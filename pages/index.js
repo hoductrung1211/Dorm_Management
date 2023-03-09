@@ -5,12 +5,10 @@ import Container from './layouts/Container';
 import Input from './components/Input';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faKey, faBullhorn, faScaleBalanced, faLandmark, faPerson, faFileLines, faUmbrella } from '@fortawesome/free-solid-svg-icons';
-import Script from 'next/script';
 
 
 library.add( faUser, faKey, faBullhorn, faScaleBalanced, faLandmark, faPerson, faFileLines);
@@ -103,7 +101,7 @@ function LoginForm({
           
 
         <div className='absolute w-full bottom-0'>
-          <Link href="/Home" className='block w-full mt-8 py-2 rounded-md bg-primary text-white text-2xl text-center hover:bg-prim-opa'>
+          <Link href="/home" className='block w-full mt-8 py-2 rounded-md bg-primary text-white text-2xl text-center hover:bg-prim-opa'>
             Log in
           </Link>
           <p className='mt-2 text-center'>
