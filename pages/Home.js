@@ -10,12 +10,28 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Home({
 
 }) {
+    const [invisible, setInvisible]=useState(false)
+    const router = useRouter();
+    useEffect(()=>{
+        HomeService.getListTypeRoom().then(res=>{
+            setInvisible(true)
+            // setRoomTypes(res.data)
+            console.log(res.data)
+        }).catch(error=>{
+            if (error.response) {
+                setInvisible(false)
+                router.push('/')
+            }
+        })
+    },{})
     return (
-        <StrictMode>
+        invisible ?
+        <StrictMode >
             <Header />
             <Main />
             <Footer />
         </StrictMode>
+        : <></>
     )
 }
 
