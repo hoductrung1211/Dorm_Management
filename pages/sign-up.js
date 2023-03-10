@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { use, useState } from "react";
+import { useState } from "react";
 import Input from './components/Input';
 import Container from "./layouts/Container";
 import Header from "./layouts/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignature, faCalendar, faLocationDot, faMobile, faUser, faEnvelope, faKey, faVenus, faMars } from '@fortawesome/free-solid-svg-icons';
+import {faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import Link from "next/link";
 import { validateIdentifier, validatePassword } from "./utils/validation";
 import OTPpopup from './layouts/OTPpopup';
@@ -132,6 +132,10 @@ function Form({
         setInputs(cloneInputs);
     }
 
+    function handleExitPopup() {
+        setIsPopup(false);
+    }
+
     return (
         <div className="items-center relative">
             <form>
@@ -170,7 +174,8 @@ function Form({
             { isPopup && 
                 <OTPpopup
                     otpMessage={otpMessage}
-                    phoneNumber="0123456789" />
+                    phoneNumber="0123456789"
+                    handleExitPopup={handleExitPopup} />
             }
         </div>
     )

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 export default function Popup({
     otpMessage,
     phoneNumber,
-    
+    handleExitPopup,
 }) {
     
 
@@ -29,7 +29,7 @@ export default function Popup({
                 />
             </div>
 
-            <div className="absolute h-screen w-screen bg-stone-600 opacity-80" />
+            <div onClick={handleExitPopup} className="absolute h-screen w-screen bg-stone-600 opacity-80" />
         </section>
     )
 }

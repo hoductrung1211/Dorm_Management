@@ -5,7 +5,7 @@ import Container from './layouts/Container';
 import Input from './components/Input';
 import Link from 'next/link';
 import Image from 'next/image';
-
+import LoginForm from './layouts/LoginForm';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faKey, faBullhorn, faScaleBalanced, faLandmark, faPerson, faFileLines, faUmbrella } from '@fortawesome/free-solid-svg-icons';
@@ -60,58 +60,6 @@ function MainSection({
   )
 }
 
-function LoginForm({
-
-}) {
-  const [inputs, setInputs] = useState([
-    {name: 'identifier', type: 'text', value: '', placeholder: 'N19DCCNxxx', icon: faUser},
-    {name: 'password', type: 'password', value: '', placeholder: 'xxxxxx', icon: faKey},
-  ])
-
-  function handleValueChange(nextInput) {
-    setInputs(inputs.map(i => 
-      nextInput.name === i.name ? nextInput : i  
-    ))
-  }
-
-  return (
-    <div className='relative h-full'>
-      <h2 className='text-center text-2xl'>
-        Login to your account
-      </h2>
-      <form className='mt-10'>
-        <ul>
-          {
-            inputs.map(input => 
-              <li className='mt-5'
-                key={input.name}>
-                <Input 
-                  input={input}
-                  onValueChange={handleValueChange}
-                > 
-                  <FontAwesomeIcon icon={input.icon} />
-                </Input>
-              </li>
-            )
-          }
-        </ul>
-        <p className='mt-2 underline text-right'>
-          <Link href={FG_PASS_LINK}>Forgot your password?</Link>
-        </p>
-          
-
-        <div className='absolute w-full bottom-0'>
-          <Link href="/home" className='block w-full mt-8 py-2 rounded-md bg-primary text-white text-2xl text-center hover:bg-prim-opa'>
-            Log in
-          </Link>
-          <p className='mt-2 text-center'>
-            Don't have an account? <Link className='text-primary underline' href={SIGN_UP_LINK}>Sign up</Link>
-          </p>
-        </div>
-      </form>  
-    </div>
-  )
-}
 
 function AnnoucementSection({
 
