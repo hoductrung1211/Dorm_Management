@@ -20,7 +20,7 @@ export default function LoginForm({
 
   return (
     <div className='relative h-full'>
-      <h2 className='text-center text-2xl'>
+      <h2 className='text-center font-bold text-2xl'>
         Login to your account
       </h2>
       
