@@ -25,6 +25,7 @@ function Main({
 
     const [roomTypeId, setRoomTypeId] = useState(0);
 
+    const rooms = roomTypeJSON.find(rt => roomTypeId == rt.id).rooms
 
     return (
         <main className="pt-12">
@@ -35,6 +36,14 @@ function Main({
                 <RoomTypeView
                     roomTypeId={roomTypeId}
                 /> 
+
+                <div className="py-20 bg-zinc-300">
+                    {rooms.map(room => {
+                        return <div>{room.name}</div>
+                    })
+                        
+                    }
+                </div>
             </Container>
         </main>
     )
@@ -176,7 +185,9 @@ var roomTypeJSON = [
         image: '/rooms/basic/8.jfif',
         icon: faMoon,
         rooms: [
-
+            {name: 'room1',},
+            {name: 'room2',},
+            {name: 'room3',},
         ],
     },
     {
@@ -188,7 +199,9 @@ var roomTypeJSON = [
         image: '/rooms/medium/12.jfif',
         icon: faRocket,
         rooms: [
-
+            {name: 'room4',},
+            {name: 'room5',},
+            {name: 'room6',},
         ],
     },
     {
@@ -200,7 +213,9 @@ var roomTypeJSON = [
         image: '/rooms/highend/4.jfif',
         icon: faUserAstronaut,
         rooms: [
-
+            {name: 'room7',},
+            {name: 'room8',},
+            {name: 'room9',},
         ],
     },
 ]

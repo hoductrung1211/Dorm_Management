@@ -1,39 +1,19 @@
 
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-
+import Image from 'next/image'; 
 export default function IndexPage() {
-    const [value, setValue] = useState('')
-    const router = useRouter();
-
-    function handleClick() {
-        if (value == '123'){
-            router.push({
-                pathname: "",
-                
-            })
-        } // thanh cong
-        else {
-
-        }
+    const myLoader = ({ src, width, height }) => {
+        return `https://picsum.${src}/200/300`
     }
 
     return (
-        <>
-            <input onChange={e => setValue(e.target.value)} value={value} />
-            <button onClick={handleClick}>
-                Click
-            </button>
-            <br />
-            <Link href={{
-                pathname: "test/about",
-                query: {
-                    username: 'n19dccn'
-                }
-            }}>
-                This is a Link compoent 
-            </Link>
-        </>
+        <div className='w-92 h-40 relative'>
+            <Image 
+                loader={myLoader}
+                src="photos"
+                width={200}
+                height={300}
+                alt="test"
+        />
+        </div>
     )
 }   
