@@ -3,17 +3,11 @@ import { useRouter } from "next/router";
 
 export default function AboutPage() {
     const router = useRouter();
-
-    const {
-        query: {id},
-    } = router;
+    const username = router.pathname
 
     return (
         <>
-            <div>About us: {id}</div>
-            <Link href={{
-                pathname: '/test',
-            }}>Go back to test</Link>
+            This is {username}
         </>
     )
 }

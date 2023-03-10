@@ -48,19 +48,19 @@ function PickRoomType({
     return (
         <section className="flex justify-between gap-10">
             <div className="w-1/3">
-                <p className="text-4xl font-bold">
+                <p className="text-3xl font-bold">
                     Your favourite <span className="text-primary">dormitory</span>
                 </p>
-                <div className="flex gap-4 text-4xl font-bold">
+                <div className="flex gap-4 text-3xl font-bold">
                     <p className="text-primary">room is</p>
                     {children}
                 </div>
             </div>
             <div className="w-2/3">
-                <p className="text-4xl font-bold">
+                <p className="text-2xl font-bold">
                     Enjoy Exploring Your Dream Room
                 </p>
-                <p className="text-lg leading-tight text-stone-600">
+                <p className="text-md leading-tight text-stone-600">
                 One of the most enjoyable aspects of this experience is designing and personalizing your living space.
                 We have come to make it easier for you to find a room, we provide more than <span className="text-stone-900 font-bold">40+ rooms</span> that are ready for you to visit
                 </p>
@@ -80,6 +80,7 @@ function Selection({
             {
                 roomTypeJSON.map(rt =>
                     <option
+                        className="text-xl"
                         key={rt.id} 
                         value={rt.id}
                     >
@@ -108,7 +109,7 @@ function RoomTypeView({
                     />
                 </div>
                 <div className="w-2/3 flex flex-col relative">
-                    <h3 className="text-4xl font-bold capitalize text-primary">
+                    <h3 className="text-3xl font-bold capitalize text-primary">
                         {rt.name} dormitory <FontAwesomeIcon icon={rt.icon} />
                     </h3>
 
@@ -122,7 +123,7 @@ function RoomTypeView({
                         </p>
                     </div>
 
-                    <p className="mt-10 text-lg italic text-stone-600 ">
+                    <p className="mt-10 text-md italic text-stone-600 ">
                         "
                         {rt.desc}
                         "
@@ -147,10 +148,10 @@ function Drafts({
         <section className="mt-10 p-10 flex gap-5 ">
             {
                 drafts.map(d => 
-                    <div className="w-1/3 flex flex-col items-start text-4xl">
-                        <FontAwesomeIcon  icon={d.icon} />
+                    <div className="w-1/3 flex flex-col items-start">
+                        <FontAwesomeIcon className="text-4xl w-full text-center"  icon={d.icon} />
                         <h3 className="mt-4 text-primary text-xl">{d.title}</h3>
-                        <p className="text-lg text-stone-500">
+                        <p className="text-md text-stone-500">
                             {d.desc}
                         </p>
                     </div>

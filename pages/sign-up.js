@@ -6,6 +6,8 @@ import Header from "./layouts/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignature, faCalendar, faLocationDot, faMobile, faUser, faEnvelope, faKey, faVenus, faMars } from '@fortawesome/free-solid-svg-icons';
 import Link from "next/link";
+import { validateIdentifier, validatePassword } from "./utils/validation";
+import OTPpopup from './layouts/OTPpopup';
 
 export default function Signup({
 
@@ -26,19 +28,59 @@ function Main({
     return (
         <main className="">
             <Container>
-                <section className="flex justify-center pt-8 pb-5 gap-10 bg-white shadow-md rounded-lg">
-                    <div className="w-1/3 relative">
-                        <Image 
-                            className="object-fit"
-                            src="/pics/signup.jpg"
-                            alt=""
-                            fill 
-                        />
-                    </div>
-                    <Form />
+                <section className="flex px-8 pt-8 pb-5 gap-10 bg-white shadow-md rounded-lg">
+                    <Illustration />
+                    <FormSection />
                 </section>
             </Container>
         </main>
+    )
+}
+
+function Illustration() {
+    return (
+        <div className="flex">
+            <div className=" w-96 relative">
+                <Image 
+                    className="object-fit"
+                    src="/pics/signup.jpg"
+                    alt=""
+                    fill 
+                />
+            </div>
+            <div className=" w-96 relative">
+                <Image 
+                    className="object-fit"
+                    src="/pics/signup_2.jpg"
+                    alt=""
+                    fill 
+                />
+            </div>
+        </div>
+    )
+}
+
+function FormSection() {
+    return (
+        <section className="w-full flex flex-col items-center">
+            <Title/>
+            <Form />
+        </section>
+    )
+}
+
+function Title() {
+    return (
+        <div className="">
+            <div className="relative w-20 aspect-square overflow-hidden">
+                <Image  
+                    src="/svg/ID.svg"
+                    alt="ID illustration"
+                    fill 
+                />
+            </div>
+            <h2 className="text-2xl font-bold">Sign up</h2>
+        </div>
     )
 }
 
@@ -46,18 +88,13 @@ function Form({
 
 }) {
     const [inputs, setInputs] = useState([
-        {name: 'Full name', type: 'text', value: '', placeholder: 'Nguyen Dang A', icon: faSignature},
-        {name: 'Birthday', type: 'date', value: '', placeholder: '', icon: faCalendar},
-        {name: 'Address', type: 'text', value: '', placeholder: 'Dong Ngo, Qua Xoai, Binh Duong', icon: faLocationDot},
-        {name: 'Phone number', type: 'number', value: '', placeholder: '0123456789', icon: faMobile},
-
         {name: 'Identifier', type: 'text', value: '', placeholder: 'N19DCCNxxx', icon: faUser},
-        {name: 'Email', type: 'mail', value: '', placeholder: 'nguyendangbac@gmail.com', icon: faEnvelope},
         {name: 'Password', type: 'password', value: '', placeholder: 'xxxx xxxx', icon: faKey},
         {name: 'Confirm Password', type: 'password', value: '', placeholder: 'xxxx xxxx', icon: faKey},
     ])
-
-    const [gender, setGender] = useState(true);
+    
+    const otpMessage = 1111;
+    const [isPopup, setIsPopup] = useState(false);
 
     function handleValueChange(nextInput) {
         setInputs(inputs.map(i => 
@@ -65,21 +102,41 @@ function Form({
         ))
     }
 
-    return (
-        <div className="items-center">
-            <div className="grid grid-cols-2 place-items-center">
-                <div className="relative w-20 aspect-square overflow-hidden">
-                    <Image  
-                        src="/svg/ID.svg"
-                        alt="ID illustration"
-                        fill 
-                    />
-                </div>
-                <h2 className="text-2xl font-bold">Sign up</h2>
-            </div>
+    function handleValidate(e) {
+        e.preventDefault();
+        const cloneInputs = [];
+        let isValid = true;
 
+        inputs.forEach(input => {
+            let validation = "";
+
+            if (input.type === 'password') {
+                if (!validatePassword(input.value)) 
+                    validation = "This password is invalid!"
+            } 
+            else if (input.name === 'Identifier') {
+                if (!validateIdentifier(input.value))
+                    validation = "This identifier is invalid!"
+            }
+    
+            if (validation)
+                isValid = false;
+
+            cloneInputs.push({
+                ...input,
+                validation,
+            })            
+        })
+
+        setIsPopup(isValid);
+        setInputs(cloneInputs);
+    }
+
+    return (
+        <div className="items-center relative">
             <form>
-                <ul className="mt-5 grid grid-rows-4 grid-flow-col-dense gap-x-4 ">
+                {/* Inputs  */}
+                <ul className="mt-5 grid grid-rows-3 grid-flow-col-dense gap-x-4 ">
                 {
                     inputs.map(input => 
                     <li className='mt-5 w-72'
@@ -95,36 +152,11 @@ function Form({
                 }
                 </ul>
 
+                {/* Buttons */}
                 <div className="mt-5 flex items-start gap-4">
-                    <div className="flex flex-col w-72">
-                        <p>Gender</p>
-                        <div className="flex justify-between">
-                            <label className="flex gap-1 items-center text-lg">
-                                <input 
-                                    checked={gender}
-                                    className=""
-                                    name="gender" 
-                                    type="radio"  
-                                    onChange={e => setGender(true)} />
-                                Male
-                                <FontAwesomeIcon icon={faMars} />
-                            </label>
-
-                            <label className="flex gap-1 items-center text-lg">
-                                <input 
-                                    checked={!gender}
-                                    name="gender" 
-                                    type="radio"  
-                                    onChange={() => setGender(false)} />
-                                Female
-                                <FontAwesomeIcon icon={faVenus} />
-                            </label>
-                        </div>
-
-                    </div>
-
+  
                     <div className="flex flex-col items-center gap-2">
-                        <button className="mt-12 w-72 h-12 bg-primary text-white text-xl rounded-lg hover:opacity-90" >
+                        <button onClick={handleValidate} className="mt-12 w-72 h-12 bg-primary text-white text-xl rounded-lg hover:opacity-90" >
                             Register
                         </button>
 
@@ -134,6 +166,12 @@ function Form({
                     </div>
                 </div>
             </form>
+
+            { isPopup && 
+                <OTPpopup
+                    otpMessage={otpMessage}
+                    phoneNumber="0123456789" />
+            }
         </div>
     )
 }

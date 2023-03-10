@@ -1,7 +1,7 @@
-export default function MyDynamicPage({ example }) {
-    return <div>My example is {example}</div>
+export default function MyDynamicPage({ id }) {
+    return <div>My example is {id}</div>
 }
 
-MyDynamicPage.getInitialProps = ({ query: {example}}) => {
-    return {example}
+MyDynamicPage.getInitialProps = ({ query: {id}}) => {
+    return {id}
 }
