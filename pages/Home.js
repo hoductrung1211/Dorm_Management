@@ -1,11 +1,12 @@
-import { StrictMode, useState } from "react";
+import { StrictMode, useState,useEffect } from "react";
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import Container from "./layouts/Container";
 import Image from "next/image";
- 
+import { useRouter } from "next/router";
 import { faBed, faMoon, faUserAstronaut, faRocket, faMoneyBill, faClock, faMobile, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import HomeService from './api/service/HomeService'
 
 export default function Home({
 
@@ -16,7 +17,6 @@ export default function Home({
         HomeService.getListTypeRoom().then(res=>{
             setInvisible(true)
             // setRoomTypes(res.data)
-            console.log(res.data)
         }).catch(error=>{
             if (error.response) {
                 setInvisible(false)
@@ -39,27 +39,54 @@ function Main({
 
 }) {
 
-    const [roomTypeId, setRoomTypeId] = useState(0);
+    // const [roomTypeId, setRoomTypeId] = useState(5);
+    const [roomTypes, setRoomTypes]=useState([])
+    const [roomInfo, setRoomInfo]=useState({})
 
-    const rooms = roomTypeJSON.find(rt => roomTypeId == rt.id).rooms
+
+    useEffect(()=>{
+        
+        HomeService.getListTypeRoom().then(res=>{
+            setRoomTypes(res.data)
+            setRoomInfo(res.data[0])
+            // console.log(res.data)
+           
+        }).catch(error=>{
+            if (error.response) {
+                console.log(error.response.data);
+            }
+        })
+        
+        // HomeService.getListRoomByTypeID(roomTypeId).then(res=>{
+        //     setRoomInfo(res.data)
+        // }).catch(error=>{
+        //     if (error.response) {
+        //         console.log(error.response.data);
+        //     }
+        // })
+            
+    },{})
+    const handleChangeTypeRoom=(id)=>{
+        setRoomInfo(roomTypes.find(obj=>obj.id==id))
+    }
 
     return (
         <main className="pt-12">
             <Container>
                 <PickRoomType>
-                    <Selection handleSelect={id => setRoomTypeId(id)} />
+                <Selection roomTypeData={roomTypes} handleSelect={id => handleChangeTypeRoom(id)} />
                 </PickRoomType>
                 <RoomTypeView
-                    roomTypeId={roomTypeId}
+                    roomInfo={roomInfo} 
                 /> 
 
-                <div className="py-20 bg-zinc-300">
+                {/* <div className="py-20 bg-zinc-300">
                     {rooms.map(room => {
                         return <div>{room.name}</div>
                     })
                         
                     }
-                </div>
+                </div> */}
             </Container>
         </main>
     )
@@ -95,7 +122,8 @@ function PickRoomType({
 }
 
 function Selection({ 
-    handleSelect
+    handleSelect,
+    roomTypeData
 }) {
     return (
         <select 
@@ -103,13 +131,13 @@ function Selection({
             onChange={e => handleSelect(e.target.value)}
         >
             {
-                roomTypeJSON.map(rt =>
+                roomTypeData.map(rt =>
                     <option
                         className="text-xl"
                         key={rt.id} 
                         value={rt.id}
                     >
-                        {rt.name}
+                        {rt.tenLoai}
                     </option>
                 )
             }
@@ -118,47 +146,47 @@ function Selection({
 }
 
 function RoomTypeView({
-    roomTypeId,
+    roomInfo,
 }) {
-    const rt = roomTypeJSON.find(rt => rt.id == roomTypeId)
-
-
+    
     return (
         <section className="flex flex-col mt-10 p-10 gap-5 bg-white shadow-xl rounded-2xl">
-            <div className="flex gap-10">
-                <div className="relative w-1/3 aspect-square rounded-xl bg-black overflow-hidden">
-                    <Image 
-                        className="absolute bottom-0 w-full object-cover"
-                        src={rt.image}
-                        fill
-                    />
-                </div>
-                <div className="w-2/3 flex flex-col relative">
-                    <h3 className="text-3xl font-bold capitalize text-primary">
-                        {rt.name} dormitory <FontAwesomeIcon icon={rt.icon} />
-                    </h3>
-
-                    <div className="flex mt-10 gap-10 text-2xl">
-                        <p className="">
-                            <FontAwesomeIcon icon={faBed} /> {rt.beds} beds
-                        </p>
-                        <p className="">
-                            <FontAwesomeIcon icon={faMoneyBill} /> {rt.cost}đ/month
-
-                        </p>
+            
+                <div   div className="flex gap-10">
+                    <div className="relative w-1/3 aspect-square rounded-xl bg-black overflow-hidden">
+                        <Image 
+                            className="absolute bottom-0 w-full object-cover"
+                            src={roomInfo.image}
+                            alt=""
+                            fill
+                        />
                     </div>
+                    <div className="w-2/3 flex flex-col relative">
+                        <h3 className="text-3xl font-bold capitalize text-primary">
+                            {/* {rt.tenLoai} dormitory <FontAwesomeIcon icon={rt.icon} /> */}
+                        </h3>
 
-                    <p className="mt-10 text-md italic text-stone-600 ">
-                        "
-                        {rt.desc}
-                        "
-                    </p>
+                        <div className="flex mt-10 gap-10 text-2xl">
+                            <p className="">
+                                <FontAwesomeIcon icon={faBed} /> {roomInfo.soGiuong} beds
+                            </p>
+                            <p className="">
+                                <FontAwesomeIcon icon={faMoneyBill} /> {roomInfo.giaPhong}đ/month
 
-                    <button className="absolute bottom-0 right-0 flex justify-center items-center h-16  w-48 hover:opacity-90 bg-primary text-white text-xl text-center rounded-lg">
-                        Register now
-                    </button>
+                            </p>
+                        </div>
+
+                        <p className="mt-10 text-md italic text-stone-600 ">
+                            "
+                            {roomInfo.description}
+                            "
+                        </p>
+
+                        <button className="absolute bottom-0 right-0 flex justify-center items-center h-16  w-48 hover:opacity-90 bg-primary text-white text-xl text-center rounded-lg">
+                            Register now
+                        </button>
+                    </div>
                 </div>
-            </div>
             
             <Drafts />
         </section>
