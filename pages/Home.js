@@ -1,4 +1,4 @@
-import { StrictMode, useState } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import Container from "./layouts/Container";
@@ -6,24 +6,25 @@ import Image from "next/image";
  
 import { faBed, faMoon, faUserAstronaut, faRocket, faMoneyBill, faClock, faMobile, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
 
 export default function Home({
 
 }) {
     const [invisible, setInvisible]=useState(false)
     const router = useRouter();
-    useEffect(()=>{
-        HomeService.getListTypeRoom().then(res=>{
-            setInvisible(true)
-            // setRoomTypes(res.data)
-            console.log(res.data)
-        }).catch(error=>{
-            if (error.response) {
-                setInvisible(false)
-                router.push('/')
-            }
-        })
-    },{})
+    // useEffect(()=>{
+    //     HomeService.getListTypeRoom().then(res=>{
+    //         setInvisible(true)
+    //         // setRoomTypes(res.data)
+    //         console.log(res.data)
+    //     }).catch(error=>{
+    //         if (error.response) {
+    //             setInvisible(false)
+    //             router.push('/')
+    //         }
+    //     })
+    // },{})
     return (
         invisible ?
         <StrictMode >
