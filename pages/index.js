@@ -45,7 +45,7 @@ function MainSection({
     <>
       <main className='mt-10 grid grid-cols-9 grid-rows-3 gap-5'>
         <div className='pt-8 px-10 pb-5 col-span-3 row-span-3 bg-white shadow-md rounded-md'>
-          <LoginForm />
+          <LoginForm /> 
         </div>
         <div className='pt-8 px-10 pb-5 col-span-6 row-span-2 bg-white shadow-md rounded-md'>
           <AnnoucementSection />

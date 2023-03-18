@@ -25,6 +25,7 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+<<<<<<< HEAD
     "/new": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -44,6 +45,12 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/new/student-home.js"
+=======
+    "/home": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/home.js"
+>>>>>>> 6a76b5d95cd32f39a8f449c8651a89342fc23065
     ]
   },
   "ampFirstPages": []
