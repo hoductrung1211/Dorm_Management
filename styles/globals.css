@@ -19,7 +19,67 @@
     background-color: var(--primary-color);
     opacity: 0.9;
   }
- 
+  
+  
+
+
+
+  .text-p {
+    /* color: #3A98B9; */
+    color: #2980B9;
+  }
+  .bg-p {
+    /* background-color: #3A98B9; */
+    background-color: #2980B9;
+  }
+
+  .text-b {
+    color: #34495E;
+  }
+  .bg-b {
+    background-color: #34495E;
+  }
+
+  .text-fa {
+    color: #FAFAFA;
+  }
+  .bg-fa {
+    background-color: #FAFAFA;
+  }
+
+  .text-6 {
+    color: #666;
+  }
+  .bg-6 {
+    background-color: #666;
+  }
+  .border-d {
+    border-color: #ddd;
+  }
+
+  .text-ec {
+    color: #ECF0F1;
+  }
+  .bg-ec {
+    background-color: #ECF0F1;
+  }
+  .border-ec {
+    border-color: #ECF0F1;
+  }
+
+  .bg-red {
+    background-color: #C0392B;
+  }
+  .text-red {
+    color: #C0392B;
+  }
+
+  .border-red {
+    border-color: #C0392B;
+  }
+  .border-ec {
+    border-color: #ECF0F1;
+  }
 }
 
 :root {
@@ -34,14 +94,15 @@ body {
   padding: 0;
   border: 0;
   box-sizing: border-box;
-
-  background-color: #FAFAFA;
+  /* background-color: #FAFAFA; */
+  overflow-x: hidden;
+  font-size: 14px;
 }
 
 html,
 input,
 button {
-  font-family: 'Poopins', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Poppins', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color: var(--dark-color);
 }
 
@@ -58,4 +119,10 @@ input,
 button,
 a {
   color: inherit;
+}
+
+.container {
+  max-width: 1200px;
+  padding: 0 10px;
+  margin: 0 auto;
 }

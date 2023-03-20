@@ -1,259 +1,244 @@
-import Header from './layouts/Header'; 
-import Footer from './layouts/Footer';
-import { StrictMode, useState } from 'react';
-import Container from './layouts/Container';
-import Input from './components/Input';
-import Link from 'next/link';
-import Image from 'next/image';
-
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faKey, faBullhorn, faScaleBalanced, faLandmark, faPerson, faFileLines, faUmbrella } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faBox, faFaucetDrip, faBolt, faTv } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Image from "next/image"
+import Link from "next/link"
+import {url, landingPageUrl} from "./utils/links"
+import { forwardRef, useEffect, useRef } from "react"
+import Header from "./components/Header";
+import Footer from "./components/Footer"
 
 
-library.add( faUser, faKey, faBullhorn, faScaleBalanced, faLandmark, faPerson, faFileLines);
+export default function LandingPage() {
+    const homeRef = useRef(null);
+    const aboutRef = useRef(null);
+    const optionsRef = useRef(null);
+    const faqRef = useRef(null);
 
-const SIGN_UP_LINK = '/';
-const FG_PASS_LINK = '/';
-
-export default function Home() { 
-  return ( 
-    <StrictMode>
-      <Header /> 
-      <Main />
-      <Footer />  
-    </StrictMode> 
-  )
+    return (
+        <>
+            <Header>
+                <Nav 
+                    homeRef={homeRef}
+                    aboutRef={aboutRef}
+                    optionsRef={optionsRef}
+                    faqRef={faqRef} 
+                />
+            </Header>
+           
+            <main className="w-screen"> 
+                <HeroSection ref={homeRef} />
+                <AboutSection ref={aboutRef} />
+                <RoomOptionsSection ref={optionsRef} />
+                <FAQSection ref={faqRef} />
+            </main>
+            <Footer>
+                <Nav 
+                    homeRef={homeRef}
+                    aboutRef={aboutRef}
+                    optionsRef={optionsRef}
+                    faqRef={faqRef} 
+                />
+            </Footer>
+        </>
+    )
 }
- 
 
-function Main({
-  
-}) {
-  return (
-    <Container>
-      <MainSection />
-      <RoomTypeSection />
-    </Container>
-  ) 
+function Nav({
+    homeRef,
+    aboutRef,
+    optionsRef,
+    faqRef,
+}) { 
+    function handleScroll(index) {
+        let ref = null;
+
+        if (index == 0)
+            ref = homeRef.current;
+        else if (index == 1)
+            ref = aboutRef.current;
+        else if (index == 2)
+            ref = optionsRef.current;
+        else if (index == 3) 
+            ref = faqRef.current;
+        else return;
+
+        ref.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start', 
+        })
+    }
+
+    return (
+        <nav>
+            <ul className="flex gap-12">
+                {landingPageUrl.map((url, index) => 
+                    <li key={url.text}>
+                        <button onClick={() => handleScroll(index)} className="capitalize cursor-pointer">
+                            {url.text}
+                        </button>
+                    </li>   
+                )}
+            </ul>
+        </nav>
+    )
 }
 
-function MainSection({
+const HeroSection = forwardRef((props, ref) => {
+    return (
+        <section ref={ref} id="home" className="pt-28 pb-10">
+            <div className="container flex justify-between">
+                <div className="flex flex-col justify-center w-3/5">
+                    <h3 className="capitalize text-4xl font-bold">
+                        live <span className="text-p">Better</span>, learn <span className="text-p">Better</span>:
+                    </h3>
+                    <h3 className="text-4xl font-bold">
+                        Welcome to Your New Home
+                    </h3>
+                    <p className="mt-5">Experience the Ultimate College Lifestyle at Our Modern and Affordable Dormitory. Enjoy 24/7 Security, On-Site Dining, Free Wi-Fi, and Spacious Rooms with Stunning Views. Join a Thriving Community of Students and Make Lifelong Memories in Your Home Away from Home.</p>
+                    <div className="mt-5 flex gap-10">
+                        <button className="px-5 py-3 bg-slate-200 hover:opacity-90 rounded-lg font-bold text-xl">
+                            Contact Us
+                        </button>
+                        <button className="px-5 py-3 bg-p text-white rounded-lg font-bold text-xl hover:opacity-90">
+                            Book a room
+                        </button>
+                    </div>
+                </div>
+                <div className="relative overflow-hidden z-0">
+                    <Image 
+                        className="object-cover z-0"
+                        src="/pics/herosection.jpg"
+                        width={384}
+                        height={575}
+                        alt="hero-section-picture"
+                    />
+                </div>
+            </div>
+        </section>
+    )
+}) 
 
-}) {
-  return (
-    <>
-      <main className='mt-10 grid grid-cols-9 grid-rows-3 gap-5'>
-        <div className='pt-8 px-10 pb-5 col-span-3 row-span-3 bg-white shadow-md rounded-md'>
-          <LoginForm />
+const AboutSection = forwardRef((props, ref) => {
+    return (
+        <section ref={ref} id="about" className="bg-fa py-10">
+            <div className="container">
+                <Title text="about us" />
+                <div className="pt-10 flex justify-around">
+                    <div className="w-80 relative">
+                        <Image
+                            className="object-cover"
+                            src="/pics/aboutus.jpg"
+                            width={304}
+                            height={456}
+                            alt="CEO of cube dormitory"
+                        />
+                    </div>
+                    <div className="w-1/2 flex flex-col justify-center">
+                        <p className="italic">
+                        “At Cube Dormitory , we are dedicated to providing a safe, affordable, and comfortable living environment for college students. Our mission is to create a welcoming and inclusive community that supports academic success, personal growth, and lifelong friendships. With modern facilities and a wide range of amenities, including on-site dining, fitness facilities, study spaces, and 24/7 security, we strive to make our dormitory a home away from home for all residents. Our committed and experienced leadership team is passionate about providing exceptional service and support to all residents, and we are proud to be a trusted and respected provider of student housing.”
+                        </p>
+                        <p className="mt-10 text-end">CEO of Cube Dormitory</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
+}) 
+
+function Title({ text }) {
+    return (
+        <h3 className="uppercase">
+            #{text}
+        </h3>
+    )
+}
+
+const RoomOptionsSection = forwardRef((props, ref) => {
+    return (
+        <section ref={ref} id="options" className="py-10">
+            <div className="container">
+                <Title text="room options" />
+                <ul className="mt-10">
+                {roomOptions.map(option => 
+                    <li key={option.name}>
+                        <RoomOption option={option} />
+                    </li>
+                )}
+                </ul>
+            </div>
+        </section>
+    )
+}) 
+
+function RoomOption({option}) {
+    return (
+        <div className="mt-10 pl-16 flex gap-20">
+            <div className="relative w-96 h-96">
+                <Image
+                    src={option.src}
+                    alt={option.name + " pic"}
+                    fill 
+                />
+            </div>
+            <div className="w-1/2 flex flex-col gap-12">
+                <h3 className="text-3xl capitalize">
+                    {option.name + " room"}
+                </h3>
+                <ul className="flex gap-5">
+                    {option.icons.map((icon, index) => 
+                        <li key={index}>
+                            <FontAwesomeIcon className="text-3xl" icon={icon} />
+                        </li>    
+                    )}
+                </ul>
+                <p>{option.paragaph}</p>
+                <Link 
+                    className="w-fit mt-5 px-5 py-3 text-white font-bold bg-p rounded-md"
+                    href={url.login}
+                >Pick a room</Link>
+            </div>
         </div>
-        <div className='pt-8 px-10 pb-5 col-span-6 row-span-2 bg-white shadow-md rounded-md'>
-          <AnnoucementSection />
-        </div>
-        <div className='pt-4 px-10 pb-5 col-span-6 shadow-md bg-white rounded-md'>
-          <Rules />
-        </div>
-      </main>
- 
-    </>
-    
-  )
+    )
 }
 
-function LoginForm({
+const FAQSection = forwardRef((props, ref) => {
+    return (
+        <section ref={ref} id="faq" className="bg-fa py-10">
+            <div className="container">
+                <Title text="FAQ" />
+                <div className="mt-20 flex justify-between">
+                    <h3 className="w-2/5 text-5xl">
+                        Frequently asked questions
+                    </h3>
+                    <ul className="w-3/5 flex flex-col items-start gap-4">
+                        {faq.map((q, index) => 
+                            <li className="cursor-pointer underline text-lg" key={index}>
+                                {index + 1}. {q}
+                            </li>
+                        )}
+                    </ul>
+                </div>
+            </div>
+        </section>
+    )
+});
 
-}) {
-  const [inputs, setInputs] = useState([
-    {name: 'identifier', type: 'text', value: '', placeholder: 'N19DCCNxxx', icon: faUser},
-    {name: 'password', type: 'password', value: '', placeholder: 'xxxxxx', icon: faKey},
-  ])
+const roomOptions = [
+    {name: "standard", src: "/rooms/basic/8.jfif", icons: [faBed, faFaucetDrip, faBolt] ,paragaph: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces."},
+    {name: "deluxe", src: "/rooms/medium/12.jfif", icons: [faBed, faBox, faFaucetDrip, faBolt] ,paragaph: "A deluxe room is a more spacious and well-appointed dormitory room that may include additional amenities such as a private bathroom, mini-fridge, and air conditioning. This option is typically priced higher than a standard room but offers more comfort and convenience."},
+    {name: "premium", src: "/rooms/highend/5.jfif", icons: [faBed, faBox, faFaucetDrip, faBolt, faTv] ,paragaph: "A premium room is a top-tier dormitory room that offers the most luxurious amenities and furnishings, such as premium bedding, a flat-screen TV, and a private balcony. This option is typically the most expensive but offers the highest level of comfort and luxury."},
+]
 
-  function handleValueChange(nextInput) {
-    setInputs(inputs.map(i => 
-      nextInput.name === i.name ? nextInput : i  
-    ))
-  }
+const faq = [
+    "What is included in the dormitory fee?",
+    "What types of rooms are available, and what are their prices?",
+    "What amenities and facilities are available in the dormitory?",
+    "Is the dormitory co-ed or single-gender?",
+    "What are the dormitory's policies on noise, visitors, and alcohol?:",
+    "What is the dormitory's policy on roommates, and can I request a specific roommate?",
+    "What types of meal plans are available, and how much do they cost?",
+    "Is the dormitory located near public transportation or within walking distance of campus?",
+    "What types of security measures are in place to ensure resident safety?",
+    "What is the process for applying to live in the dormitory, and when are applications due?",
+]
 
-  return (
-    <div className='relative h-full'>
-      <h2 className='text-center text-2xl'>
-        Login to your account
-      </h2>
-      <form className='mt-10'>
-        <ul>
-          {
-            inputs.map(input => 
-              <li className='mt-5'
-                key={input.name}>
-                <Input 
-                  input={input}
-                  onValueChange={handleValueChange}
-                > 
-                  <FontAwesomeIcon icon={input.icon} />
-                </Input>
-              </li>
-            )
-          }
-        </ul>
-        <p className='mt-2 underline text-right'>
-          <Link href={FG_PASS_LINK}>Forgot your password?</Link>
-        </p>
-          
-
-        <div className='absolute w-full bottom-0'>
-          <Link href="/home" className='block w-full mt-8 py-2 rounded-md bg-primary text-white text-2xl text-center hover:bg-prim-opa'>
-            Log in
-          </Link>
-          <p className='mt-2 text-center'>
-            Don't have an account? <Link className='text-primary underline' href={SIGN_UP_LINK}>Sign up</Link>
-          </p>
-        </div>
-      </form>  
-    </div>
-  )
-}
-
-function AnnoucementSection({
-
-}) {
-  const ancmList = [
-    {text: "Announcement of interviewees for dormitory work scholarship of interviewees for dormitory work scholarship of interviewees for dormitory work scholarship ", date: "10 Feb 2023"},
-    {text: "Secure Your Spot in Our Affordable On-Campus Housing Today", date: "10 Feb 2023"},
-    {text: "Limited Availability: Reserve Your Room in Our Newly Constructed Dormitory and Enjoy State-of-the-Art Facilities and Amenities", date: "10 Feb 2023"},
-    {text: "Experience Comfort and Convenience in Our Modern Dormitory, Located Just Steps Away from Campus", date: "10 Feb 2023"},
-  ]
-
-
-  return (
-    <section className='divide-y-2'> 
-      <h2 className='text-2xl'>
-        Login to your account
-        {" "}
-        <FontAwesomeIcon icon={faBullhorn} />
-      </h2>
-      <ul className=''>
-        {
-          ancmList.map(ancm => 
-            <li>
-              <Announcement
-                ancm={ancm}
-              
-              />
-            </li>  
-          )
-        }
-      </ul>
-    </section>
-  )
-}
-
-function Announcement({
-  ancm
-}) {
-  return (
-    <p className='grid grid-cols-10 py-3'>
-      <Link className='col-span-8 text-stone-600 hover:text-stone-400 truncate ' href="/">{ancm.text}</Link>
-      
-      <span className='col-span-2 text-stone-400 text-sm text-end'>
-        {ancm.date}
-      </span>
-    </p>
-  )
-}
-
-function Rules({
-
-}) {
-  const ruleList = [
-    {text: "Dorm rules", icon: faLandmark},
-    {text: "Life rules", icon: faPerson},
-    {text: "Guides", icon: faFileLines},
-  ]
-
-  return (
-    <section className='flex flex-col h-full'>
-      <h2 className='text-2xl'>
-        Dormitory Rules
-        {" "}
-        <FontAwesomeIcon icon={faScaleBalanced} />
-      </h2>
-
-      <div className='flex h-full justify-between items-center gap-2'>
-        {ruleList.map(rule => 
-            <Rule 
-              rule={rule}
-            />
-        )}
-      </div>
-
-    </section>
-  )
-}
-
-function Rule({
-  rule,
-}) {
-  return (
-    <Link className='flex justify-center gap-4 items-center h-full w-full text-xl rounded-sm hover:bg-light' href="/">
-      <FontAwesomeIcon className='text-3xl' icon={rule.icon} />
-      {rule.text}
-    </Link>
-  )
-}
-
-function RoomTypeSection({
-
-}) {
-  const roomTypes = [
-    {text: "Basic", desc: "This system provides basic amenities for students, including a shared bedroom, bathroom, and common areas such as a kitchen and living room. The system may have limited access to Wi-Fi, laundry facilities, and recreational areas.", images: ['/rooms/basic/8.jfif', '/rooms/basic/13.jfif']},
-    {text: "Medium", desc: "This system provides students with more amenities than a basic system, including private or semi-private bedrooms, shared or private bathrooms, access to Wi-Fi, laundry facilities, and recreational areas such as a gym or lounge.", images: ['/rooms/medium/8.jfif', '/rooms/medium/12.jfif']},
-    {text: "High end", desc: "This system offers students a luxury living experience, with private bedrooms and bathrooms, high-speed internet access, laundry facilities, recreational areas such as a pool or movie theater, and on-site services such as a 24-hour front desk, cleaning services, and on-site dining options.", images: ['/rooms/highend/4.jfif', '/rooms/highend/5.jfif']},
-  ]
-
-  return (
-    <section className='mt-10'>
-      {
-        roomTypes.map(rt =>
-          <RoomType
-            rt={rt}/>
-        )
-      }
-    </section>
-  )
-}
-
-function RoomType({
-  rt,
-}) {
-  return (
-    <div className='mt-10 px-10 py-6 bg-white rounded-md shadow-md'>
-      <h3 className='text-2xl'>
-        {rt.text} Dormitory
-      </h3>
-      <div className='grid grid-cols-3 gap-5'>
-        <p className='flex items-center leading-10 italic'>
-          "
-          {rt.desc}
-          "
-        </p>
-        
-        { 
-          rt.images.slice(0, 2).map( image =>
-            <div className='w-full h-96 relative overflow-hidden'>
-            {/* <img 
-              className='w-full absolute bottom-0 object-scale-down'
-              src={image}
-              /> */}
-              <Image 
-                src={image}
-                fill
-                alt={rt.text}
-              />
-          </div>
-          )
-        }
-      </div>
-    </div>
-  )
-}
- 

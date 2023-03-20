@@ -3,18 +3,22 @@ import Link from 'next/link';
 import Header from './components/Header';
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import {validateUsername, validatePassword} from './utils/validation';
+import {checkUsername, checkPassword } from './utils/validation';
 import { url } from './utils/links';
-import { Input, Main, Nav} from  './components/form';
-
+import { Input, Main, Nav, OTPForm} from  './components/form';
 
 const initInputs = [
-    {name: "identifier", type: "text", value: "", placeholder: "N19DCCN001", icon: faUser, error: undefined, validate: validateUsername},
-    {name: "password", type: "password", value: "", placeholder: "At least 6 characters", icon: faKey, error: undefined, validate: validatePassword},
-    {name: "confirm password", type: "password", value: "", placeholder: "Enter your password again", icon: faKey, error: undefined, validate: validatePassword},
+    {name: "identifier", type: "text", value: "N19DCCN018", placeholder: "N19DCCN001", icon: faUser, error: undefined, validate: checkUsername},
+    {name: "password", type: "password", value: "aaa123", placeholder: "Enter your password", icon: faKey, error: undefined, validate: checkPassword},
 ]
 
 export default function Page() {
+    const [isPopup, setIsPopup] = useState(false);
+
+    function handlePushPopup() {
+        setIsPopup(true);
+    }
+
     return (
         <>
             <Header>
@@ -22,13 +26,19 @@ export default function Page() {
             </Header>
             <Main>
                 <Illustration />
-                <SignUpForm />
+                {   isPopup ? 
+                    <OTPForm /> : 
+                    <LoginForm
+                        handlePushPopup={handlePushPopup} />
+                }
             </Main>
         </>
     )
 }
 
-function SignUpForm() {
+function LoginForm({
+    handlePushPopup,
+}) {
     const [inputs, setInputs] = useState(initInputs);
 
     function handleValueChange(nextInput) {
@@ -41,39 +51,38 @@ function SignUpForm() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        let nextInputs = [];
+        let flag = false; // true if there is already an error, no need to check anymore
 
-        inputs.slice(0, 2).map(input => {
+        setInputs(inputs.map(input => {
+            if (flag)
+                return input;
+
             let valid = input.validate(input.value);
+            if (valid)
+                flag = true;
             let error = valid;
 
-            nextInputs.push({
+            return {
                 ...input,
                 error,
-            });
-        })
+            }
+        }))
         
-        // Confirm password
-        if (!(inputs[1].value == inputs[2].value))
-            nextInputs.push({
-                ...inputs[2],
-                error: "The confirm password is not the same"
-            })
-        else nextInputs.push(inputs[2]);
-
-        setInputs(nextInputs);
+        if (!flag) { // There is no errors
+            handlePushPopup();
+        }
     }
 
     return (
         <form onSubmit={handleSubmit} className='relative mt-1 pt-8 flex flex-col px-4'>
             <h3 className='mb-8 text-b flex flex-col items-center text-2xl font-bold'>
                 <Image 
-                    src="/svg/ID.svg"
-                    width={80}
-                    height={80}
+                    src="/svg/welcome.svg"
+                    width={200}
+                    height={200}
                     alt='welcome pic'
                 />
-                Sign up
+                Login your account
             </h3>
             {
                 inputs.map(input => 
@@ -85,14 +94,16 @@ function SignUpForm() {
                 )
             }
 
+            <Link href="/new" className='mt-3 text-sm self-end underline'>Forgot password?</Link>
+            
             <div className='absolute bottom-0'>
                 <button 
                     className=' w-72 py-2 bg-p text-white font-bold rounded-md'>
-                    Create account
+                    Login
                 </button>
-                <p className='mt-1 text-center text-sm'>Already have an account?
+                <p className='mt-1 text-center text-sm'>Don't have an account?
                     {' '}
-                    <Link href={url.login} className="underline">Login</Link>
+                    <Link href={url.signup} className="underline">Sign up</Link>
                 </p>
             </div>
             
@@ -105,18 +116,29 @@ function Illustration() {
         <div className='relative flex'>
             <Image
                 className='object-fit'
-                src="/pics/signup_2.jpg"
+                src="/pics/login2.jpg"
                 alt='dorm illustration'
                 width={350}
                 height={525}
             />
             <Image
-                src="/pics/signup.jpg"
+                src="/pics/login4.jpg"
                 alt='dorm illustration'
                 width={350}
                 height={525}
-            />
-            
+            /> 
         </div>
     )
 }
+
+
+
+
+
+
+
+
+
+
+
+
