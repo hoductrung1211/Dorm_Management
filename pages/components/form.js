@@ -95,7 +95,6 @@ export function OTPForm({
         
     }
  
-
     return (
         <form onSubmit={handleSubmit} className='relative mt-1 pt-8 flex flex-col px-4'>
             <h3 className='mb-8 text-b flex flex-col items-center text-2xl font-bold'>

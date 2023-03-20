@@ -1,13 +1,13 @@
 export const url = {
-    home: "/new",
-    signup: '/new/sign-up',
-    login: '/new/login',
+    home: "/",
+    signup: '/sign-up',
+    login: '/login',
 }
 
 export const landingPageUrl = [
-    {text: 'home', href: '/new#home', ref: null},
-    {text: 'about', href: '/new#about', ref: null},
-    {text: 'room options', href: '/new#options', ref: null},
-    {text: 'FAQ', href: '/new#faq', ref: null},
+    {text: 'home', href: '/#home', ref: null},
+    {text: 'about', href: '/#about', ref: null},
+    {text: 'room options', href: '/#options', ref: null},
+    {text: 'FAQ', href: '/#faq', ref: null},
 ]
 
