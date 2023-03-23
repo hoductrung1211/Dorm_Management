@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import Header from './components/Header';
+import Header from './layouts/Header';
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import {validateUsername, validatePassword} from './utils/validation';

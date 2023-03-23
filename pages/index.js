@@ -4,8 +4,8 @@ import Image from "next/image"
 import Link from "next/link"
 import {url, landingPageUrl} from "./utils/links"
 import { forwardRef, useEffect, useRef } from "react"
-import Header from "./components/Header";
-import Footer from "./components/Footer"
+import Header from "./layouts/Header";
+import Footer from "./layouts/Footer"
 
 
 export default function LandingPage() {

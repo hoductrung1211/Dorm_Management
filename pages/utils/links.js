@@ -1,7 +1,8 @@
 export const url = {
-    home: "/",
+    index: "/",
     signup: '/sign-up',
     login: '/login',
+    home: '/student-home'
 }
 
 export const landingPageUrl = [

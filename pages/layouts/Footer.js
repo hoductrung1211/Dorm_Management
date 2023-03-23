@@ -1,4 +1,4 @@
-import Logo from "./Logo" 
+import Logo from "../components/Logo" 
 import { Nav } from ".."
 import { faFacebook, faInstagramSquare, faYoutubeSquare, faTwitterSquare } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import Header from './components/Header';
+import Header from './layouts/Header';
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import {checkUsername, checkPassword } from './utils/validation';
@@ -14,6 +14,7 @@ const initInputs = [
 
 export default function Page() {
     const [isPopup, setIsPopup] = useState(false);
+    const [OTPcode, setOTPcode] = useState(546213);
 
     function handlePushPopup() {
         setIsPopup(true);
@@ -27,7 +28,7 @@ export default function Page() {
             <Main>
                 <Illustration />
                 {   isPopup ? 
-                    <OTPForm /> : 
+                    <OTPForm OTPcode={OTPcode} /> : 
                     <LoginForm
                         handlePushPopup={handlePushPopup} />
                 }

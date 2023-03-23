@@ -4,6 +4,8 @@ import { faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/router";
+import {url} from '../utils/links'
 
 export function Input({
     input,
@@ -79,16 +81,20 @@ export function Nav() {
 }
 
 export function OTPForm({
-
+    OTPcode,
 }) {
-    const [text, setText] = useState("");
+    const router = useRouter();
+    const [text, setText] = useState(OTPcode);
 
     function handleValueChange(nextText) {
         setText(nextText);
     }
 
-    function handleSubmit() {
+    function handleSubmit(e) {
+        e.preventDefault();
 
+        if (OTPcode == text)
+            router.push(url.home)
     }
 
     function handleResendOTPCode() {

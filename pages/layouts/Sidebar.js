@@ -11,7 +11,7 @@ export default function Sidebar({
     children,
 }) {
     return (
-        <aside className="fixed inset-y-0 left-0 py-10 px-5 bg-ec">
+        <aside className="fixed inset-y-0 left-0 py-10 px-5 bg-fa">
             <div className="w-64 h-full relative">
                 {/* User Information */}
                 <section className="h-14 grid grid-cols-7 items-center">

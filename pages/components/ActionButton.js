@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 export default function ActionButton({
     btn,
@@ -14,11 +15,17 @@ export default function ActionButton({
         iconClassname += " text-white"
         divClassname += " bg-p";
     } else {
-        divClassname += " hover:bg-zinc-200"
+        divClassname += " hover:bg-ec"
+    }
+
+    function handleClick() {
+        if (btn.action == 'layout')
+            handleActionEvent(btn.id);
+        else btn.handleAction();
     }
 
     return (
-        <div className={divClassname} onClick={() => handleActionEvent(btn.id)}>
+        <div className={divClassname} onClick={handleClick}>
             <FontAwesomeIcon icon={btn.icon} className={iconClassname} />
             <p className={textClassname}>
                 {btn.text}

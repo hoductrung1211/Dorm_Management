@@ -5,8 +5,6 @@ import { useRef, useState } from "react";
 import Dashboard from "./Dashboard";
 
 
-
-
 export default function MyRoom() {
     const tabs = useRef([
         {id: 0, text: "Room detail", mainSection: RegisterSection},
@@ -163,12 +161,14 @@ function CardSection({
 
     return (
         <section className="relative h-full p-2">
+            <h4 className="absolute top-6 left-1/2 -translate-x-1/2 text-xl">Available rooms</h4>
+
             <ul className="h-full flex items-center gap-5 overflow-x-hidden">
             {rooms.map(room =>
                 // Card 
                 <li 
                     key={room.id} 
-                    className="shrink-0 w-80 min-h-min h-5/6 p-2 bg-fa rounded-xl cursor-pointer shadow-md hover:shadow-sm hover:scale-95 hover:bg-ec transition-all overflow-hidden"
+                    className="shrink-0 w-80 min-h-min h-5/6 max-h-96 p-2 bg-fa rounded-xl cursor-pointer shadow-md hover:shadow-sm hover:scale-95 hover:bg-ec transition-all overflow-hidden"
                     ref={node => {
                         const map = getMap();
 
@@ -195,7 +195,7 @@ function CardSection({
                 </li>
             )}
             </ul>
-            
+
             <button 
                 className="absolute grid place-items-center top-1/2 -translate-y-1/2 left-0 -translate-x-1/2 h-16 w-16 bg-fa rounded-full active:bg-ec shadow-md active:scale-90 transition"
                 onClick={handlePreviousView}>
@@ -206,6 +206,8 @@ function CardSection({
                 onClick={handleNextView}>
                 <FontAwesomeIcon className="text-xl" icon={faAngleRight} />
             </button>
+
+            <p className="absolute right-6 bottom-4">© 2023 Cube Dormitory. All rights reserved</p>
         </section>
     )
 }
@@ -239,9 +241,15 @@ var roomTypeJSON = [
         desc: "A deluxe room is a more spacious and well-appointed dormitory room that may include additional amenities such as a private bathroom, mini-fridge, and air conditioning. This option is typically priced higher than a standard room but offers more comfort and convenience.",
         icons: [faBed, faBox, faFaucetDrip, faBolt],
         rooms: [
-            {name: 'room4',},
-            {name: 'room5',},
-            {name: 'room6',},
+            {id: 1, imgSrc: '/rooms/medium/12.jfif', available: 1,},
+            {id: 2, imgSrc: '/rooms/basic/8.jfif', available: 1,},
+            {id: 3, imgSrc: '/rooms/highend/5.jfif', available: 2,},
+            {id: 4, imgSrc: '/rooms/highend/4.jfif', available: 1,},
+            {id: 5, imgSrc: '/rooms/highend/5.jfif', available: 2,},
+            {id: 6, imgSrc: '/rooms/basic/13.jfif', available: 2,},
+            {id: 7, imgSrc: '/rooms/highend/4.jfif', available: 1,},
+            {id: 8, imgSrc: '/rooms/medium/8.jfif', available: 2,},
+            {id: 9, imgSrc: '/rooms/basic/13.jfif', available: 2,},
         ],
     },
     {
@@ -252,9 +260,15 @@ var roomTypeJSON = [
         desc: "A premium room is a top-tier dormitory room that offers the most luxurious amenities and furnishings, such as premium bedding, a flat-screen TV, and a private balcony. This option is typically the most expensive but offers the highest level of comfort and luxury.",
         icons: [faBed, faBox, faFaucetDrip, faBolt, faTv],
         rooms: [
-            {name: 'room7',},
-            {name: 'room8',},
-            {name: 'room9',},
+            {id: 1, imgSrc: '/rooms/highend/5.jfif', available: 2,},
+            {id: 2, imgSrc: '/rooms/basic/13.jfif', available: 2,},
+            {id: 3, imgSrc: '/rooms/highend/5.jfif', available: 2,},
+            {id: 4, imgSrc: '/rooms/medium/12.jfif', available: 1,},
+            {id: 5, imgSrc: '/rooms/highend/4.jfif', available: 1,},
+            {id: 6, imgSrc: '/rooms/basic/13.jfif', available: 2,},
+            {id: 7, imgSrc: '/rooms/highend/4.jfif', available: 1,},
+            {id: 8, imgSrc: '/rooms/medium/8.jfif', available: 2,},
+            {id: 9, imgSrc: '/rooms/basic/8.jfif', available: 1,},
         ],
     },
 ]

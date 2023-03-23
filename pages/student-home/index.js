@@ -1,29 +1,37 @@
 import { faArrowRightFromBracket, faBell, faBook, faGear, faHammer, faReceipt, faShuttleSpace } from "@fortawesome/free-solid-svg-icons"
 import {  useRef, useState } from "react"
-import ActionButton from "./components/ActionButton"
-import Sidebar from "./components/Sidebar"
-import MyRoom from './components/MyRoom';
+import ActionButton from "../components/ActionButton"
+import Sidebar from "../layouts/Sidebar"
+import MyRoom from '../layouts/MyRoom';
+import { url } from "../utils/links";
+import { useRouter } from "next/router";
 
 const initStudentNav = [
-    {id: 0, type: "student", text: "My room", icon: faShuttleSpace, mainSection: MyRoom},
-    {id: 1, type: "student", text: "Invoices", icon: faReceipt, mainSection: undefined},
-    {id: 2, type: "student", text: "Maintenance requests", icon: faHammer, mainSection: undefined},
-    {id: 3, type: "student", text: "Notifications", icon: faBell, mainSection: undefined},
-    {id: 4, type: "student", text: "Resources", icon: faBook, mainSection: undefined},
-    {id: 5, type: "user", text: "Settings", icon: faGear, mainSection: undefined},
-    {id: 6, type: "user", text: "Log out", icon: faArrowRightFromBracket, mainSection: undefined},
+    {id: 0, type: "student", text: "My room", icon: faShuttleSpace, action:"layout", mainSection: MyRoom},
+    {id: 1, type: "student", text: "Invoices", icon: faReceipt, action:"layout", mainSection: undefined},
+    {id: 2, type: "student", text: "Maintenance requests", icon: faHammer, action:"layout", mainSection: undefined},
+    {id: 3, type: "student", text: "Notifications", icon: faBell, action:"layout", mainSection: undefined},
+    {id: 4, type: "student", text: "Resources", icon: faBook, action:"layout", mainSection: undefined},
+    {id: 5, type: "user", text: "Settings", icon: faGear, action:"layout", mainSection: undefined},
+    {id: 6, type: "user", text: "Log out", icon: faArrowRightFromBracket, action:"link", handleAction: handleLogout},
 ]
 
 export default function Page() {
-    const user = useRef({id: "N19DCCN018", name: "Nguyen Dang Bac", role: false});
+    const user = useRef({id: "N19DCCN018", name: "Nguyen Dang Bac", isStudent: true});
     const [navigation, setNavigation] = useState(initStudentNav);
     const [selectedIdBtn, setSelectedIdBtn] = useState(0);
 
-    let main = navigation.find(nav => nav.id === selectedIdBtn).mainSection();
+    const navRef = navigation.find(nav => nav.id === selectedIdBtn);
+    let main = null;
+    if (navRef.action == 'layout')
+        main = navRef.mainSection(); 
 
     function handleActionEvent(id) {
         setSelectedIdBtn(id);
     }
+
+    console.log(main);
+    console.log(navRef.action);
 
     return (
         <>
@@ -64,4 +72,9 @@ function StudentNav({
         </nav>
     )
 };
- 
+
+
+function handleLogout() {
+    const router = useRouter();
+    router.push('/');
+}
