@@ -64,12 +64,24 @@ export function validatePassword(password) {
     // Contains at least 6 characters.
 }
 
-export function checkUsername(username) {
+function checkUsername(username) {
     let mediumRegex = new RegExp("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
     return mediumRegex.test(username) ? undefined : "The Identifier does not exist";
 }
 
-export function checkPassword(password) {
+function checkPassword(password) {
     let mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
     return mediumRegex.test(password) ?  undefined : "The password is incorrect";
+}
+
+export function authenticate(id, password) {
+    let checkID = checkUsername(id);
+    if (checkID)
+        return {
+            name: "id",
+            error: checkID,
+        }
+    
+    let checkPass = checkPassword(password);
+    return checkPass ? {name: "password", error: checkPass} : undefined;
 }
