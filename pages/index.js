@@ -2,11 +2,10 @@ import { faBed, faBox, faFaucetDrip, faBolt, faTv } from "@fortawesome/free-soli
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Image from "next/image"
 import Link from "next/link"
-import {url, landingPageUrl} from "./utils/links"
-import { forwardRef, useEffect, useRef } from "react"
-import Header from "./layouts/Header";
-import Footer from "./layouts/Footer"
-
+import {url, landingPageUrl} from "../features/utils/links"
+import { forwardRef, useRef } from "react" 
+import Header from "../features/ui/header"
+import Footer from "../features/ui/footer"
 
 export default function LandingPage() {
     const homeRef = useRef(null);
@@ -17,12 +16,22 @@ export default function LandingPage() {
     return (
         <>
             <Header>
-                <Nav 
-                    homeRef={homeRef}
-                    aboutRef={aboutRef}
-                    optionsRef={optionsRef}
-                    faqRef={faqRef} 
-                />
+                <div className="w-full ml-20 flex justify-between">
+                    <Nav 
+                        homeRef={homeRef}
+                        aboutRef={aboutRef}
+                        optionsRef={optionsRef}
+                        faqRef={faqRef} 
+                    />
+                    <div className="flex gap-12">
+                        <Link href={url.login}>
+                            Login
+                        </Link>
+                        <Link href={url.signup}>
+                            Sign up                
+                        </Link>
+                    </div>
+                </div>
             </Header>
            
             <main className="w-screen"> 
@@ -242,3 +251,4 @@ const faq = [
     "What is the process for applying to live in the dormitory, and when are applications due?",
 ]
 
+ 
