@@ -1,43 +1,18 @@
+import { useState } from "react";
+import Link from "next/link";
+import { url } from "../utils/links";
+import Image from "next/image";
+import InputGroup from "./input-group";
+import { faUser, faKey } from "@fortawesome/free-solid-svg-icons"
 
-function SignUpForm() {
-    const [inputs, setInputs] = useState(initInputs);
-
-    function handleValueChange(nextInput) {
-        setInputs(inputs.map(input => {
-            if (nextInput.name == input.name)
-                return nextInput;
-            return input;
-        }));
-    }
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        let nextInputs = [];
-
-        inputs.slice(0, 2).map(input => {
-            let valid = input.validate(input.value);
-            let error = valid;
-
-            nextInputs.push({
-                ...input,
-                error,
-            });
-        })
-        
-        // Confirm password
-        if (!(inputs[1].value == inputs[2].value))
-            nextInputs.push({
-                ...inputs[2],
-                error: "The confirm password is not the same"
-            })
-        else nextInputs.push(inputs[2]);
-
-        setInputs(nextInputs);
-    }
+export default function SignupForm() {
+    const [id, setId] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     return (
-        <form onSubmit={handleSubmit} className='relative mt-1 pt-8 flex flex-col px-4'>
-            <h3 className='mb-8 text-b flex flex-col items-center text-2xl font-bold'>
+        <form className='relative mt-1 pt-8 flex flex-col px-4'>
+            <h3 className='mb-8 w-72 text-b flex flex-col items-center text-2xl font-bold'>
                 <Image 
                     src="/svg/ID.svg"
                     width={80}
@@ -46,27 +21,42 @@ function SignUpForm() {
                 />
                 Sign up
             </h3>
-            {
-                inputs.map(input => 
-                    <Input 
-                        key={input.name} 
-                        input={input} 
-                        handleValueChange={handleValueChange} 
-                    />
-                )
-            }
+            
+            <InputGroup  
+                name="identifier"
+                type="text"
+                placeholder="N19DCCN001"
+                value={id}
+                icon={faUser}
+                handleChange={nextID => setId(nextID)}
+            />
+            <InputGroup  
+                name="password"
+                type="password"
+                placeholder="At least 6 characters"
+                value={password}
+                icon={faKey}
+                handleChange={nextPassword => setPassword(nextPassword)}
+            />
+            <InputGroup  
+                name="confirm password"
+                type="password"
+                placeholder="Enter your password again"
+                value={confirmPassword}
+                icon={faKey}
+                handleChange={nextPassword => setConfirmPassword(nextPassword)}
+            /> 
 
             <div className='absolute bottom-0'>
                 <button 
-                    className=' w-72 py-2 bg-p text-white font-bold rounded-md'>
+                    className='w-72 py-2 bg-p text-white font-bold rounded-md'>
                     Create account
                 </button>
                 <p className='mt-1 text-center text-sm'>Already have an account?
                     {' '}
                     <Link href={url.login} className="underline">Login</Link>
                 </p>
-            </div>
-            
+            </div>  
         </form>
     )
 }

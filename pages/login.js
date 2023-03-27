@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Illustration from '../features/user/components/illustration';
 import Header from '../features/ui/header';
-import LoginModal from '../features/user/login-modal.test';
+import LoginModal from '../features/user/login-modal';
 import Container from '../features/user/components/container';
 import Navigation from '../features/user/navigation';
 import OTPModal from '../features/user/otp-modal';

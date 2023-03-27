@@ -1,49 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { faUser, faKey } from "@fortawesome/free-solid-svg-icons"
 import { url } from "../utils/links";
 import InputGroup from "./input-group";
+import { authenticate } from "./auth-user";
 
 export default function LoginModal({
     handlePushPopup,
 }) {
-    const [inputs, setInputs] = useState(initInputs);
+    const [id, setId] = useState('');
+    const [password, setPassword] = useState('');
 
-    function handleValueChange(nextInput) {
-        setInputs(inputs.map(input => {
-            if (nextInput.name == input.name)
-                return nextInput;
-            return input;
-        }));
-    }
+    const [idError, setIdError] = useState(undefined);
+    const [passwordError, setPasswordError] = useState(undefined);
 
     function handleSubmit(e) {
         e.preventDefault();
-        let flag = false; // true if there is already an error, no need to check anymore
 
-        setInputs(inputs.map(input => {
-            if (flag)
-                return input;
+        // Authentication
 
-            let valid = input.validate(input.value);
-            if (valid)
-                flag = true;
-            let error = valid;
-
-            return {
-                ...input,
-                error,
-            }
-        }))
-        
-        if (!flag) { // There is no errors
-            handlePushPopup();
-        }
+        handlePushPopup()
     }
 
     return (
         <form onSubmit={handleSubmit} className='relative mt-1 pt-8 flex flex-col px-4'>
-            <h3 className='mb-8 text-b flex flex-col items-center text-2xl font-bold'>
+            <h3 className='mb-8 w-72 text-b flex flex-col items-center text-2xl font-bold'>
                 <Image 
                     src="/svg/welcome.svg"
                     width={200}
@@ -52,17 +34,25 @@ export default function LoginModal({
                 />
                 Login your account
             </h3>
-            {
-                inputs.map(input => 
-                    <InputGroup 
-                        key={input.name} 
-                        input={input} 
-                        handleValueChange={handleValueChange} 
-                    />
-                )
-            }
-
-            <Link href="/new" className='mt-3 text-sm self-end underline'>Forgot password?</Link>
+             
+            <InputGroup  
+                name="identifier"
+                type="text"
+                placeholder="N19DCCN001"
+                value={id}
+                icon={faUser}
+                handleChange={nextID => setId(nextID)}
+                error={idError}
+            />
+            <InputGroup  
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                icon={faKey}
+                handleChange={nextPassword => setPassword(nextPassword)}
+                error={passwordError}
+            />
             
             <div className='absolute bottom-0'>
                 <button 
@@ -74,7 +64,6 @@ export default function LoginModal({
                     <Link href={url.signup} className="underline">Sign up</Link>
                 </p>
             </div>
-            
         </form>
     )
 }
