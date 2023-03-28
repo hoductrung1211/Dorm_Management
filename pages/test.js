@@ -1,7 +1,7 @@
-import LoginModal from "../features/user/login-modal";
+import Test from "./student/index.test";
 
 export default function Page() {
     return (
-        <LoginModal />
+        <Test />
     )
 }

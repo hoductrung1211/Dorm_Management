@@ -2,8 +2,7 @@ import { faArrowRightFromBracket, faBell, faBook, faGear, faHammer, faReceipt, f
 import {  useRef, useState } from "react"
 import ActionButton from "../components/ActionButton"
 import Sidebar from "../layouts/Sidebar"
-import MyRoom from '../layouts/MyRoom';
-import { url } from "../utils/links";
+import MyRoom from '../layouts/MyRoom'; 
 import { useRouter } from "next/router";
 
 const initStudentNav = [
