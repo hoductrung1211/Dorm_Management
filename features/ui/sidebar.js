@@ -1,4 +1,4 @@
-import GreetingUser from "../user/greeting-user";
+import GreetingUser from "../user/components/greeting-user";
 import NavButton from '../ui/nav-button';
 import { faGear, faOutdent, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

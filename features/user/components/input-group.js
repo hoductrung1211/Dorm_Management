@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Error from '../ui/error';
+import Error from '../../ui/error';
 
 export default function InputGroup({
     name,

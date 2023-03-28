@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Link from "next/link";
-import { url } from "../utils/links";
+import { url } from "../../utils/links";
 import Image from "next/image";
-import InputGroup from "./input-group";
+import InputGroup from "../components/input-group";
 import { faUser, faKey } from "@fortawesome/free-solid-svg-icons"
 
 export default function SignupForm() {

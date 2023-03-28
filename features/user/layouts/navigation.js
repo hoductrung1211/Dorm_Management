@@ -1,6 +1,6 @@
-import {landingPageUrl} from "../utils/links" 
+import {landingPageUrl} from "../../utils/links" 
 import Link from "next/link";
-import {url} from "../utils/links";
+import {url} from "../../utils/links";
 
 export default function Navigation() {
     return (

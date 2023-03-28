@@ -2,9 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { faUser, faKey } from "@fortawesome/free-solid-svg-icons"
-import { url } from "../utils/links";
-import InputGroup from "./input-group";
-import { authenticate } from "./auth-user";
+import { url } from "../../utils/links";
+import InputGroup from "../components/input-group";
+import { authenticate } from "../auth-user";
 
 export default function LoginModal({
     handlePushPopup,

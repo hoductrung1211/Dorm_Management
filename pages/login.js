@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import Illustration from '../features/user/components/illustration';
 import Header from '../features/ui/header';
-import LoginModal from '../features/user/login-modal';
-import Container from '../features/user/components/container';
-import Navigation from '../features/user/navigation';
-import OTPModal from '../features/user/otp-modal';
+import LoginModal from '../features/user/layouts/login-modal';
+import Container from '../features/user/layouts/container';
+import Navigation from '../features/user/layouts/navigation';
+import OTPModal from '../features/user/layouts/otp-modal';
 
 export default function Page() {
     const [isPopup, setIsPopup] = useState(false);

@@ -19,9 +19,6 @@
     background-color: var(--primary-color);
     opacity: 0.9;
   }
-  
-  
-
 
 
   .text-p {
@@ -125,4 +122,8 @@ a {
   max-width: 1200px;
   padding: 0 10px;
   margin: 0 auto;
+}
+
+.h-192 {
+  height: 48rem;
 }

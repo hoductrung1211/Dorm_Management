@@ -1,8 +1,8 @@
-import Navigation from '../features/user/navigation';
+import Navigation from '../features/user/layouts/navigation';
 import Illustration from '../features/user/components/illustration';
 import Header from '../features/ui/header';
-import Container from '../features/user/components/container';
-import SignupModal from '../features/user/signup-modal';
+import Container from '../features/user/layouts/container';
+import SignupModal from '../features/user/layouts/signup-modal';
 
 export default function Page() {
     return (
