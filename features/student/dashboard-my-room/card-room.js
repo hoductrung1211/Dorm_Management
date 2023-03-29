@@ -1,10 +1,21 @@
 import Image from "next/image";
+import { useContext } from "react";
+import {SectionContext} from './section.context';
+import RegisterFormSection from './section-register-form';
 
-export default function RoomCard({ room, typeName, cost, getMap }) {
+export default function RoomCard({ 
+    room, 
+    typeName, 
+    cost, 
+    getMap, 
+}) {
+    const setSection = useContext(SectionContext);
+
     return (
         <li 
             key={room.id} 
             className="shrink-0 w-80 min-h-min h-5/6 max-h-96 p-2 bg-fa rounded-xl cursor-pointer shadow-md hover:shadow-sm hover:scale-95 hover:bg-ec transition-all overflow-hidden"
+            onClick={() => setSection(<RegisterFormSection />)}
             ref={node => {
                 const map = getMap();
 

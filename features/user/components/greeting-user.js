@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons"
 import { useContext } from "react"
-import { userContext } from "../user-context"
+import { userContext } from "../user.context"
 
 export default function GreetingUser() {
     const user = useContext(userContext);

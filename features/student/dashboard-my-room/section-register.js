@@ -2,23 +2,26 @@ import TypeInfoBlock from "./block-type-info"
 import { faBed, faFaucetDrip, faBolt, faBox, faTv } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
 import SelectTypeBlock from "./block-select-type";
-import ShowRoomsBlock from "./block-show-room";
+import ShowRoomsBlock from "./block-show-room"; 
 
-export default function Section() {
-    const [selectedTypeID, setSelectedTypeID] = useState(0);
+
+export default function RegisterSection() {
+    const [selectedTypeID, setSelectedTypeID] = useState(0); 
     const typeInfo = roomTypeJSON.find(roomType => roomType.id == selectedTypeID);
     return (
         <>
             <TypeInfoBlock typeInfo={typeInfo}>
                 <SelectTypeBlock
                     types={roomTypeJSON}
-                    handleChangeSelectedID={nextID => {setSelectedTypeID(nextID); console.log(nextID)}}
+                    handleChangeSelectedID={nextID => setSelectedTypeID(nextID)}
                 />
             </TypeInfoBlock>
             <ShowRoomsBlock typeInfo={typeInfo} />
         </>
     )
 }
+
+
 
 var roomTypeJSON = [
     {

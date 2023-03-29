@@ -2,7 +2,9 @@ export const url = {
     index: "/",
     signup: '/sign-up',
     login: '/login',
-    home: '/student'
+    home: '/student',
+    roomDetail: '/student/room-detail',
+    roomRegister: '/student/room-register',
 }
 
 export const landingPageUrl = [
