@@ -1,10 +1,13 @@
 import { faAsterisk, faCakeCandles, faCalendar, faCalendarDays, faDiamond, faIdCard, faMoneyBill, faSignature, faVenusMars } from "@fortawesome/free-solid-svg-icons"
 import Image from "next/image"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import FormInfoBlock from "./block-form-info"
+import { SectionContext } from "./section.context";
+import SucessfullyBlock from "../../user/layouts/block-sucessfully";
 
 export default function FormBlock() {
     const [readCheckbox, setReadCheckbox] = useState(false);
+    const setSection = useContext(SectionContext);
 
     return (
         <form className="w-full h-full pt-8 flex flex-col">
@@ -55,7 +58,8 @@ export default function FormBlock() {
 
                 <button 
                     className="w-80 h-12 rounded-md bg-primary font-bold text-white hover:opacity-95 transition disabled:bg-ec disabled:text-primary"
-                    disabled={!readCheckbox}>
+                    disabled={!readCheckbox}
+                    onClick={() => setSection(<SucessfullyBlock title="Register sucessfully" desc="Please check your bill in your invoices section" />)}>
                     Submit
                 </button>
             </div>

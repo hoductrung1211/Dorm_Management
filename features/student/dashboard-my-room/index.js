@@ -1,15 +1,14 @@
 import { useContext, useState } from "react";
 import Container from "../../user/layouts/db-container";
-import RegisterSection from "./section-register"; 
-import RegisterFormSection from "./section-register-form"; 
-import {SectionContext} from './section.context';
-import SucessfullyBlock from "../../user/layouts/block-sucessfully";
+import RegisterSection from "./section-register";  
+import {SectionContext} from './section.context';  
+import RoomDetailSection from "./section-room-detail";
 
 const menus = [
     {
         id: 0,
         text: "Room detail", 
-        section: <SucessfullyBlock title="Register sucessfully" desc="Please check your bill in your invoices section" />,
+        section: <RoomDetailSection />,
     }, 
     {
         id: 1,
