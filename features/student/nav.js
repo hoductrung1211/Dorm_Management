@@ -1,9 +1,10 @@
 import NavButton from '../ui/nav-button';
 import { faShuttleSpace, faReceipt, faHammer, faBell, faBook } from '@fortawesome/free-solid-svg-icons';
+import {studentURL} from '../utils/links';
 
 const navs = [
-    {id: 0, text: "My room", icon: faShuttleSpace, url: '/student'},
-    {id: 1, text: "Invoices", icon: faReceipt, url: '/student/invoice'},
+    {id: 0, text: "My room", icon: faShuttleSpace, url: studentURL.index},
+    {id: 1, text: "Invoices", icon: faReceipt, url: studentURL.invoices},
     {id: 2, text: "Maintenance requests", icon: faHammer, url: null},
     {id: 3, text: "Notifications", icon: faBell, url: undefined},
     {id: 4, text: "Resources", icon: faBook, url: undefined}

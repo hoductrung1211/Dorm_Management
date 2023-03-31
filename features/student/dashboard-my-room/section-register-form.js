@@ -3,7 +3,8 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext } from "react";
 import RegisterSection from "./section-register";
-import { SectionContext } from "./section.context";
+import {SectionContext} from '../../utils/section.context';  
+
 
 
 export default function RegisterFormSection( ) {

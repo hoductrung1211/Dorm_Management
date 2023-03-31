@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Container from "../../user/layouts/db-container";
 import RegisterSection from "./section-register";  
-import {SectionContext} from './section.context';  
+import {SectionContext} from '../../utils/section.context';  
 import RoomDetailSection from "./section-room-detail";
 
 const menus = [

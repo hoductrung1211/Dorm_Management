@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useContext } from "react";
-import {SectionContext} from './section.context';
+import {SectionContext} from '../../utils/section.context';  
+
 import RegisterFormSection from './section-register-form';
 
 export default function RoomCard({ 

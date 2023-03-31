@@ -13,4 +13,10 @@ export const landingPageUrl = [
 
 export const studentURL = {
     index: '/student',
+    myRoom: '/student/',
+    invoices: '/student/invoice',
+}
+
+export const managerURL = {
+    index: '/admin',
 }

@@ -2,7 +2,8 @@ import { faAsterisk, faCakeCandles, faCalendar, faCalendarDays, faDiamond, faIdC
 import Image from "next/image"
 import { useContext, useState } from "react"
 import FormInfoBlock from "./block-form-info"
-import { SectionContext } from "./section.context";
+import {SectionContext} from '../../utils/section.context';  
+
 import SucessfullyBlock from "../../user/layouts/block-sucessfully";
 
 export default function FormBlock() {
