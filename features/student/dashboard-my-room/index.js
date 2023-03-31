@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Container from "../../user/layouts/db-container";
 import RegisterSection from "./section-register";  
 import {SectionContext} from './section.context';  
@@ -18,8 +18,8 @@ const menus = [
 ]
 
 export default function MyRoomDashboard() {
-    const [menuID, setMenuID] = useState(1);
-    const [section, setSection] = useState(<RegisterSection />)
+    const [menuID, setMenuID] = useState(0);
+    const [section, setSection] = useState(<RoomDetailSection />)
 
 
     function handleChangeMenu(nextID) {

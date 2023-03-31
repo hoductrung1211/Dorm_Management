@@ -2,14 +2,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Button({
     btn,
-    selected, 
-    handleNavigate,
+    isActive, 
+    handleNavigate, 
 }) {
-    let textClassname = "col-span-5";
-    let divClassname = "h-14 grid grid-cols-7 items-center rounded-md cursor-pointer";
+    let textClassname = "col-span-5 text-left";
+    let divClassname = "w-full h-14 grid grid-cols-7 items-center rounded-md cursor-pointer";
     let iconClassname = "col-span-2 justify-self-center text-2xl";
 
-    if (selected) {
+    if (isActive) {
         textClassname += " text-white font-bold";
         iconClassname += " text-white"
         divClassname += " bg-p";
@@ -18,13 +18,13 @@ export default function Button({
     }
 
     return (
-        <div className={divClassname}
-            onClick={() => handleNavigate(btn.id)}
+        <button className={divClassname}
+            onClick={() => handleNavigate(btn.url)}
         >
             <FontAwesomeIcon icon={btn.icon} className={iconClassname} />
             <p className={textClassname}>
                 {btn.text}
             </p>
-        </div>
+        </button>
     )
 }   

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { url } from "../../utils/links";
+import { userURL } from "../../utils/links";
 import Image from "next/image";
 import InputGroup from "../components/input-group";
 import { faUser, faKey } from "@fortawesome/free-solid-svg-icons"
@@ -54,7 +54,7 @@ export default function SignupForm() {
                 </button>
                 <p className='mt-1 text-center text-sm'>Already have an account?
                     {' '}
-                    <Link href={url.login} className="underline">Login</Link>
+                    <Link href={userURL.login} className="underline">Login</Link>
                 </p>
             </div>  
         </form>

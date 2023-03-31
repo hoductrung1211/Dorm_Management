@@ -81,6 +81,12 @@
   .text-green {
     color: #1ABC9C;
   }
+  .text-yellow {
+    color: #f1c40f;
+  }
+  .text-orange {
+    color: #f39c12;
+  }
 }
 
 :root {

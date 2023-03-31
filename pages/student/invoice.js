@@ -1,10 +1,9 @@
-import Sidebar from "../../features/ui/sidebar";
+import { useRouter } from "next/router";
 import { userContext } from "../../features/user/user.context";
 import StudentNav from '../../features/student/nav';
-import MyRoomDashboard from "../../features/student/dashboard-my-room/index";
 import Main from "../../features/ui/main";
-import { useRouter } from "next/router";
-
+import Sidebar from "../../features/ui/sidebar";
+import InvoiceDashboard from "../../features/student/dashboard-invoice";
 
 export default function Page() {
     const user = {
@@ -14,11 +13,12 @@ export default function Page() {
         gender: true,
         dateOfBirth: '01-01-2001',
     };
+
     const router = useRouter();
-    const activeNavID = 0;
-    
+    const activeNavID = 1;
+
     function handleNavigate(nextURL) {
-        router.push(nextURL); 
+        router.push(nextURL);
     }
 
     return (
@@ -34,10 +34,8 @@ export default function Page() {
             </Sidebar>
 
             <Main>
-                <MyRoomDashboard />
+                <InvoiceDashboard />
             </Main>
         </userContext.Provider>
     )
 }
-
- 

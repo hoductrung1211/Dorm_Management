@@ -2,7 +2,7 @@ import { faBed, faBox, faFaucetDrip, faBolt, faTv } from "@fortawesome/free-soli
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Image from "next/image"
 import Link from "next/link"
-import {url, landingPageUrl} from "../features/utils/links"
+import {userURL, landingPageUrl} from "../features/utils/links"
 import { forwardRef, useRef } from "react" 
 import Header from "../features/ui/header"
 import Footer from "../features/ui/footer"
@@ -24,10 +24,10 @@ export default function LandingPage() {
                         faqRef={faqRef} 
                     />
                     <div className="flex gap-12">
-                        <Link href={url.login}>
+                        <Link href={userURL.login}>
                             Login
                         </Link>
-                        <Link href={url.signup}>
+                        <Link href={userURL.signup}>
                             Sign up                
                         </Link>
                     </div>
@@ -203,7 +203,7 @@ function RoomOption({option}) {
                 <p>{option.paragaph}</p>
                 <Link 
                     className="w-fit mt-5 px-5 py-3 text-white font-bold bg-p rounded-md"
-                    href={url.login}
+                    href={userURL.login}
                 >Pick a room</Link>
             </div>
         </div>

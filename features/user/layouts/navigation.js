@@ -1,6 +1,6 @@
 import {landingPageUrl} from "../../utils/links" 
 import Link from "next/link";
-import {url} from "../../utils/links";
+import {userURL} from "../../utils/links";
 
 export default function Navigation() {
     return (
@@ -15,10 +15,10 @@ export default function Navigation() {
                 )}
             </ul>
             <div className="flex gap-12">
-                <Link href={url.login}>
+                <Link href={userURL.login}>
                     Login
                 </Link>
-                <Link href={url.signup}>
+                <Link href={userURL.signup}>
                     Sign up                
                 </Link>
             </div>

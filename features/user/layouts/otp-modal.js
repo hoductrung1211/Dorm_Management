@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Image from "next/image";
-import {url} from '../../utils/links'
+import {studentURL} from '../../utils/links'
 
 export default function OTPModal({
     OTPcode,
@@ -17,7 +17,7 @@ export default function OTPModal({
         e.preventDefault();
 
         if (OTPcode == text)
-            router.push(url.home)
+            router.push(studentURL.index)
     }
 
     function handleResendOTPCode() {

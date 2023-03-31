@@ -1,6 +1,4 @@
 import Logo from "./logo"
-import Link from "next/link"
-import {url} from "../utils/links"
 
 export default function Header({
     children,

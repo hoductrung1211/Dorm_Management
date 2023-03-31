@@ -1,10 +1,7 @@
-export const url = {
+export const userURL = {
     index: "/",
     signup: '/sign-up',
-    login: '/login',
-    home: '/student',
-    roomDetail: '/student/room-detail',
-    roomRegister: '/student/room-register',
+    login: '/login', 
 }
 
 export const landingPageUrl = [
@@ -14,3 +11,6 @@ export const landingPageUrl = [
     {text: 'FAQ', href: '/#faq', ref: null},
 ]
 
+export const studentURL = {
+    index: '/student',
+}

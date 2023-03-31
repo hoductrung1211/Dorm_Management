@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { faUser, faKey } from "@fortawesome/free-solid-svg-icons"
-import { url } from "../../utils/links";
+import { userURL } from "../../utils/links";
 import InputGroup from "../components/input-group";
 import { authenticate } from "../auth-user";
 
@@ -61,7 +61,7 @@ export default function LoginModal({
                 </button>
                 <p className='mt-1 text-center text-sm'>Don't have an account?
                     {' '}
-                    <Link href={url.signup} className="underline">Sign up</Link>
+                    <Link href={userURL.signup} className="underline">Sign up</Link>
                 </p>
             </div>
         </form>

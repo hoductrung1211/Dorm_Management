@@ -39,15 +39,15 @@ export default function Sidebar({
                         )}
                     </nav>
                     
-                    <div 
-                        className="h-14 grid grid-cols-7 items-center rounded-md cursor-pointer text-red hover:bg-ec"
-                        
+                    <button 
+                        className="w-full h-14 grid grid-cols-7 items-center rounded-md cursor-pointer text-red hover:bg-ec"
+                        onClick={() => handleNavigate('/')}
                     >
                         <FontAwesomeIcon icon={faRightFromBracket} className="col-span-2 justify-self-center text-2xl" />
-                        <p className="col-span-5">
+                        <p className="col-span-5 text-left">
                             Log out
                         </p>
-                    </div>
+                    </button>
                 </section>
             </div>
         </aside>

@@ -11,7 +11,7 @@ export default function RoomDetailSection() {
                     Room detail dashboard
                 </h2>
 
-                <div className="h-full grid grid-cols-3 pt-5 gap-3 ">
+                <div className="h-full grid grid-cols-3 pt-10 gap-3 ">
                     <RoomSection />
                     <PersonalSection />
                     <ActionsSection />
@@ -86,13 +86,13 @@ function RoomSection() {
 
                 <div className="mt-3 relative">
                     <input 
-                        className="h-12 w-full px-5 text-2xl border-2 rounded-md bg-fa border-ec"
+                        className="h-12 w-full px-5 text-lg border-2 rounded-md bg-fa border-ec"
                         value="0943394369"
                         type={isShow ? "text" : "password"}
                         disabled
                     />
 
-                    <button className="absolute w-10 h-10 right-5 top-1/2 -translate-y-1/2 translate-x-2 text-2xl rounded-full active:bg-ec"
+                    <button className="absolute w-10 h-10 right-5 top-1/2 -translate-y-1/2 translate-x-2 text-xl rounded-full active:bg-ec"
                         onClick={() => setIsShow(!isShow)}
                     >
                         {isShow ?
