@@ -3,7 +3,6 @@ import { userContext } from "../../features/user/user.context";
 import AdminNav from '../../features/admin/nav';
 import Main from "../../features/layouts/main";
 import { useRouter } from "next/router";
-import StudentsDashboard from "../../features/admin/dashboard-students";
 
 
 export default function Page() {
@@ -15,7 +14,7 @@ export default function Page() {
         dateOfBirth: '01-01-2001',
     };
     const router = useRouter();
-    const activeNavID = 0;
+    const activeNavID = 1;
     
     function handleNavigate(nextURL) {
         router.push(nextURL); 
@@ -33,8 +32,7 @@ export default function Page() {
                 />
             </Sidebar>
 
-            <Main>
-                <StudentsDashboard />
+            <Main> 
             </Main>
         </userContext.Provider>
     )

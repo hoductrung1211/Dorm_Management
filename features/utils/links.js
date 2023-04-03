@@ -19,4 +19,8 @@ export const studentURL = {
 
 export const managerURL = {
     index: '/admin',
+    rooms: '/admin/rooms',
+    invoices: '/admin/invoices',
+    contracts: '/admin/contracts',
+    terms: '/admin/terms ',
 }

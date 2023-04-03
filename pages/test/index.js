@@ -1,18 +1,10 @@
-import { useState } from "react"
-
-export default function App() {
-    const [value, setValue] = useState(0);
-
+export default function Page() {
     return (
-        <>
-            <div>value: {value}</div>
-            <select onChange={(e) => {
-                setValue(e.target.value)
-            }}>
-                <option value={1}>First</option>
-                <option value={2}>Second</option>
-                <option value={3}>Third</option>
-            </select>
-        </>
+        <div className="grid grid-flow-col">
+            <div className="col-span-1 h-80 bg-slate-100" />
+            <div className="col-span-1 h-80 bg-slate-900" />
+            <div className="col-span-1 h-80 bg-slate-100" />
+            <div className="col-span-1 h-80 bg-slate-900" />
+        </div>
     )
 }

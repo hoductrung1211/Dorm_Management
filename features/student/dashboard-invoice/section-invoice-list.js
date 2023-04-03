@@ -35,7 +35,7 @@ export default function InvoiceListSection({
 
     return (
         <>
-            <header className="grid grid-cols-5 items-center w-full h-14 font-bold bg-ec rounded-tl-lg rounded-tr-lg shadow-sm">
+            <header className=" grid grid-cols-5 items-center w-full h-14 font-bold bg-ec rounded-tl-lg rounded-tr-lg shadow-sm">
                 <div className="p-4">Invoice</div>
                 <div className="p-4">Category</div>
                 <div className="p-4">Date</div>

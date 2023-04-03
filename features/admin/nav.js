@@ -4,10 +4,10 @@ import {managerURL} from '../utils/links';
 
 const navs = [
     {id: 0, text: "Students", icon: faUser, url: managerURL.index},
-    {id: 1, text: "Rooms", icon: faDoorOpen, url: null},
-    {id: 2, text: "Bill & Invoices", icon: faReceipt, url: null},
-    {id: 3, text: "Contracts", icon: faPenNib, url: undefined},
-    {id: 4, text: "Terms", icon: faBook, url: undefined}
+    {id: 1, text: "Rooms", icon: faDoorOpen, url: managerURL.rooms},
+    {id: 2, text: "Bill & Invoices", icon: faReceipt, url: managerURL.invoices},
+    {id: 3, text: "Contracts", icon: faPenNib, url: managerURL.contracts},
+    {id: 4, text: "Terms", icon: faBook, url: managerURL.terms}
 ]
 
 export default function Nav({

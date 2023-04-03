@@ -2,7 +2,7 @@ import Sidebar from "../../features/ui/sidebar";
 import { userContext } from "../../features/user/user.context";
 import StudentNav from '../../features/student/nav';
 import MyRoomDashboard from "../../features/student/dashboard-my-room/index";
-import Main from "../../features/ui/main";
+import Main from "../../features/layouts/main";
 import { useRouter } from "next/router";
 
 

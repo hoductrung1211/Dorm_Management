@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { userContext } from "../../features/user/user.context";
 import StudentNav from '../../features/student/nav';
-import Main from "../../features/ui/main";
+import Main from "../../features/layouts/main";
 import Sidebar from "../../features/ui/sidebar";
 import InvoiceDashboard from "../../features/student/dashboard-invoice";
 
