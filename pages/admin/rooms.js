@@ -3,6 +3,7 @@ import { userContext } from "../../features/user/user.context";
 import AdminNav from '../../features/admin/nav';
 import Main from "../../features/layouts/main";
 import { useRouter } from "next/router";
+import RoomsDashboard from "../../features/admin/rooms.dashboard";
 
 
 export default function Page() {
@@ -32,7 +33,8 @@ export default function Page() {
                 />
             </Sidebar>
 
-            <Main> 
+            <Main>
+                <RoomsDashboard />
             </Main>
         </userContext.Provider>
     )
