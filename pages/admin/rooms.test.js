@@ -3,7 +3,7 @@ import { userContext } from "../../features/user/user.context";
 import AdminNav from '../../features/admin/nav';
 import Main from "../../features/layouts/main";
 import { useRouter } from "next/router";
-import RoomsDashboard from "../../features/admin/dashboard-rooms";
+import RoomsDashboard from "../../features/admin/dashboard-rooms/index.test";
 
 
 export default function Page() {

@@ -1,9 +1,9 @@
-import Sidebar from "../../features/ui/sidebar";
+import { useRouter } from "next/router";
+import { useContext } from "react";
 import { userContext } from "../../features/user/user.context";
+import Sidebar from "../../features/ui/sidebar";
 import AdminNav from '../../features/admin/nav';
 import Main from "../../features/layouts/main";
-import { useRouter } from "next/router";
-import RoomsDashboard from "../../features/admin/dashboard-rooms";
 
 
 export default function Page() {
@@ -33,8 +33,7 @@ export default function Page() {
                 />
             </Sidebar>
 
-            <Main>
-                <RoomsDashboard />
+            <Main> 
             </Main>
         </userContext.Provider>
     )
