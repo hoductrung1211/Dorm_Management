@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
 import OrderButtoon from "../../ui/button-order";
-import { FilterValuesContext } from "./filterValues.context";
+import { FilterValuesContext } from "../filterValues.context";
 import DataColumn from "../../ui/data.column";
 import SectionRoomInfo from "./room-info.section";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 
-const orderButtons = [
+const sortingButtons = [
     {id: 0, text: "ID", 
         handleOrder: (rowA, rowB, isAsc) => {
             if (isAsc) {
@@ -72,12 +74,14 @@ const rooms = [
 ]
 
 export default function SectionRooms() {
-    const [orderButton, setOrderButton] = useState({
+    const [sortingButton, setSortingButton] = useState({
         id: 0,
         isAsc: true,
     });
     const filterValues = useContext(FilterValuesContext);
     const [viewedRoomId, setViewedRoomId] = useState(null);
+
+
 
     // Room Info display on info dashboard
     const viewedRoom = rooms.find(room => room.id == viewedRoomId);
@@ -92,12 +96,11 @@ export default function SectionRooms() {
             return true;
         return false;
     });
-
     // Filtered Room array have been sorted by order button
     filteredRooms.sort((rowA, rowB) => {
-        const sortCB = orderButtons.find(btn => btn.id == orderButton.id).handleOrder;
+        const sortCB = sortingButtons.find(btn => btn.id == sortingButton.id).handleOrder;
 
-        return sortCB(rowA, rowB, orderButton.isAsc);
+        return sortCB(rowA, rowB, sortingButton.isAsc);
     });
 
 
@@ -110,9 +113,9 @@ export default function SectionRooms() {
                 setViewedId={setViewedRoomId} />
         :
             <SectionRoomList
-                orderButton={orderButton}
-                orderButtons={orderButtons}
-                setOrderButton={setOrderButton}
+                sortingButton={sortingButton}
+                sortingButtons={sortingButtons}
+                setSortingButton={setSortingButton}
                 filteredRooms={filteredRooms}
                 setViewedRoomId={setViewedRoomId}/>
         }            
@@ -121,9 +124,9 @@ export default function SectionRooms() {
 }
 
 function SectionRoomList({
-    orderButtons={orderButtons},
-    orderButton={orderButton},
-    setOrderButton={setOrderButton},
+    sortingButtons={sortingButtons},
+    sortingButton={sortingButton},
+    setSortingButton={setSortingButton},
     filteredRooms={filteredRooms},
     setViewedRoomId={setViewedRoomId}
 }) {
@@ -131,18 +134,18 @@ function SectionRoomList({
     <>
         <header className="flex-shrink-0 grid grid-flow-col grid-cols-6 w-full h-12 font-bold rounded-tl-lg rounded-tr-lg overflow-hidden shadow-sm">
         {
-            orderButtons.map(button => 
+            sortingButtons.map(button => 
                 <OrderButtoon 
                     button={button}
-                    orderButton={orderButton}
+                    sortingButton={sortingButton}
                     handleClick={(id) => {
-                        if (id == orderButton.id) {
-                            setOrderButton({
+                        if (id == sortingButton.id) {
+                            setSortingButton({
                                 id,
-                                isAsc: !orderButton.isAsc,
+                                isAsc: !sortingButton.isAsc,
                             })
                         } else {
-                            setOrderButton({
+                            setSortingButton({
                                 id,
                                 isAsc: true,
                             })
@@ -160,10 +163,12 @@ function SectionRoomList({
             >
                 <DataColumn text={room.id} />
                 <DataColumn text={room.type == 0 ? "standard" : room.type == 1 ? "deluxe" : "premium"} />
-                <DataColumn text={room.gender ? "Male" : "Female"} />
+                <DataColumn text={room.gender ? "Male" : "Female"}>
+                {room.gender ? <FontAwesomeIcon icon={faMars} className=" text-xl mr-1 text-primary" /> : <FontAwesomeIcon icon={faVenus} className="text-xl mr-1 text-pink-500" />}
+                </DataColumn>
                 <DataColumn text={room.beds} />
                 <DataColumn text={room.students} />
-                <DataColumn text={room.status == 0 ? "Empty" : room.status == 1 ? "Available" : "Full"} className="font-bold" />
+                <DataColumn text={room.status == 0 ? "Empty" : room.status == 1 ? "Available" : "Full"} className={"font-bold " + (room.status == 0 ? "text-violet-500" : room.status == 1 ? "text-green" : "text-orange")} />
             </div>
         )}
         </main>

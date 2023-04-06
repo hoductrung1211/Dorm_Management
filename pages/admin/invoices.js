@@ -3,7 +3,7 @@ import { userContext } from "../../features/user/user.context";
 import AdminNav from '../../features/admin/nav';
 import Main from "../../features/layouts/main";
 import { useRouter } from "next/router";
-
+import InvoiceDashboard from "../../features/admin/invoice.dashboard";
 
 export default function Page() {
     const user = {
@@ -33,6 +33,7 @@ export default function Page() {
             </Sidebar>
 
             <Main> 
+                <InvoiceDashboard />
             </Main>
         </userContext.Provider>
     )

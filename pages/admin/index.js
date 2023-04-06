@@ -3,7 +3,7 @@ import { userContext } from "../../features/user/user.context";
 import AdminNav from '../../features/admin/nav';
 import Main from "../../features/layouts/main";
 import { useRouter } from "next/router";
-import StudentsDashboard from "../../features/admin/dashboard-students";
+import StudentsDashboard from "../../features/admin/students.dashboard";
 
 
 export default function Page() {

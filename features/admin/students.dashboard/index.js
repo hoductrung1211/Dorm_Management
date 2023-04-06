@@ -5,11 +5,11 @@ import InputFilter from "../../ui/input-filter";
 import FilterSelection from "../../ui/select-filter";
 import OrderButtoon from "../../ui/button-order";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRotate } from "@fortawesome/free-solid-svg-icons";
+import { faMars, faRotate, faVenus } from "@fortawesome/free-solid-svg-icons";
 import DataColumn from "../../ui/data.column";
 import SectionStudentInfo from "./student-info.section";
 
-const orderButtons = [
+const sortingButtons = [
     {id: 0, text: "ID", 
         handleOrder: (rowA, rowB, isAsc) => {
             if (isAsc) {
@@ -74,7 +74,7 @@ const students = [
 ]
 
 export default function StudentsDashboard() {
-    const [orderButton, setOrderButton] = useState({
+    const [sortingButton, setSortingButton] = useState({
         id: 0,
         isAsc: true,
     });
@@ -103,9 +103,9 @@ export default function StudentsDashboard() {
 
     // Filtered Student array have been sorted by order button
     filteredStudents.sort((rowA, rowB) => {
-        const sortCB = orderButtons.find(btn => btn.id == orderButton.id).handleOrder;
+        const sortCB = sortingButtons.find(btn => btn.id == sortingButton.id).handleOrder;
 
-        return sortCB(rowA, rowB, orderButton.isAsc);
+        return sortCB(rowA, rowB, sortingButton.isAsc);
     })
 
     return (
@@ -132,9 +132,9 @@ export default function StudentsDashboard() {
 
                         :   // student info overvie Table  
                         <SectionStudentList
-                            orderButtons={orderButtons}
-                            orderButton={orderButton}
-                            setOrderButton={setOrderButton}
+                            sortingButtons={sortingButtons}
+                            sortingButton={sortingButton}
+                            setSortingButton={setSortingButton}
                             filteredStudents={filteredStudents}
                             isLoading={isLoading}
                             setViewedStudentId={setViewedStudentId}
@@ -148,9 +148,9 @@ export default function StudentsDashboard() {
 }
 
 function SectionStudentList({
-    orderButtons,
-    orderButton,
-    setOrderButton,
+    sortingButtons,
+    sortingButton,
+    setSortingButton,
     filteredStudents,
     isLoading,
     setViewedStudentId,
@@ -160,18 +160,18 @@ function SectionStudentList({
     <>
         <header className="flex-shrink-0 grid grid-flow-col grid-cols-5 w-full h-12 font-bold rounded-tl-lg rounded-tr-lg overflow-hidden shadow-sm">
         {
-            orderButtons.map(button => 
+            sortingButtons.map(button => 
                 <OrderButtoon 
                     button={button}
-                    orderButton={orderButton}
+                    sortingButton={sortingButton}
                     handleClick={(id) => {
-                        if (id == orderButton.id) {
-                            setOrderButton({
+                        if (id == sortingButton.id) {
+                            setSortingButton({
                                 id,
-                                isAsc: !orderButton.isAsc,
+                                isAsc: !sortingButton.isAsc,
                             })
                         } else {
-                            setOrderButton({
+                            setSortingButton({
                                 id,
                                 isAsc: true,
                             })
@@ -193,8 +193,10 @@ function SectionStudentList({
                 <DataColumn text={student.id} />
                 <DataColumn text={student.name} />
                 <DataColumn text={student.birthday} />
-                <DataColumn text={student.gender ? "Male" : "Female"} />
-                <DataColumn text={student.status ? "In Dorm" : "Out Dorm"} className="font-bold" />
+                <DataColumn text={student.gender ? "Male" : "Female"}>
+                {student.gender ? <FontAwesomeIcon icon={faMars} className=" text-xl mr-1 text-primary" /> : <FontAwesomeIcon icon={faVenus} className="text-xl mr-1 text-pink-500" />}
+                </DataColumn>
+                <DataColumn text={student.status ? "In Dorm" : "Out Dorm"} className={"font-bold " + (student.status ? " text-green " : " text-b")} />
             </div>
         )}
         </main>

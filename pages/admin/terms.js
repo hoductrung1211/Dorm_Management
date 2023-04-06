@@ -3,6 +3,7 @@ import { userContext } from "../../features/user/user.context";
 import AdminNav from '../../features/admin/nav';
 import Main from "../../features/layouts/main";
 import { useRouter } from "next/router";
+import TermDashboard from "../../features/admin/terms.dashboard";
 
 
 export default function Page() {
@@ -33,6 +34,7 @@ export default function Page() {
             </Sidebar>
 
             <Main> 
+                <TermDashboard />
             </Main>
         </userContext.Provider>
     )

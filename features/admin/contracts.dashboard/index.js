@@ -2,22 +2,21 @@ import { useState } from "react";
 import HeaderSection from "../../layouts/section-header";
 import MenuButton from "../../ui/button-menu";
 import Container from "../../user/layouts/db-container";
-import SectionRoomTypes from "./room-type.dashboard";
-import SectionRooms from "./rooms.dashboard";
+ 
 import InputFilter from "../../ui/input-filter";
 import FilterSelection from "../../ui/select-filter";
-import { FilterValuesContext } from "./filterValues.context";
+import { FilterValuesContext } from "../filterValues.context";
 
 const menus = [
     {
         id: 0,
         text: "Rooms",
-        section: <SectionRooms/>,
+        section: null,
     },
     {
         id: 1,
         text: "Room Types",
-        section: <SectionRoomTypes/>,
+        section: null,
     },
 ]
 

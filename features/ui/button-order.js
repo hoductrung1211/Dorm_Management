@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function OrderButtoon({
     button,
-    orderButton,
+    sortingButton,
     handleClick,
 }) {
-    let icon = orderButton.isAsc ? faArrowDownWideShort : faArrowUpWideShort;
+    let icon = sortingButton.isAsc ? faArrowDownWideShort : faArrowUpWideShort;
     let className = "flex items-center justify-center col-span-1 ";
-    if (orderButton.id == button.id) className += " bg-fa text-primary";
+    if (sortingButton.id == button.id) className += " bg-fa text-primary";
     else className += "bg-ec hover:opacity-80";
 
     return (
@@ -18,7 +18,7 @@ export default function OrderButtoon({
         >
             {button.text}
 
-            {orderButton.id == button.id && <FontAwesomeIcon icon={icon} className="ml-4 text-xl" />}
+            {sortingButton.id == button.id && <FontAwesomeIcon icon={icon} className="ml-4 text-xl" />}
         </button>
 
         
