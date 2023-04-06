@@ -4,11 +4,10 @@ import RoomCard from "./card-room";
 import { useRef } from "react";
 
 export default function ShowRoomsBlock({ 
-    typeInfo,
+    roomDetails,
 }) {
     const cardsRef = useRef(null);
     const cardViewId = useRef(0);
-
     function scrollToId(id) {
         const map = getMap();
         const node = map.get(id);
@@ -50,9 +49,9 @@ export default function ShowRoomsBlock({
             <h4 className="absolute top-6 left-1/2 -translate-x-1/2 text-xl">Available rooms</h4>
 
             <ul className="h-full flex items-center gap-5 overflow-x-hidden">
-            {typeInfo.rooms.map(room =>
+            {roomDetails.map(room =>
                 // Card 
-                <RoomCard room={room} typeName={typeInfo.name} cost={typeInfo.cost} getMap={getMap} />
+                <RoomCard room={room} typeName={room.nameRoomType} cost={room.cost} getMap={getMap} />
             )}
             </ul>
 

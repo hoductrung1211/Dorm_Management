@@ -2,22 +2,33 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Image from "next/image";
 import {studentURL} from '../../utils/links'
+import Authentication from "../../../pages/api/student-auth/AuthService"
+import Error from '../../ui/error';
+
 
 export default function OTPModal({
-    OTPcode,
+    inputOTP, redirect
 }) {
     const router = useRouter();
-    const [text, setText] = useState(OTPcode);
-
+    const [text, setText] = useState('');
+    const [errorOTP, setErrorOTP]=useState(undefined)
     function handleValueChange(nextText) {
         setText(nextText);
     }
 
     function handleSubmit(e) {
         e.preventDefault();
-
-        if (OTPcode == text)
-            router.push(studentURL.index)
+        console.log(inputOTP)
+        Authentication.verify(inputOTP.id, inputOTP.password, text).then(e=>{
+            router.push(redirect)
+        })
+        .catch((error)=>{
+            if( error.response ){
+                setErrorOTP(error.response.data)
+                console.log(error.response)
+            }
+        })
+        
     }
 
     function handleResendOTPCode() {
@@ -39,7 +50,7 @@ export default function OTPModal({
             <p className="flex flex-col items-center">
                 Enter OTP code sent to
                 <span className="font-bold">
-                    nguyendangbac@gmail.com
+                    {inputOTP.id+"@student.ptithcm.edu.vn"}
                 </span>
             </p>
 
@@ -48,7 +59,7 @@ export default function OTPModal({
                 value={text}
                 onChange={e => handleValueChange(e.target.value)}
             />
-
+            <div className="w-72 flex items-center gap-2 text-sm text-red">{errorOTP}</div>
             <div className='absolute bottom-0'>
                 <p className="mb-8 flex flex-col text-center">
                     Didn't receive the code?

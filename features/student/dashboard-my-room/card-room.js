@@ -37,7 +37,7 @@ export default function RoomCard({
                     <p>{typeName}</p>
             </div>
             <div className="mt-2 px-2 flex justify-between items-center">
-                    <p className="text-zinc-500"><span className="font-bold text-b">{room.available}</span> beds left</p>
+                    <p className="text-zinc-500"><span className="font-bold text-b">{room.emptyBed}</span> beds left</p>
                     <p><span className="font-bold">{cost}</span> đ/month</p>
             </div>
         </li>
