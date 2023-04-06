@@ -162,6 +162,7 @@ function SectionStudentList({
         {
             sortingButtons.map(button => 
                 <OrderButtoon 
+                    key={button.id}
                     button={button}
                     sortingButton={sortingButton}
                     handleClick={(id) => {

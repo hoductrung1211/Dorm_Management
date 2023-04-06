@@ -52,6 +52,7 @@ export default function InvoiceDashboard() {
                 <div className="relative top-1.5 h-14 -mt-1 z-10"> 
                     {menus.map(menu => 
                         <MenuButton 
+                            key={menu.id}
                             menu={menu} 
                             isActive={menuID == menu.id} 
                             handleChangeActiveMenu={handleChangeMenu}

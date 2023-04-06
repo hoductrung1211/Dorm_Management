@@ -87,9 +87,7 @@ export default function SectionTemplateCost() {
         <div className="h-full w-full p-4 flex flex-col">
         {viewedDataId != null 
         
-        ?   <SectionRoomInfo 
-                info={viewedRoom}
-                setViewedId={setViewedDataId} />
+        ?   null
         :
             <SectionRoomList
                 sortingButton={sortingButton}
@@ -115,6 +113,7 @@ function SectionRoomList({
         {
             sortingButtons.map(button => 
                 <OrderButtoon 
+                    key={button.id}
                     button={button}
                     sortingButton={sortingButton}
                     handleClick={(id) => {

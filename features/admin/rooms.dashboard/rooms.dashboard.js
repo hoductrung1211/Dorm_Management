@@ -136,6 +136,7 @@ function SectionRoomList({
         {
             sortingButtons.map(button => 
                 <OrderButtoon 
+                    key={button.id}
                     button={button}
                     sortingButton={sortingButton}
                     handleClick={(id) => {
@@ -157,7 +158,7 @@ function SectionRoomList({
 
         <main className="h-full w-full flex flex-col overflow-auto">
         {filteredRooms.map( room => 
-            <div 
+            <div
                 key={room.id} className="flex-shrink-0 grid grid-cols-6 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa"  
                 onClick={() => setViewedRoomId(room.id)}
             >

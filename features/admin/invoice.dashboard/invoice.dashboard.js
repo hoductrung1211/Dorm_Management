@@ -141,6 +141,7 @@ function SectionRoomList({
         {
             sortingButtons.map(button => 
                 <OrderButtoon 
+                    key={button.id}
                     button={button}
                     sortingButton={sortingButton}
                     handleClick={(id) => {
@@ -161,19 +162,19 @@ function SectionRoomList({
         </header>
 
         <main className="h-full w-full flex flex-col overflow-auto">
-        {filteredInvoices.map( room => 
+        {filteredInvoices.map( invoice => 
             <div 
-                key={room.id} className="flex-shrink-0 grid grid-cols-6 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa"  
-                onClick={() => setViewedRoomId(room.id)}
+                key={invoice.id} className="flex-shrink-0 grid grid-cols-6 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa"  
+                onClick={() => setViewedRoomId(invoice.id)}
             >
-                <DataColumn text={room.id} />
-                <DataColumn text={room.roomId} />
-                <DataColumn text={room.date} />
-                <DataColumn text={room.comsumption + (room.type ? " kW" : " m3")} className="  font-bold ">
-                    {room.type ? <FontAwesomeIcon icon={faBolt} className="text-xl text-orange-400 mr-1" /> : <FontAwesomeIcon icon={faFaucetDrip} className="text-xl text-primary mr-1" />}
+                <DataColumn text={invoice.id} />
+                <DataColumn text={invoice.roomId} />
+                <DataColumn text={invoice.date} />
+                <DataColumn text={invoice.comsumption + (invoice.type ? " kW" : " m3")} className="  font-bold ">
+                    {invoice.type ? <FontAwesomeIcon icon={faBolt} className="text-xl text-orange-400 mr-1" /> : <FontAwesomeIcon icon={faFaucetDrip} className="text-xl text-primary mr-1" />}
                 </DataColumn>
-                <DataColumn text={moneyConverter(room.cost)} />
-                <DataColumn text={room.status ? "Paid" : "Unpaid"} className={" font-bold " + (room.status ? " text-green" : " text-orange-400") } />
+                <DataColumn text={moneyConverter(invoice.cost)} />
+                <DataColumn text={invoice.status ? "Paid" : "Unpaid"} className={" font-bold " + (invoice.status ? " text-green" : " text-b") } />
  
             </div>
         )}
