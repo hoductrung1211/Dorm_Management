@@ -5,6 +5,7 @@ import DataColumn from "../../ui/data.column";
 import { moneyConverter } from "../../utils/convert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBolt, faFaucetDrip  } from "@fortawesome/free-solid-svg-icons";
+import TemplateCostInfo from "./template-cost-info.section";
 
 const sortingButtons = [
     {id: 0, text: "ID", 
@@ -63,7 +64,7 @@ export default function SectionTemplateCost() {
 
 
     // Room Info display on info dashboard
-    const viewedRoom = templateCosts.find(data => data.id == viewedDataId);
+    const viewedTemplateCost = templateCosts.find(data => data.id == viewedDataId);
 
     // Room array have been filtered
     const filteredData = templateCosts.filter(data => {
@@ -87,7 +88,10 @@ export default function SectionTemplateCost() {
         <div className="h-full w-full p-4 flex flex-col">
         {viewedDataId != null 
         
-        ?   null
+        ?   <TemplateCostInfo
+                info={viewedTemplateCost}
+                setViewedId={setViewedDataId}
+            />
         :
             <SectionRoomList
                 sortingButton={sortingButton}

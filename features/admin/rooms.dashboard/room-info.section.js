@@ -13,7 +13,6 @@ export default function SectionRoomInfo({
 }) {
     return (
         <>
-            
             <SectionInfoHeader 
                 title="Room Detail" 
                 setViewedId={setViewedId} />

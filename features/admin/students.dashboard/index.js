@@ -203,7 +203,7 @@ function SectionStudentList({
         </main>
         
         {/* Bottom */}
-        <div className="flex-shrink-0 w-full h-14 pt-2  text-end">
+        <footer className="flex-shrink-0 w-full h-14 flex gap-3 pt-2">
             <button 
                 className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
                 onClick={() => {
@@ -215,7 +215,7 @@ function SectionStudentList({
                 {isLoading && <FontAwesomeIcon className="ml-4 animate-spin" icon={faRotate} />}
 
             </button>
-        </div>
+        </footer>
     </>
     )
 }

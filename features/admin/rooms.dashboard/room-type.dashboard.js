@@ -51,12 +51,12 @@ const sortingButtons = [
 ]
 
 const roomTypes = [
-    {id: "001", typeName: "standard", gender: true, beds: 6, cost: 240000},
-    {id: "002", typeName: "standard", gender: false, beds: 6, cost: 240000},
-    {id: "003", typeName: "deluxe", gender: true, beds: 4, cost: 360000},
-    {id: "004", typeName: "deluxe", gender: false, beds: 4, cost: 360000},
-    {id: "005", typeName: "premium", gender: true, beds: 2,cost: 420000}, 
-    {id: "006", typeName: "premium", gender: false, beds: 2,cost: 420000}, 
+    {id: "001", typeName: "standard", gender: true, beds: 6, cost: 240000, imgUrl: "/rooms/basic/8.jfif"},
+    {id: "002", typeName: "standard", gender: false, beds: 6, cost: 240000, imgUrl: "/rooms/basic/13.jfif"},
+    {id: "003", typeName: "deluxe", gender: true, beds: 4, cost: 360000, imgUrl: "/rooms/medium/8.jfif"},
+    {id: "004", typeName: "deluxe", gender: false, beds: 4, cost: 360000, imgUrl: "/rooms/medium/12.jfif"},
+    {id: "005", typeName: "premium", gender: true, beds: 2,cost: 420000, imgUrl: "/rooms/highend/4.jfif"}, 
+    {id: "006", typeName: "premium", gender: false, beds: 2,cost: 420000, imgUrl: "/rooms/highend/5.jfif"}, 
 ]
 
 export default function SectionRoomTypes() {
@@ -145,7 +145,7 @@ function SectionRoomTypeList({
         )}
         </main>
 
-        <div className="flex-shrink-0 w-full h-14 pt-2 text-end ">
+        <div className="flex-shrink-0 w-full h-14 pt-2  flex gap-3 ">
             <button 
                 className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
             >

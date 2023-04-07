@@ -81,6 +81,10 @@
   .text-green {
     color: #1ABC9C;
   }
+  .bg-green {
+    background-color: #1ABC9C;
+  }
+
   .text-yellow {
     color: #f1c40f;
   }
