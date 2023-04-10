@@ -9,20 +9,24 @@ import SectionInfoHeader from "../../layouts/info-header.section";
 
 export default function SectionRoomInfo({
     info,
-    setViewedId,
+    setSectionId,
 }) {
+    console.log(info)
     return (
         <>
             <SectionInfoHeader 
                 title="Room Detail" 
-                setViewedId={setViewedId} />
+                handleOut={() => setSectionId(0)} />
 
             <main className="flex flex-col h-full gap-12 p-4 border-2 border-ec  border-t-0 rounded-bl-lg rounded-br-lg">
                 <section className="w-full flex gap-3">
                     <ImageSection info={info} />
                     <InfoSection info={info} />
                     <ActionsSection>
-                        <ActionButton title="Edit" />
+                        <ActionButton 
+                            title="Edit"
+                            handleClick={() => setSectionId(2)}    
+                        />
                         <ActionButton title="Delete" bgRed={true} />
                         <ActionButton title="Show all students (4)" />
                     </ActionsSection>
@@ -64,7 +68,7 @@ function ImageSection({ info: {imgUrl, cost}}) {
 
 function InfoSection({info: {
     id,
-    type,
+    typeName,
     gender,
     beds,
 }}) {
@@ -76,7 +80,7 @@ function InfoSection({info: {
                 </span>
             </AttributeText>
             <AttributeText title="Type name">
-                <AttributeValue icon={faDiamond} value={type == 0 ? 'standard' : type == 1 ? 'deluxe' : 'premium'} />
+                <AttributeValue icon={faDiamond} value={typeName} />
             </AttributeText>
             <AttributeText title="For gender">
                 <AttributeValue icon={gender ? faMars : faVenus} value={gender ? 'male' : 'female' } />

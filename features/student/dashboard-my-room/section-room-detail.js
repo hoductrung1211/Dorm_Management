@@ -128,7 +128,21 @@ function PersonalSection() {
                     <AttributeValue icon={faMobile} value="0123431456" />
                 </div>
             </AttributeSection>
+        </section>
+    )
+}
 
+function ActionsSection() {
+    return (
+        <section className="flex flex-col">
+            <AttributeSection title="Actions">
+                <div className="flex flex-col gap-5 border-2 px-5 py-4 rounded-lg ">
+                    <Button title="Request Housekeeping" />
+                    <Button title="Request Room Transfer" />
+                    <Button title="View Room Availability" />
+                    <Button title="Request Extra Duration" />
+                </div>
+            </AttributeSection>
             <AttributeSection title="Move in">
                 <p className="flex items-center gap-2 font-bold text-green text-xl">
                     <FontAwesomeIcon 
@@ -147,21 +161,6 @@ function PersonalSection() {
                     />
                     13/07/2023
                 </p>
-            </AttributeSection>
-        </section>
-    )
-}
-
-function ActionsSection() {
-    return (
-        <section className="flex flex-col">
-            <AttributeSection title="Actions">
-                <div className="flex flex-col gap-5 border-2 px-5 py-4 rounded-lg ">
-                    <Button title="Request Housekeeping" />
-                    <Button title="Request Room Transfer" />
-                    <Button title="View Room Availability" />
-                    <Button title="Request Extra Duration" />
-                </div>
             </AttributeSection>
         </section>
     )

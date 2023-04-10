@@ -52,7 +52,12 @@ export default function ShowRoomsBlock({
             <ul className="h-full flex items-center gap-5 overflow-x-hidden">
             {typeInfo.rooms.map(room =>
                 // Card 
-                <RoomCard room={room} typeName={typeInfo.name} cost={typeInfo.cost} getMap={getMap} />
+                <RoomCard 
+                    key={room.id}
+                    room={room} 
+                    typeName={typeInfo.name} 
+                    cost={typeInfo.cost} 
+                    getMap={getMap} />
             )}
             </ul>
 

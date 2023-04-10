@@ -88,7 +88,7 @@ function FilterBar({
                 placeholder="Search here.."
             />
 
-            <FilterSelection
+            {/* <FilterSelection
                 title="Room type"
                 options={[
                     {text: "All", value: "all"},
@@ -118,7 +118,7 @@ function FilterBar({
                         status: nextStatus,
                     })
                 }}
-            />
+            /> */}
         </div>
     )
 }

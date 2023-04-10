@@ -43,6 +43,9 @@
   .bg-fa {
     background-color: #FAFAFA;
   }
+  .border-fa {
+    border-color: #fafafa;
+  }
 
   .text-6 {
     color: #666;
@@ -62,6 +65,9 @@
   }
   .border-ec {
     border-color: #ECF0F1;
+  }
+  .outline-ec {
+    outline-color: #ECF0F1;
   }
 
   .bg-red {
@@ -91,6 +97,8 @@
   .text-orange {
     color: #f39c12;
   }
+
+
 }
 
 :root {

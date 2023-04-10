@@ -8,22 +8,21 @@ import { useRef, useState } from "react";
 
 export default function TemplateCostInfo({
     info,
-    setViewedId,
+    setSectionId,
 }) {
     const [isEditing, setIsEditing] = useState(false);
     const [tempCost, setTempCost] = useState(info.cost)
     const formRef = useRef(null);
 
     function handleChangeCost() {
-        // Handle here
-        setViewedId(null);
+        setSectionId(0);
     }
 
     return (
         <>
         <SectionInfoHeader 
             title="Template Cost detail" 
-            setViewedId={setViewedId} />
+            handleOut={() => setSectionId(0)} />
 
         <main className="flex flex-col justify-between items-center gap-10 h-full p-4 border-2 border-ec  border-t-0 rounded-bl-lg rounded-br-lg">
             <section className="w-96 h-full bg-fa p-5 border-2 border-ec rounded-lg ">
