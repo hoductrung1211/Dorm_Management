@@ -1,17 +1,48 @@
 import { useState } from "react";
 import Link from "next/link";
-import { userURL } from "../../utils/links";
+import { studentURL, userURL } from "../../utils/links";
 import Image from "next/image";
 import InputGroup from "../components/input-group";
 import { faUser, faKey } from "@fortawesome/free-solid-svg-icons"
+import Authentication from "../../../pages/api/student-auth/AuthService"
+// import { url } from "inspector";
 
-export default function SignupForm() {
+export default function SignupForm({
+    handlePushPopup, inputOTP, redirect
+}) {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [passwordError, setPasswordError]= useState(undefined)
+    function handleSubmitSignup(e){
+        e.preventDefault()
+        Authentication.register(id, password).then(res=>{
+            handlePushPopup()
+            inputOTP({"id":id,"password": password})
+            redirect(userURL.login)
+        })
+        .catch((error)=>{
+            if( error.response ){
+                console.log(error.response)
+                setPasswordError(error.response.data)
+                // if(error.response.status===401){
+                    
+                //     setPasswordError('Username or password incorrect')
+                // }
+                // else if(error.response.status===400){
+                //     setPasswordError('Account not accessible')
+                // }
+                // else{
+                //     handlePushPopup()
+                //     inputOTP({"id":id,"password": password})
+                // }
+                // error.response.status===403 ? handlePushPopup() : setPasswordError("aaaa")
+            }
+          })
+    }
 
     return (
-        <form className='relative mt-1 pt-8 flex flex-col px-4'>
+        <form onSubmit={handleSubmitSignup} className='relative mt-1 pt-8 flex flex-col px-4'>
             <h3 className='mb-8 w-72 text-b flex flex-col items-center text-2xl font-bold'>
                 <Image 
                     src="/svg/ID.svg"
@@ -45,6 +76,7 @@ export default function SignupForm() {
                 value={confirmPassword}
                 icon={faKey}
                 handleChange={nextPassword => setConfirmPassword(nextPassword)}
+                error={passwordError}
             /> 
 
             <div className='absolute bottom-0'>

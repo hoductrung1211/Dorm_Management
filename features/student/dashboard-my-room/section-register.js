@@ -1,22 +1,42 @@
 import TypeInfoBlock from "./block-type-info"
 import { faBed, faFaucetDrip, faBolt, faBox, faTv } from "@fortawesome/free-solid-svg-icons"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SelectTypeBlock from "./block-select-type";
 import ShowRoomsBlock from "./block-show-room"; 
-
+import RoomType from "../../../pages/api/service/Home-StudentService"
 
 export default function RegisterSection() {
     const [selectedTypeID, setSelectedTypeID] = useState(0); 
     const typeInfo = roomTypeJSON.find(roomType => roomType.id == selectedTypeID);
+    const [roomTypes, setRoomTypes] = useState([])
+    const [roomDetails, setRoomDetails]= useState([])
+    useEffect(()=>{
+        RoomType.getListTypeRoom().then(res=>{
+            setRoomTypes(res.data)
+        })
+        RoomType.getListRoomByTypeID(5).then(res=>{
+            console.log(res.data)
+            setRoomDetails(res.data)
+        })
+    },{})
+
+    function eventSelection(id){
+        console.log(id)
+        RoomType.getListRoomByTypeID(id).then(res=>{
+            setRoomDetails(res.data)
+        })
+    }
+
     return (
         <>
             <TypeInfoBlock typeInfo={typeInfo}>
                 <SelectTypeBlock
-                    types={roomTypeJSON}
-                    handleChangeSelectedID={nextID => setSelectedTypeID(nextID)}
+                    types={roomTypes}
+                    // handleChangeSelectedID={nextID => setSelectedTypeID(nextID)}
+                    handleChangeSelectedID={nextID => {eventSelection(nextID)}}
                 />
             </TypeInfoBlock>
-            <ShowRoomsBlock typeInfo={typeInfo} />
+            <ShowRoomsBlock roomDetails={roomDetails} />
         </>
     )
 }

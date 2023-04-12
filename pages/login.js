@@ -8,11 +8,12 @@ import OTPModal from '../features/user/layouts/otp-modal';
 
 export default function Page() {
     const [isPopup, setIsPopup] = useState(false);
-    const [OTPcode, setOTPcode] = useState(546213);
-
+    const [inputOTP, setInputOTP]=useState(undefined)
+    const [redirect, setRedirect] = useState('')
     function handlePushPopup() {
         setIsPopup(true);
     }
+    
 
     return (
         <>
@@ -24,9 +25,14 @@ export default function Page() {
                     imgUrls={["/pics/login4.jpg", "/pics/login2.jpg"]} 
                 />
                 {   isPopup ? 
-                    <OTPModal OTPcode={OTPcode} /> : 
+                    <OTPModal 
+                        inputOTP={inputOTP}
+                        redirect={redirect}
+                    /> : 
                     <LoginModal
                         handlePushPopup={handlePushPopup} 
+                        inputOTP={setInputOTP}
+                        redirect={setRedirect}
                     />
                 }
             </Container>

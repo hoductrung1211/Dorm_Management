@@ -25,7 +25,7 @@ export default function MyRoomDashboard() {
     function handleChangeMenu(nextID) {
         setMenuID(nextID);
     }
-
+    
     return (
         <SectionContext.Provider value={setSection}>
             <nav className="translate-y-0.5 flex z-10">

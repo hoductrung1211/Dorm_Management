@@ -8,7 +8,7 @@ export default function SelectTypeBlock({
             <select className="w-40 h-12 bg-ec rounded-md outline-none text-center cursor-pointer" onChange={e => {handleChangeSelectedID(e.target.value)}}>
             {types.map(type =>
                 <option  key={type.id} value={type.id}>
-                    {type.name}
+                    {type.tenLoai}
                 </option>
             )}
             </select>
