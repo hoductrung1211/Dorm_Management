@@ -6,6 +6,7 @@ import { moneyConverter } from "../../utils/convert";
 import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 import SectionRoomTypeEditing from "./room-type-editing.section";
 import SectionRoomTypeInfo from "./room-type-info.section";
+import SectionAddingRoom from "./room-type-adding.section";
 
 const sortingButtons = [
   {
@@ -184,6 +185,16 @@ export default function SectionRoomTypes() {
         />
       ),
     },
+    {
+      id: 3,
+      section: (
+        <SectionAddingRoom
+          info={roomTypeInfo}
+          handleUpdateInfo={handleUpdateInfo}
+          setSectionId={setSectionId}
+        />
+      ),
+    },
   ];
   const section = displaySections.find((st) => st.id == sectionId).section;
 
@@ -258,9 +269,12 @@ function SectionRoomTypeList({
       </main>
 
       <div className="flex-shrink-0 w-full h-14 pt-2  flex gap-3 ">
-        <button className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition">
-          Add
-        </button>
+          <button 
+            className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
+            onClick={() => setSectionId(3)}
+          >
+              Add
+          </button>
       </div>
     </>
   );

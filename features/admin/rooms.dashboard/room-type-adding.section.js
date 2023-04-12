@@ -8,13 +8,19 @@ import InputEditing from "../../ui/input-editing";
 import { useState } from "react";
 import SelectEditing from "../../ui/select-editing";
 import TextareaEditing from "../../ui/textarea-editing";
+import InputImageEditing from "../../ui/input-image-editing";
 
 export default function SectionRoomTypeEditing({
-    info,
-    handleUpdateInfo,
+    handleAddingRoom,
     setSectionId,
 }) {
-    const [tempInfo, setTempInfo] = useState(info);
+    const [tempInfo, setTempInfo] = useState({
+        typeName: "",
+        gender: true,
+        beds: 0,
+        cost: 100_000,
+        desc: "",
+    });
 
     return (
         <>
@@ -37,29 +43,16 @@ export default function SectionRoomTypeEditing({
                                 }
                             }}
                         />
-                        <ActionButton 
-                            title="Cancel"
-                            handleClick={() => {
-                                let result = confirm("Don't you really want to save the changes?");
-                                if (result)
-                                    setSectionId(1);
-                            }}
-                        />
+                     
                     </ActionsSection>
                 </section>
 
                 <section className="grid grid-cols-3 gap-3 w-full h-full ">
                     <DescriptionSection
-                        info={info}
+                        info={tempInfo.desc}
                         handleChangeInfo={setTempInfo}
                     />
-                    <div className="col-span-1 ">
-                        <h4 className=" text-red mb-2 text-xl font-bold">
-                            Important
-                            <FontAwesomeIcon icon={faWarning} className="ml-2 text-2xl" />
-                        </h4>
-                        <p>When you editing or deleting this room, make sure that there is no students related to this type!</p>
-                    </div>
+                    
                 </section>
             </main>
         </>
@@ -71,26 +64,10 @@ function ImageSection({
     handleChangeInfo,
 }) {
     return (
-        <section className="w-full">
+        <section className="w-full h-full flex justify-center items-center">
             <div className="relative w-10/12 aspect-square">
-                <Image
-                    className="object-cover rounded-lg"
-                    src={info.imgUrl}
-                    alt="A picture of room"
-                    fill
-                />
+                <InputImageEditing />
             </div>
-            <AttributeText title="Cost">
-                <InputEditing 
-                    icon={faMoneyBill} 
-                    value={info.cost} 
-                    type="number"
-                    handleChange={nextCost => handleChangeInfo({
-                        ...info, 
-                        cost: nextCost,
-                    })}    
-                />
-            </AttributeText>
         </section>
     )
 }
@@ -101,11 +78,7 @@ function InfoSection({
 }) {
     return (
         <section className="relative w-full ">
-            <AttributeText title="Room ID">
-                <span className="text-5xl text-primary font-bold">
-                    {info.id}
-                </span>
-            </AttributeText>
+            
             <AttributeText title="Type name">
                 <InputEditing 
                     icon={faDiamond} 
@@ -138,6 +111,17 @@ function InfoSection({
                         beds: nextBeds,
                     })} />
             </AttributeText>
+            <AttributeText title="Cost">
+                <InputEditing 
+                    icon={faMoneyBill} 
+                    value={info.cost} 
+                    type="number"
+                    handleChange={nextCost => handleChangeInfo({
+                        ...info, 
+                        cost: nextCost,
+                    })}    
+                />
+            </AttributeText>
         </section>
     )
 }
@@ -157,8 +141,8 @@ function ActionsSection({
 }
 
 function DescriptionSection({
-    info,
-    handleChangeInfo,
+    desc,
+    handleChangeDesc,
 }) {
     return (
         <>
@@ -168,11 +152,8 @@ function DescriptionSection({
                 A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.
             </p> */}
             <TextareaEditing
-                value={info.desc}
-                handleChange={nextDesc => handleChangeInfo({
-                        ...info,
-                        desc: nextDesc,
-                    })} 
+                value={desc}
+                handleChange={e => handleChangeDesc(e.target.value)} 
             />
         </div>
         </>

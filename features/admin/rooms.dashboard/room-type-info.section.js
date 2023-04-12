@@ -123,7 +123,7 @@ function DescriptionSection({
     return (
         <>
         <div className="col-span-2 flex flex-col">
-            <AttributeText title="Analysis" />
+            <AttributeText title="Description" />
             <p className="h-full flex flex-col gap-2 border-2 rounded-md p-2">
                 {info.desc}
             </p>
