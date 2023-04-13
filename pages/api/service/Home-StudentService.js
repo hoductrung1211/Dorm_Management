@@ -9,15 +9,31 @@ const getListTypeRoom=()=> {
       headers: authHeader() 
     });
   }
-const getListRoomByTypeID=(id)=>{
-  return axios.get(API_URL+"room-type/"+id,{
+const getListRoomDetailsById=(id)=>{
+  return axios.get(API_URL+"room-details/"+id,{
     headers: authHeader() 
   })
 }
+const getTypeRoom=(id)=>{
+  return axios.get(API_URL + 'room-type/'+id, { 
+    headers: authHeader() 
+  });
+}
 
+
+
+
+
+const getStudentDetails=()=>{
+  return axios.get(API_URL + 'info', { 
+    headers: authHeader() 
+  });
+}
 const StudentService={
     getListTypeRoom,
-    getListRoomByTypeID,
+    getListRoomDetailsById,
+    getTypeRoom,
+    getStudentDetails,
     // getStudentBoard,
     // getAdminBoard
   }

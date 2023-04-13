@@ -1,15 +1,19 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
+
 export default function FormInfoBlock({
     title,
     infos,
+    room
 }) {
+    
     return (
         <section className="w-80 flex flex-col gap-5">
             <header className="text-center text-xl  mb-3">
                 {title}
             </header>
-            {infos.map(info => <Info info={info} />)}
+            {infos.map(info => <Info key={info.id} info={info} />)}
+           
         </section>
     )
 }

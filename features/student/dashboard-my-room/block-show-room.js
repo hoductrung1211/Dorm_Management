@@ -1,13 +1,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import RoomCard from "./card-room";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 
 export default function ShowRoomsBlock({ 
     roomDetails,
+    // studentDetails
 }) {
+    
     const cardsRef = useRef(null);
     const cardViewId = useRef(0);
+    
+
     function scrollToId(id) {
         const map = getMap();
         const node = map.get(id);
@@ -51,7 +55,8 @@ export default function ShowRoomsBlock({
             <ul className="h-full flex items-center gap-5 overflow-x-hidden">
             {roomDetails.map(room =>
                 // Card 
-                <RoomCard room={room} typeName={room.nameRoomType} cost={room.cost} getMap={getMap} />
+                <RoomCard key={room.id} room={room} typeName={room.nameRoomType} cost={room.cost} getMap={getMap} />
+                // <RoomCard key={room.id} studentDetails={studentDetails} room={room} typeName={room.nameRoomType} cost={room.cost} getMap={getMap} />
             )}
             </ul>
 

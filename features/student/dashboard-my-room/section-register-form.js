@@ -1,18 +1,21 @@
 import FormBlock from "./block-form"; 
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import RegisterSection from "./section-register";
 import {SectionContext} from '../../utils/section.context';  
+import StudentSerivce from "../../../pages/api/service/Home-StudentService"
 
 
 
-export default function RegisterFormSection( ) {
+export default function RegisterFormSection({dataContract} ) {
+
+
     return (
         <main className="p-5 h-full w-full">
             <div className="flex flex-col w-full h-full py-5 px-6  border-2 border-ec rounded-xl">
                 <FormHeader />
-                <FormBlock />
+                <FormBlock dataContract={dataContract}/>
             </div>
         </main>
     )

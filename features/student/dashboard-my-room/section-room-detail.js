@@ -1,9 +1,47 @@
-import { faDiamond, faBed, faUsers, faWifi, faBox, faFaucetDrip, faBolt, faTv, faEye, faEyeSlash, faIdCard, faSignature, faPhone, faCakeCandles, faVenusMars, faMobile, faAt, faRightFromBracket, faRightToBracket } from "@fortawesome/free-solid-svg-icons"
+import { faDiamond, faBed, faUsers, faWifi, faBox, faFaucetDrip, faBolt, faTv, faEye, faEyeSlash, faIdCard, faSignature, faPhone, faCakeCandles, faVenusMars, faMobile, faAt, faRightFromBracket, faRightToBracket, faMoneyBill, faMoneyCheck } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const icons = [faBed, faBox, faFaucetDrip, faBolt, faTv];
+import StudentSerivce from "../../../pages/api/service/Contract-StudentService"
+import StdService from "../../../pages/api/service/Home-StudentService"
 
-export default function RoomDetailSection() {
+export default function RoomDetailSection({checkCondition}) {
+
+    const [personalInfo, setPersionalInfo] = useState({})
+    const [contractInfo, setContractInfo] = useState({})
+    // const contractInfoDefault={
+
+    // }
+    useEffect(()=>{
+        // True: Chưa đăng ký KTX, chưa có data Contract
+        
+        if(!checkCondition){
+            StudentSerivce.getViewAfterCreatedContract().then(res=>{
+                console.log(res.data)
+                setPersionalInfo(res.data.student)
+                setContractInfo(res.data)
+            })
+            .catch(error=>{
+                if(error.response){
+                    console.log(error.response)
+                }
+            })
+        } 
+        // False: Lấy thông tin sv
+        else{
+            StdService.getStudentDetails().then(res=>{
+                console.log(res.data)
+                setPersionalInfo(res.data)
+                
+
+            }).catch(error=>{
+                if(error.response){
+                    console.log(error.response.status)
+                }
+            })
+        }
+    },[])
+
     return (
         <section className="h-full w-full p-5">
             <div className="h-full w-full flex flex-col p-5 border-2 rounded-lg shadow-md">
@@ -12,8 +50,8 @@ export default function RoomDetailSection() {
                 </h2>
 
                 <div className="h-full grid grid-cols-3 pt-10 gap-3 ">
-                    <RoomSection />
-                    <PersonalSection />
+                    <RoomSection contractInfo={contractInfo}/>
+                    <PersonalSection personalInfo={personalInfo} />
                     <ActionsSection />
                 </div>
             </div>
@@ -24,10 +62,10 @@ export default function RoomDetailSection() {
 function AttributeSection({ title, children }) {
     return (
         <>
-            <h4 className="mt-10 mb-2 text-xl font-bold first:mt-0">
+            <h4 className="mt-7 mb-2 text-xl font-bold first:mt-0">
                 {title}
             </h4>
-            {children}
+            <span className="font-medium">{children}</span>
         </>
     )
 }
@@ -55,31 +93,53 @@ function Button({
     )
 }
 
-function RoomSection() {
+function RoomSection({contractInfo}) {
     const [isShow, setIsShow] = useState(false);
+    
+   
+    if(Object.keys(contractInfo).length === 0){
+        
+        contractInfo={
+            hopDongKTX: {
+                idPhongKTX: '',
+                ngayLamDon: '',
+                trangThai: '',
+            },
+            loaiKTX:{
+                tenLoai: ''
+            },
+            datePayment:'',
+            dateFrom:'',
+            dateEnd: ''
+
+        }
+    }
 
     return (
         <section className="flex flex-col">
             <AttributeSection title="Room number">
-                <span className="text-5xl text-primary font-bold">
-                    001
+                <span className="text-3xl text-primary font-bold">
+                    {contractInfo.hopDongKTX.idPhongKTX}
                 </span>
             </AttributeSection>
 
             <AttributeSection title="Room Type">
-                <AttributeValue 
-                    icon={faDiamond}
-                    value="premium"
-                />
-                <div className="mt-3 h-12 px-5 gap-5 flex items-center border-2 rounded-md">
+                    <AttributeValue 
+                        icon={faDiamond}
+                        value={contractInfo.loaiKTX.tenLoai}
+                    />
+                
+                {/* <div className="mt-1 h-10 px-5 gap-5 flex items-center border-2 rounded-md">
                 {icons.map(icon => 
-                    <FontAwesomeIcon icon={icon} className="text-2xl"  />
+                    <FontAwesomeIcon key={icon.iconName} icon={icon} className="text-2xl"  />
                 )}
-                </div>
+                </div> */}
             </AttributeSection>
 
-            <AttributeSection title="Internet & Wifi">
-                <AttributeValue 
+            <AttributeSection title="Application date">
+                
+                {contractInfo.hopDongKTX.ngayLamDon}
+                {/* <AttributeValue 
                     icon={faWifi}
                     value="phongJ10"
                 />
@@ -100,54 +160,73 @@ function RoomSection() {
                         <FontAwesomeIcon icon={faEyeSlash} />
                         }
                     </button>
-                </div>
+                </div> */}
             </AttributeSection>
 
-            <AttributeSection title="Roomates">
+            <AttributeSection title="Expiry date">
+                
+                {contractInfo.datePayment}
+            </AttributeSection>
+
+            <AttributeSection title="Payment Status">
                 <AttributeValue 
+                    icon={faMoneyCheck}
+                    value={contractInfo.hopDongKTX.trangThai ? "Paid" : "Pending"}
+                />
+                {/* <span className="text-orange text-xl"></span> */}
+                
+                {/* <AttributeValue 
                     icon={faUsers}
                     value="Number of roomates: 1"
                 />
 
-                <Button title="Show all roomates" />
+                <Button title="Show all roomates" /> */}
             </AttributeSection>
-        </section>
-    )
-}
-
-function PersonalSection() {
-    return (
-        <section className="flex flex-col">
-            <AttributeSection title="Personal Information">
-                <div className="flex flex-col gap-6 px-5 py-4 border-2 rounded-lg ">
-                    <AttributeValue icon={faIdCard} value="N19DCCN018" />
-                    <AttributeValue icon={faSignature} value="Nguyen Dang Bac" />
-                    <AttributeValue icon={faVenusMars} value="Male" />
-                    <AttributeValue icon={faCakeCandles} value="01-01-2001" />
-                    <AttributeValue icon={faAt} value="nguyendangbac@gmail.com.vn" />
-                    <AttributeValue icon={faMobile} value="0123431456" />
-                </div>
-            </AttributeSection>
-
-            <AttributeSection title="Move in">
+            <AttributeSection title="Move in and Move out">
                 <p className="flex items-center gap-2 font-bold text-green text-xl">
                     <FontAwesomeIcon 
                         icon={faRightToBracket}
                         className="ml-5 w-1/12 text-2xl mr-2"
                     />
-                    03/02/2023
+                    {contractInfo.dateFrom}
                 </p>
-            </AttributeSection>
-
-            <AttributeSection title="Move out">
                 <p className="flex items-center gap-2 font-bold text-red text-xl">
                     <FontAwesomeIcon 
                         icon={faRightFromBracket}
                         className="ml-5 w-1/12 text-2xl mr-2"
                     />
-                    13/07/2023
+                    {contractInfo.dateEnd}
                 </p>
             </AttributeSection>
+
+            
+        </section>
+    )
+}
+
+function PersonalSection({personalInfo}) {
+    function renderGender(gender){
+        if(gender){
+            return "Male"
+        }
+        else{
+            return "Female"
+        }
+    }
+    return (
+        <section className="flex flex-col">
+            <AttributeSection title="Personal Information">
+                <div className="flex flex-col gap-6 px-5 py-4 border-2 rounded-lg ">
+                    <AttributeValue icon={faIdCard} value={personalInfo.username} />
+                    <AttributeValue icon={faSignature} value={personalInfo.hoTen} />
+                    <AttributeValue icon={faVenusMars} value={renderGender(personalInfo.username) } />
+                    <AttributeValue icon={faCakeCandles} value={personalInfo.ngaySinh}/>
+                    <AttributeValue icon={faAt} value={personalInfo.mail} />
+                    <AttributeValue icon={faMobile} value={personalInfo.sdt} />
+                </div>
+            </AttributeSection>
+
+            
         </section>
     )
 }
@@ -157,10 +236,10 @@ function ActionsSection() {
         <section className="flex flex-col">
             <AttributeSection title="Actions">
                 <div className="flex flex-col gap-5 border-2 px-5 py-4 rounded-lg ">
-                    <Button title="Request Housekeeping" />
+                    <Button title="Contract extension" />
+                    <Button title="Cancellation of contract" />
                     <Button title="Request Room Transfer" />
                     <Button title="View Room Availability" />
-                    <Button title="Request Extra Duration" />
                 </div>
             </AttributeSection>
         </section>

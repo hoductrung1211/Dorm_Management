@@ -6,12 +6,16 @@ import {userURL, landingPageUrl} from "../features/utils/links"
 import { forwardRef, useRef } from "react" 
 import Header from "../features/ui/header"
 import Footer from "../features/ui/footer"
+import { useEffect } from "react"
+import { useRouter } from "next/router"
 
 export default function LandingPage() {
     const homeRef = useRef(null);
     const aboutRef = useRef(null);
     const optionsRef = useRef(null);
     const faqRef = useRef(null);
+
+
 
     return (
         <>

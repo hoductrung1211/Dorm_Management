@@ -38,16 +38,13 @@ const resendOtp=(username)=>{
 }
 
 
-const getCurrentUser=()=> {
-  return JSON.parse(localStorage.getItem('user'));;
-}
+
 
 
 const AuthService={
   login,
   logout,
   register,
-  getCurrentUser,
   verify,
   resendOtp,
 }
