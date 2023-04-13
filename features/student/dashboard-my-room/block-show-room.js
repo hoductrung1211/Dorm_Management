@@ -56,7 +56,12 @@ export default function ShowRoomsBlock({
             {roomDetails.map(room =>
                 // Card 
                 <RoomCard key={room.id} room={room} typeName={room.nameRoomType} cost={room.cost} getMap={getMap} />
-                // <RoomCard key={room.id} studentDetails={studentDetails} room={room} typeName={room.nameRoomType} cost={room.cost} getMap={getMap} />
+                // <RoomCard 
+                //     key={room.id}
+                //     room={room} 
+                //     typeName={typeInfo.name} 
+                //     cost={typeInfo.cost} 
+                //     getMap={getMap} />
             )}
             </ul>
 

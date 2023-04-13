@@ -193,7 +193,7 @@ function SectionTermList({
         </main>
         
         {/* Bottom */}
-        <div className="flex-shrink-0 w-full h-14 pt-2  text-end">
+        <div className="flex-shrink-0 w-full h-14 pt-2  flex gap-3 ">
             <button 
                 className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
                 onClick={() => {

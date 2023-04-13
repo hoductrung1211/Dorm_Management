@@ -57,7 +57,7 @@ const sortingButtons = [
     },
 ]
 
-const invoices = [
+const initInvoices = [
     {id: "001", roomId: "010", date: "03/02/2023", comsumption: 50, cost: 270000, type: false, status: true},
     {id: "002", roomId: "011", date: "03/03/2023", comsumption: 60, cost: 250000, type: true, status: false},
     {id: "003", roomId: "002", date: "03/03/2023", comsumption: 70, cost: 270000, type: false, status: false},
@@ -74,18 +74,14 @@ const invoices = [
 ]
 
 export default function SectionInvoices() {
+    const [invoices, setInvoices] = useState(initInvoices);
+    const filterValues = useContext(FilterValuesContext); 
     const [sortingButton, setSortingButton] = useState({
         id: 0,
         isAsc: true,
     });
+    const [selectedRowID, setSelectedRowID] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const filterValues = useContext(FilterValuesContext);
-    const [viewedInvoiceId, setViewedInvoiceId] = useState(null);
-
-
-
-    // Room Info display on info dashboard
-    const viewedInvoice = invoices.find(invoice => invoice.id == viewedInvoiceId);
 
     // Room array have been filtered
     const filteredInvoices = invoices.filter(invoice => {
@@ -98,100 +94,113 @@ export default function SectionInvoices() {
             return true;
         return false;
     });
-    // Filtered Room array have been sorted by order button
     filteredInvoices.sort((rowA, rowB) => {
         const sortCB = sortingButtons.find(btn => btn.id == sortingButton.id).handleOrder;
 
         return sortCB(rowA, rowB, sortingButton.isAsc);
     });
 
+    const rowClassName = " flex-shrink-0 grid grid-cols-6 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa ";
+    const seletectRowClassName = rowClassName + " bg-fa border-l-2 border-r-2 "
+    const selectedRow = selectedRowID == null ? null : filteredInvoices.find(invoice => invoice.id == selectedRowID);
 
+    // Filtered Row array have been sorted by order button
+    function handleSelectRow(nextID) {
+        if (nextID == selectedRowID)
+            nextID = null;
+        setSelectedRowID(nextID);
+    }
+    function handleMarkStatus() {
+        setInvoices(filteredInvoices.map(invoice => {
+            if (invoice.id == selectedRowID)
+                return {
+                    ...invoice,
+                    status: !invoice.status,
+                }
+            return invoice;
+        }));
+
+        setSelectedRowID(null);
+    }
+    
     return (
-        <div className="h-full w-full p-4 flex flex-col">
-        {viewedInvoiceId != null 
-        
-        ?   null
-        :
-            <SectionRoomList
-                isLoading={isLoading} // For Syncing
-                setIsLoading={setIsLoading} // For syncing
+        <section className="h-full w-full p-4 flex flex-col">
+            <header className="flex-shrink-0 grid grid-flow-col grid-cols-6 w-full h-12 font-bold rounded-tl-lg rounded-tr-lg overflow-hidden shadow-sm">
+            {
+                sortingButtons.map(button => 
+                    <OrderButtoon 
+                        key={button.id}
+                        button={button}
+                        sortingButton={sortingButton}
+                        handleClick={(id) => {
+                            if (id == sortingButton.id) {
+                                setSortingButton({
+                                    id,
+                                    isAsc: !sortingButton.isAsc,
+                                })
+                            } else {
+                                setSortingButton({
+                                    id,
+                                    isAsc: true,
+                                })
+                            }
+                        }}
+                    />)
+            }
+            </header>
 
-                sortingButtons={sortingButtons}
-                sortingButton={sortingButton} 
-                setSortingButton={setSortingButton}
-                
-                filteredInvoices={filteredInvoices}
-                
-                setViewedRoomId={setViewedInvoiceId}
-            />
-        }            
-        </div>
+            <main className="h-full w-full flex flex-col overflow-auto">
+            {filteredInvoices.map( invoice => 
+                <div 
+                    key={invoice.id} className={selectedRowID == invoice.id ? seletectRowClassName : rowClassName}
+                    onClick={() => handleSelectRow(invoice.id)}
+                >
+                    <DataColumn text={invoice.id} />
+                    <DataColumn text={invoice.roomId} />
+                    <DataColumn text={invoice.date} />
+                    <DataColumn text={invoice.comsumption + (invoice.type ? " kW" : " m3")} className="  font-bold ">
+                        {invoice.type ? <FontAwesomeIcon icon={faBolt} className="text-xl text-orange-400 mr-1" /> : <FontAwesomeIcon icon={faFaucetDrip} className="text-xl text-primary mr-1" />}
+                    </DataColumn>
+                    <DataColumn text={moneyConverter(invoice.cost)} />
+                    <DataColumn text={invoice.status ? "Paid" : "Unpaid"} className={" font-bold " + (invoice.status ? " text-green" : " text-b") } />
+    
+                </div>
+            )}
+            </main>
+
+            <footer className="flex-shrink-0 w-full h-14 flex gap-3 pt-2">
+                <button 
+                    className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
+                    onClick={() => {
+                        setIsLoading(true);
+                        setTimeout(() => setIsLoading(false), 1000)
+                    }}
+                >
+                    Sync
+                    {isLoading && <FontAwesomeIcon className="ml-4 animate-spin" icon={faRotate} />}
+                </button>
+                { selectedRow && <ActionsBoard selectedRow={selectedRow} handleAction={handleMarkStatus} />}
+            </footer>
+        </section>
     )
 }
 
-function SectionRoomList({
-    isLoading, setIsLoading,
-    sortingButtons, setSortingButton, sortingButton ,
-    filteredInvoices ,
-    setViewedRoomId ,
+function ActionsBoard({
+    selectedRow,
+    handleAction,
 }) {
+    let classname = " w-32 h-full rounded-lg  font-bold active:opacity-90 transition "
+    if (selectedRow.status)
+        classname += " bg-ec text-b "
+    else classname += "  bg-green text-white ";
     return (
-    <>
-        <header className="flex-shrink-0 grid grid-flow-col grid-cols-6 w-full h-12 font-bold rounded-tl-lg rounded-tr-lg overflow-hidden shadow-sm">
-        {
-            sortingButtons.map(button => 
-                <OrderButtoon 
-                    key={button.id}
-                    button={button}
-                    sortingButton={sortingButton}
-                    handleClick={(id) => {
-                        if (id == sortingButton.id) {
-                            setSortingButton({
-                                id,
-                                isAsc: !sortingButton.isAsc,
-                            })
-                        } else {
-                            setSortingButton({
-                                id,
-                                isAsc: true,
-                            })
-                        }
-                    }}
-                />)
-        }
-        </header>
-
-        <main className="h-full w-full flex flex-col overflow-auto">
-        {filteredInvoices.map( invoice => 
-            <div 
-                key={invoice.id} className="flex-shrink-0 grid grid-cols-6 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa"  
-                onClick={() => setViewedRoomId(invoice.id)}
-            >
-                <DataColumn text={invoice.id} />
-                <DataColumn text={invoice.roomId} />
-                <DataColumn text={invoice.date} />
-                <DataColumn text={invoice.comsumption + (invoice.type ? " kW" : " m3")} className="  font-bold ">
-                    {invoice.type ? <FontAwesomeIcon icon={faBolt} className="text-xl text-orange-400 mr-1" /> : <FontAwesomeIcon icon={faFaucetDrip} className="text-xl text-primary mr-1" />}
-                </DataColumn>
-                <DataColumn text={moneyConverter(invoice.cost)} />
-                <DataColumn text={invoice.status ? "Paid" : "Unpaid"} className={" font-bold " + (invoice.status ? " text-green" : " text-b") } />
- 
-            </div>
-        )}
-        </main>
-
-        <div className="flex-shrink-0 w-full h-14 pt-2 text-end ">
-            <button 
-                className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
-                onClick={() => {
-                    setIsLoading(true);
-                    setTimeout(() => setIsLoading(false), 1000)
-                }}
-            >
-                Sync
-                {isLoading && <FontAwesomeIcon className="ml-4 animate-spin" icon={faRotate} />}
-            </button>
-        </div>
-    </>
+        <>
+        <button 
+            className={classname}
+            onClick={handleAction}
+        >
+        {selectedRow.status ? "Mark Unpaid" : "Mark paid"}
+        </button>
+        </>
     )
 }

@@ -84,10 +84,10 @@ export default function StudentsDashboard() {
         status: 'all',
     });
     const [isLoading, setIsLoading] = useState(false);
-    const [viewedStudentId, setViewedStudentId] = useState(null);
+    const [studentId, setStudentId] = useState(null);
 
     // Student Info display on info dashboard
-    const viewedStudent = students.find(student => student.id == viewedStudentId);
+    const studentInfo = students.find(student => student.id == studentId);
 
     // Student array have been filtered
     const filteredStudents = students.filter(student => {
@@ -108,6 +108,37 @@ export default function StudentsDashboard() {
         return sortCB(rowA, rowB, sortingButton.isAsc);
     })
 
+
+    const [sectionId, setSectionId] = useState(0);
+    const displaySections = [
+        {
+            id: 0,
+            section: 
+                <SectionStudentList
+                    sortingButtons={sortingButtons}
+                    sortingButton={sortingButton}
+                    setSortingButton={setSortingButton}
+                    filteredStudents={filteredStudents}
+                
+                    isLoading={isLoading}
+                    setIsLoading={setIsLoading} 
+                
+                    setStudentId={setStudentId}
+
+                    setSectionId={setSectionId}
+                />,
+        },
+        {
+            id: 1,
+            section:
+                <SectionStudentInfo 
+                    studentInfo={studentInfo}
+                    setSectionId={setSectionId}
+   
+                />,
+        },
+    ];
+    const section = displaySections.find(st => st.id == sectionId).section;
     return (
         <>
             {/* *** Header contains filter fields *** */}
@@ -122,24 +153,7 @@ export default function StudentsDashboard() {
             <div className="invoice-dashboard relative h-full flex flex-col">
                 <Container>
                     <div className="h-full w-full p-4 flex flex-col">
-                    {
-                        viewedStudentId != null
-                        ?   // When user click to a student row, it will popup student info 
-                            <SectionStudentInfo 
-                                viewedStudent={viewedStudent}
-                                setViewedStudentId={setViewedStudentId}    
-                            />
-
-                        :   // student info overvie Table  
-                        <SectionStudentList
-                            sortingButtons={sortingButtons}
-                            sortingButton={sortingButton}
-                            setSortingButton={setSortingButton}
-                            filteredStudents={filteredStudents}
-                            isLoading={isLoading}
-                            setViewedStudentId={setViewedStudentId}
-                            setIsLoading={setIsLoading} />
-                    }
+                    {section}
                     </div>
                 </Container>
             </div>
@@ -153,8 +167,9 @@ function SectionStudentList({
     setSortingButton,
     filteredStudents,
     isLoading,
-    setViewedStudentId,
+    setStudentId,
     setIsLoading,
+    setSectionId,
 }) {
     return (
     <>
@@ -188,7 +203,8 @@ function SectionStudentList({
             <div 
                 key={student.id} className="flex-shrink-0 grid grid-cols-5 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa"
                 onClick={() => {
-                    setViewedStudentId(student.id);
+                    setStudentId(student.id);
+                    setSectionId(1);
                 }}    
             >
                 <DataColumn text={student.id} />
@@ -203,7 +219,7 @@ function SectionStudentList({
         </main>
         
         {/* Bottom */}
-        <div className="flex-shrink-0 w-full h-14 pt-2  text-end">
+        <footer className="flex-shrink-0 w-full h-14 flex gap-3 pt-2">
             <button 
                 className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
                 onClick={() => {
@@ -215,7 +231,7 @@ function SectionStudentList({
                 {isLoading && <FontAwesomeIcon className="ml-4 animate-spin" icon={faRotate} />}
 
             </button>
-        </div>
+        </footer>
     </>
     )
 }

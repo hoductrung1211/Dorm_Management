@@ -43,6 +43,9 @@
   .bg-fa {
     background-color: #FAFAFA;
   }
+  .border-fa {
+    border-color: #fafafa;
+  }
 
   .text-6 {
     color: #666;
@@ -63,6 +66,9 @@
   .border-ec {
     border-color: #ECF0F1;
   }
+  .outline-ec {
+    outline-color: #ECF0F1;
+  }
 
   .bg-red {
     background-color: #C0392B;
@@ -81,12 +87,18 @@
   .text-green {
     color: #1ABC9C;
   }
+  .bg-green {
+    background-color: #1ABC9C;
+  }
+
   .text-yellow {
     color: #f1c40f;
   }
   .text-orange {
     color: #f39c12;
   }
+
+
 }
 
 :root {

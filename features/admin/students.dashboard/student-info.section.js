@@ -1,13 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faXmark, faIdCard,
+import {  faIdCard,
     faSignature,
-    faVenusMars,
     faCakeCandles,
     faAt,
     faMobile, 
     faMars,
     faVenus,
-    faInfoCircle,
     faInfo,
     faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import AttributeText from '../../ui/attribute-text';
@@ -16,20 +14,20 @@ import ActionButton from "../../ui/button-action";
 import SectionInfoHeader from "../../layouts/info-header.section";
 
 export default function SectionStudentInfo({
-    viewedStudent,
-    setViewedStudentId,
+    studentInfo,
+    setSectionId,
 }) {
     return (
         <> 
             <SectionInfoHeader 
                 title="Student's Information" 
-                setViewedId={setViewedStudentId} />
+                handleOut={() => setSectionId(0)} />
 
             <main className="flex flex-col h-full min-h-min gap-5 p-4 border-2 border-ec  border-t-0 rounded-bl-lg rounded-br-lg">
                 <section className="w-full flex gap-3"> 
                     <SectionImage />
                     <SectionPersonalInformation
-                        studentInfo={viewedStudent} />
+                        studentInfo={studentInfo} />
                     <SectionActions>
                         <ActionButton title="Room History" />
                         <ActionButton title="View all contracts" />

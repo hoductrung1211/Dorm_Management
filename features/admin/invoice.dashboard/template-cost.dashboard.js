@@ -5,6 +5,7 @@ import DataColumn from "../../ui/data.column";
 import { moneyConverter } from "../../utils/convert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBolt, faFaucetDrip  } from "@fortawesome/free-solid-svg-icons";
+import TemplateCostInfo from "./template-cost-info.section";
 
 const sortingButtons = [
     {id: 0, text: "ID", 
@@ -60,10 +61,8 @@ export default function SectionTemplateCost() {
     const filterValues = useContext(FilterValuesContext);
     const [viewedDataId, setViewedDataId] = useState(null);
 
-
-
     // Room Info display on info dashboard
-    const viewedRoom = templateCosts.find(data => data.id == viewedDataId);
+    const viewedTemplateCost = templateCosts.find(data => data.id == viewedDataId);
 
     // Room array have been filtered
     const filteredData = templateCosts.filter(data => {
@@ -82,20 +81,31 @@ export default function SectionTemplateCost() {
         return sortCB(rowA, rowB, sortingButton.isAsc);
     });
 
+    const [sectionId, setSectionId] = useState(0);
+    const displaySections = [
+        {
+            id: 0,
+            section: <SectionRoomList
+                        sortingButton={sortingButton}
+                        sortingButtons={sortingButtons}
+                        setSortingButton={setSortingButton}
+                        filteredData={filteredData}
+                        setViewedDataId={setViewedDataId}
+                        setSectionId={setSectionId} />,
+        },
+        {
+            id: 1,
+            section: <TemplateCostInfo
+                        info={viewedTemplateCost}
+                        setSectionId={setSectionId}
+                    />
+        }
+    ]
+    const section = displaySections.find(st => st.id == sectionId).section;
 
     return (
         <div className="h-full w-full p-4 flex flex-col">
-        {viewedDataId != null 
-        
-        ?   null
-        :
-            <SectionRoomList
-                sortingButton={sortingButton}
-                sortingButtons={sortingButtons}
-                setSortingButton={setSortingButton}
-                filteredData={filteredData}
-                setViewedDataId={setViewedDataId} />
-        }            
+        {section}           
         </div>
     )
 }
@@ -106,6 +116,7 @@ function SectionRoomList({
     setSortingButton,
     filteredData ,
     setViewedDataId , 
+    setSectionId,
 }) {
     return (
     <>
@@ -137,7 +148,10 @@ function SectionRoomList({
         {filteredData.map( data => 
             <div 
                 key={data.id} className="flex-shrink-0 grid grid-cols-4  text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa"  
-                onClick={() => setViewedDataId(data.id)}
+                onClick={() => {
+                    setViewedDataId(data.id);
+                    setSectionId(1);
+                }}
             >
                 <DataColumn text={data.id} />
                 <DataColumn text={data.month} />
