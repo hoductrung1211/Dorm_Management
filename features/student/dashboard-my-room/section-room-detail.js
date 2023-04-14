@@ -181,39 +181,7 @@ function RoomSection({contractInfo}) {
                 />
 
                 <Button title="Show all roomates" /> */}
-            </AttributeSection>
-        </section>
-    )
-}
-
-function PersonalSection() {
-    return (
-        <section className="flex flex-col">
-            <AttributeSection title="Personal Information">
-                <div className="flex flex-col gap-6 px-5 py-4 border-2 rounded-lg ">
-                    <AttributeValue icon={faIdCard} value="N19DCCN018" />
-                    <AttributeValue icon={faSignature} value="Nguyen Dang Bac" />
-                    <AttributeValue icon={faVenusMars} value="Male" />
-                    <AttributeValue icon={faCakeCandles} value="01-01-2001" />
-                    <AttributeValue icon={faAt} value="nguyendangbac@gmail.com.vn" />
-                    <AttributeValue icon={faMobile} value="0123431456" />
-                </div>
-            </AttributeSection>
-        </section>
-    )
-}
-
-function ActionsSection() {
-    return (
-        <section className="flex flex-col">
-            <AttributeSection title="Actions">
-                <div className="flex flex-col gap-5 border-2 px-5 py-4 rounded-lg ">
-                    <Button title="Request Housekeeping" />
-                    <Button title="Request Room Transfer" />
-                    <Button title="View Room Availability" />
-                    <Button title="Request Extra Duration" />
-                </div>
-            </AttributeSection>
+            </AttributeSection> 
             <AttributeSection title="Move in and Move out">
                 <p className="flex items-center gap-2 font-bold text-green text-xl">
                     <FontAwesomeIcon 
@@ -230,7 +198,23 @@ function ActionsSection() {
                     {contractInfo.dateEnd}
                 </p>
             </AttributeSection>
+        </section>
+    )
+}
 
+
+
+function ActionsSection() {
+    return (
+        <section className="flex flex-col">
+            <AttributeSection title="Actions">
+                <div className="flex flex-col gap-5 border-2 px-5 py-4 rounded-lg ">
+                    <Button title="Request Housekeeping" />
+                    <Button title="Request Room Transfer" />
+                    <Button title="View Room Availability" />
+                    <Button title="Request Extra Duration" />
+                </div>
+            </AttributeSection>
             
         </section>
     )
@@ -259,21 +243,6 @@ function PersonalSection({personalInfo}) {
             </AttributeSection>
 
             
-        </section>
-    )
-}
-
-function ActionsSection() {
-    return (
-        <section className="flex flex-col">
-            <AttributeSection title="Actions">
-                <div className="flex flex-col gap-5 border-2 px-5 py-4 rounded-lg ">
-                    <Button title="Contract extension" />
-                    <Button title="Cancellation of contract" />
-                    <Button title="Request Room Transfer" />
-                    <Button title="View Room Availability" />
-                </div>
-            </AttributeSection>
         </section>
     )
 }
