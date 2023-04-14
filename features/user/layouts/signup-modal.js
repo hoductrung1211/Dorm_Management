@@ -23,7 +23,6 @@ export default function SignupForm({
         })
         .catch((error)=>{
             if( error.response ){
-                console.log(error.response)
                 setPasswordError(error.response.data)
                 // if(error.response.status===401){
                     

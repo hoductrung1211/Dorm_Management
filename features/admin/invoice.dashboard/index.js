@@ -27,6 +27,7 @@ export default function InvoiceDashboard() {
     const [filterValues, setFilterValues] = useState({
         text: "",
         type: "all",
+        timeframe: "all",
         status: "all",
     })
 
@@ -34,7 +35,7 @@ export default function InvoiceDashboard() {
         setFilterValues({
             text: "",
             type: "all",
-            status: "all",
+            timeframe: "all",
         });
 
         setMenuID(nextMenuID);
@@ -105,11 +106,29 @@ function InvoiceFilterBar({
             />
 
             <FilterSelection
+                title="Timeframe"
+                options={[
+                    {text: "All", value: "all"},
+                    {text: "Last month", value: 0},
+                    {text: "This term", value: 1},
+                    {text: "Last term", value: 2},
+                    {text: "This year", value: 3},
+                    {text: "Last year", value: 4},
+                ]}
+                handleChangeSelection={nextTimeframe => {
+                    setFilterValues({
+                        ...filterValues,
+                        timeframe: nextTimeframe,
+                    })
+                }}
+            />
+
+            <FilterSelection
                 title="Status"
                 options={[
                     {text: "All", value: "all"},
                     {text: "Paid", value: true},
-                    {text: "Unpaid", value: false},
+                    {text: "Unpaid", value: false}, 
                 ]}
                 handleChangeSelection={nextStatus => {
                     setFilterValues({

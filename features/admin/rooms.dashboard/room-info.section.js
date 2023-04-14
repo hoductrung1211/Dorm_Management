@@ -10,8 +10,8 @@ import SectionInfoHeader from "../../layouts/info-header.section";
 export default function SectionRoomInfo({
     info,
     setSectionId,
+    handleDeleteRoom,
 }) {
-    console.log(info)
     return (
         <>
             <SectionInfoHeader 
@@ -27,7 +27,17 @@ export default function SectionRoomInfo({
                             title="Edit"
                             handleClick={() => setSectionId(2)}    
                         />
-                        <ActionButton title="Delete" bgRed={true} />
+                        <ActionButton 
+                            title="Delete" 
+                            bgRed={true}
+                            handleClick={() => {
+                                let result = confirm("Do you really want to delete this room?");
+                                if (result) {
+                                    handleDeleteRoom(info.id)
+                                    setSectionId(0);
+                                }
+                            }}
+                        />
                         <ActionButton title="Show all students (4)" />
                     </ActionsSection>
                 </section>

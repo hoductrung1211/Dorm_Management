@@ -151,6 +151,8 @@ export default function SectionRoomTypes() {
     setRoomTypes(roomTypes.filter((roomtype) => roomtype.id !== roomTypeId));
   }
 
+
+
   const displaySections = [
     {
       id: 0,
@@ -190,7 +192,14 @@ export default function SectionRoomTypes() {
       section: (
         <SectionAddingRoom
           info={roomTypeInfo}
-          handleUpdateInfo={handleUpdateInfo}
+          handleAddingRoomType={(data) => {
+            initRoomTypes.push({
+              id: "new room type",
+              ...data,
+            });
+
+            setRoomTypes(initRoomTypes);
+          }}
           setSectionId={setSectionId}
         />
       ),

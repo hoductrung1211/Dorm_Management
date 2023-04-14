@@ -58,23 +58,28 @@ const sortingButtons = [
 ]
 
 const initInvoices = [
-    {id: "001", roomId: "010", date: "03/02/2023", comsumption: 50, cost: 270000, type: false, status: true},
-    {id: "002", roomId: "011", date: "03/03/2023", comsumption: 60, cost: 250000, type: true, status: false},
-    {id: "003", roomId: "002", date: "03/03/2023", comsumption: 70, cost: 270000, type: false, status: false},
-    {id: "004", roomId: "001", date: "03/04/2023", comsumption: 60, cost: 250000, type: true, status: true},
-    {id: "005", roomId: "011", date: "03/04/2023", comsumption: 50, cost: 270000, type: false, status: false},
-    {id: "006", roomId: "022", date: "03/03/2023", comsumption: 50, cost: 240000, type: true, status: false},
-    {id: "007", roomId: "014", date: "03/03/2023", comsumption: 70, cost: 250000, type: false, status: true},
-    {id: "008", roomId: "004", date: "03/04/2023", comsumption: 50, cost: 240000, type: true, status: false},
-    {id: "009", roomId: "005", date: "03/04/2023", comsumption: 70, cost: 250000, type: false, status: false},
-    {id: "010", roomId: "002", date: "03/03/2023", comsumption: 60, cost: 240000, type: true, status: true},
-    {id: "011", roomId: "014", date: "03/03/2023", comsumption: 70, cost: 240000, type: false, status: false},
-    {id: "012", roomId: "002", date: "03/02/2023", comsumption: 50, cost: 270000, type: true, status: true},
-    {id: "013", roomId: "003", date: "03/02/2023", comsumption: 60, cost: 250000, type: false, status: false},
+    {id: "001", roomId: "010", month: "01", year: "2023", comsumption: 50, cost: 270000, type: false, status: true},
+    {id: "002", roomId: "011", month: "01", year: "2023", comsumption: 60, cost: 250000, type: true, status: false},
+    {id: "003", roomId: "002", month: "02", year: "2023", comsumption: 70, cost: 270000, type: false, status: false},
+    {id: "004", roomId: "001", month: "01", year: "2023", comsumption: 60, cost: 250000, type: true, status: true},
+    {id: "005", roomId: "011", month: "02", year: "2023", comsumption: 50, cost: 270000, type: false, status: false},
+    {id: "006", roomId: "022", month: "02", year: "2023", comsumption: 50, cost: 240000, type: true, status: false},
+    {id: "007", roomId: "014", month: "03", year: "2023", comsumption: 70, cost: 250000, type: false, status: true},
+    {id: "008", roomId: "004", month: "02", year: "2023", comsumption: 50, cost: 240000, type: true, status: false},
+    {id: "009", roomId: "005", month: "01", year: "2023", comsumption: 70, cost: 250000, type: false, status: false},
+    {id: "010", roomId: "002", month: "02", year: "2023", comsumption: 60, cost: 240000, type: true, status: true},
+    {id: "011", roomId: "014", month: "02", year: "2023", comsumption: 70, cost: 240000, type: false, status: false},
+    {id: "012", roomId: "002", month: "03", year: "2023", comsumption: 50, cost: 270000, type: true, status: true},
+    {id: "013", roomId: "003", month: "01", year: "2023", comsumption: 60, cost: 250000, type: false, status: false},
 ]
 
 export default function SectionInvoices() {
-    const [invoices, setInvoices] = useState(initInvoices);
+    const [invoices, setInvoices] = useState(initInvoices.map(invoice => {
+        return {
+            ...invoice,
+            date: invoice.month + "/" +  invoice.year,
+        }
+    }));
     const filterValues = useContext(FilterValuesContext); 
     const [sortingButton, setSortingButton] = useState({
         id: 0,
@@ -88,9 +93,9 @@ export default function SectionInvoices() {
         const checkedID = invoice.id.includes(filterValues.text);
         const checkedRoomID = invoice.roomId.includes(filterValues.text);
         const checkedType = filterValues.type == "all" ? true : filterValues.type == invoice.type + "";
-        const checkedStatus = filterValues.status == "all" ? true : filterValues.status == invoice.status + "";
-
-        if ((checkedID|| checkedRoomID) && checkedType && checkedStatus )  
+        const status = filterValues.status == "all" ? true : invoice.status + "" ==  filterValues.status;
+ 
+        if ((checkedID|| checkedRoomID) && checkedType && status )  
             return true;
         return false;
     });

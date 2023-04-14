@@ -3,6 +3,7 @@ import OrderButtoon from "../../ui/button-order";
 import { FilterValuesContext } from "../filterValues.context";
 import DataColumn from "../../ui/data.column";
 import SectionRoomInfo from "./room-info.section";
+import SectionRoomAdding from "./room-adding.section";
 import SectionRoomEditing from "./room-editing.section";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
@@ -219,6 +220,53 @@ export default function SectionRooms() {
     );
   }
 
+  function handleDeleteRoom(roomId) {
+    setRooms(rooms.filter((room) => room.id !== roomId));
+  }
+
+
+  function handleAddRoom(typeId) {
+    let initId;
+
+    while (true) {
+      initId = Math.random() * 100;
+      initId = parseInt(initId);
+      initId = (initId + "").padStart(3, 0);
+
+      let flag = true;
+
+      initRooms.forEach(room => {
+        if (room.id == initId)
+          flag = false;
+      })
+
+      if (flag) break;
+    }
+
+    initRooms.push({
+      id:  initId,
+      typeId: typeId,
+      students: 0,
+    })
+
+    setRooms(initRooms.map((room) => {
+        const { typeName, gender, beds, cost, imgUrl, desc } = roomTypes.find(
+          (roomtype) => roomtype.id == room.typeId
+        );
+
+        return {
+          ...room,
+          typeName,
+          gender,
+          beds,
+          cost,
+          imgUrl,
+          desc,
+        }})
+    );
+  }
+
+
   const displaySections = [
     {
       id: 0,
@@ -240,6 +288,7 @@ export default function SectionRooms() {
           info={roomInfo}
           setViewedId={setRoomId}
           setSectionId={setSectionId}
+          handleDeleteRoom={handleDeleteRoom}
         />
       ),
     },
@@ -254,6 +303,16 @@ export default function SectionRooms() {
         />
       ),
     },
+    {
+      id: 3,
+      section: (
+        <SectionRoomAdding
+          setSectionId={setSectionId}
+          roomTypeList={roomTypes}
+          handleAddRoom={handleAddRoom}
+        />
+      )
+    }
   ];
   const section = displaySections.find((st) => st.id == sectionId).section;
 
@@ -334,7 +393,12 @@ function SectionRoomList({
       </main>
 
       <div className="flex-shrink-0 w-full h-14 pt-2  flex gap-3 ">
-        <button className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition">
+        <button 
+          className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
+          onClick={() => {
+            setSectionId(3);
+          }}
+        >
           Add
         </button>
       </div>

@@ -31,7 +31,6 @@ export default function RegisterSection({}) {
     function eventSelection(id){
         
         StudentSerivce.getListRoomDetailsById(id).then(res=>{
-            
             setRoomDetails(res.data)
         })
         StudentSerivce.getTypeRoom(id).then(res=>{

@@ -11,7 +11,7 @@ import TextareaEditing from "../../ui/textarea-editing";
 import InputImageEditing from "../../ui/input-image-editing";
 
 export default function SectionRoomTypeEditing({
-    handleAddingRoom,
+    handleAddingRoomType,
     setSectionId,
 }) {
     const [tempInfo, setTempInfo] = useState({
@@ -38,8 +38,8 @@ export default function SectionRoomTypeEditing({
                             handleClick={() => {
                                 let result = confirm("Do you really want to save the changes?");
                                 if (result) {
-                                    handleUpdateInfo(tempInfo);
-                                    setSectionId(1);
+                                    handleAddingRoomType(tempInfo);
+                                    setSectionId(0);
                                 }
                             }}
                         />
@@ -50,7 +50,10 @@ export default function SectionRoomTypeEditing({
                 <section className="grid grid-cols-3 gap-3 w-full h-full ">
                     <DescriptionSection
                         info={tempInfo.desc}
-                        handleChangeInfo={setTempInfo}
+                        handleChangeDesc={nextDesc => setTempInfo({
+                            ...tempInfo,
+                            desc: nextDesc,
+                        })}
                     />
                     
                 </section>
@@ -153,7 +156,7 @@ function DescriptionSection({
             </p> */}
             <TextareaEditing
                 value={desc}
-                handleChange={e => handleChangeDesc(e.target.value)} 
+                handleChange={handleChangeDesc} 
             />
         </div>
         </>

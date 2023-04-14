@@ -1,11 +1,9 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBed,
   faDiamond,
   faMars,
   faMoneyBill,
   faVenus,
-  faWarning,
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import AttributeText from "../../ui/attribute-text";
@@ -16,21 +14,19 @@ import SectionInfoHeader from "../../layouts/info-header.section";
 import SelectEditing from "../../ui/select-editing";
 import { useState } from "react";
 
-export default function SectionRoomEditing({
-  info,
+export default function SectionRoomAdding({
   roomTypeList,
   setSectionId,
-  handleUpdateRoom,
+  handleAddRoom,
 }) {
-  const [roomTypeId, setRoomTypeId] = useState(info.typeId);
+  const [roomTypeId, setRoomTypeId] = useState(roomTypeList[0].id);
   const roomTypeInfo = roomTypeList.find(
     (roomType) => roomType.id == roomTypeId
   ); 
-
   return (
     <>
       <SectionInfoHeader
-        title="Room Detail Editing"
+        title="Room Addition"
         handleOut={() => setSectionId(0)}
       />
 
@@ -38,7 +34,6 @@ export default function SectionRoomEditing({
         <section className="w-full flex gap-3">
           <ImageSection roomTypeInfo={roomTypeInfo} />
           <InfoSection
-            info={info}
             roomTypeList={roomTypeList}
             roomTypeInfo={roomTypeInfo}
             setRoomTypeId={setRoomTypeId}
@@ -49,32 +44,12 @@ export default function SectionRoomEditing({
                 handleClick={() => {
                     const result = confirm("Do you really want to save the changes?");
                     if (result) {
-                        handleUpdateRoom(info.id, roomTypeId);
-                        setSectionId(1);
-                    }
-                }}    
-            />
-            <ActionButton 
-                title="Cancel"
-                handleClick={() => {
-                    const result = confirm("Don't you want to save the changes?");
-                    if (result) {
-                        setSectionId(1);
+                        handleAddRoom(roomTypeId);
+                        setSectionId(0);
                     }
                 }}    
             />
           </ActionsSection>
-        </section>
-
-        <section className=" w-full ">
-          <h4 className=" text-red mb-2 text-xl font-bold">
-            Important
-            <FontAwesomeIcon icon={faWarning} className="ml-2 text-2xl" />
-          </h4>
-          <p>
-            When you editing or deleting this room, make sure that there is no
-            students related to this type!
-          </p>
         </section>
       </main>
     </>
@@ -92,27 +67,19 @@ function ImageSection({ roomTypeInfo }) {
             fill
         />
       </div>
-      <AttributeText title="Cost">
-        <AttributeValue
-            icon={faMoneyBill}
-            value={moneyConverter(roomTypeInfo.cost)}
-        />
-      </AttributeText>
+      
     </section>
   );
 }
 
 function InfoSection({
-  info: { id },
   roomTypeList,
   roomTypeInfo,
   setRoomTypeId,
 }) {
   return (
     <section className="relative w-full ">
-      <AttributeText title="Room ID">
-        <span className="text-5xl text-primary font-bold">{id}</span>
-      </AttributeText>
+       
       <AttributeText title="Room Type ID">
         <SelectEditing
           icon={faDiamond}
@@ -142,6 +109,13 @@ function InfoSection({
       </AttributeText>
       <AttributeText title="Number of beds">
         <AttributeValue icon={faBed} value={roomTypeInfo.beds} />
+      </AttributeText>
+
+      <AttributeText title="Cost">
+        <AttributeValue
+            icon={faMoneyBill}
+            value={moneyConverter(roomTypeInfo.cost)}
+        />
       </AttributeText>
     </section>
   );
