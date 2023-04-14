@@ -15,13 +15,11 @@ export default function RegisterSection() {
             setRoomTypes(res.data)
         })
         RoomType.getListRoomByTypeID(5).then(res=>{
-            console.log(res.data)
             setRoomDetails(res.data)
         })
     },{})
 
     function eventSelection(id){
-        console.log(id)
         RoomType.getListRoomByTypeID(id).then(res=>{
             setRoomDetails(res.data)
         })

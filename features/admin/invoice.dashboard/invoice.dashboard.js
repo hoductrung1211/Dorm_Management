@@ -93,8 +93,9 @@ export default function SectionInvoices() {
         const checkedID = invoice.id.includes(filterValues.text);
         const checkedRoomID = invoice.roomId.includes(filterValues.text);
         const checkedType = filterValues.type == "all" ? true : filterValues.type == invoice.type + "";
-
-        if ((checkedID|| checkedRoomID) && checkedType  )  
+        const status = filterValues.status == "all" ? true : invoice.status + "" ==  filterValues.status;
+ 
+        if ((checkedID|| checkedRoomID) && checkedType && status )  
             return true;
         return false;
     });

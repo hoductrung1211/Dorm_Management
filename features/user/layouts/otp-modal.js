@@ -18,14 +18,12 @@ export default function OTPModal({
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log(inputOTP)
         Authentication.verify(inputOTP.id, inputOTP.password, text).then(e=>{
             router.push(redirect)
         })
         .catch((error)=>{
             if( error.response ){
                 setErrorOTP(error.response.data)
-                console.log(error.response)
             }
         })
         

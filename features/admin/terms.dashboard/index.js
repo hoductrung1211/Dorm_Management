@@ -2,10 +2,9 @@ import { useState } from "react";
 import HeaderSection from "../../layouts/section-header";
 import Container from "../../user/layouts/db-container";
 import InputFilter from "../../ui/input-filter";
-import FilterSelection from "../../ui/select-filter";
 import OrderButtoon from "../../ui/button-order";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMars, faRotate, faVenus } from "@fortawesome/free-solid-svg-icons";
+import { faRotate} from "@fortawesome/free-solid-svg-icons";
 import DataColumn from "../../ui/data.column";
 
 const sortingButtons = [
@@ -53,23 +52,14 @@ const sortingButtons = [
 
             return rowA.feeDeadline < rowB.feeDeadline ? 1 : -1;
         }
-    },
-    {id: 5, text: "Status",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.status > rowB.status ? 1 : -1;
-            } 
-
-            return rowA.status < rowB.status ? 1 : -1;
-        }
-    }
+    }, 
 ]
 
 const terms = [ 
-    {id: "004", startDate: "01/06/2021", endDate: "01/01/2023", formDeadline: "02/07/2022", feeDeadline: "09/07/2022", status: false},
-    {id: "003", startDate: "01/01/2021", endDate: "01/07/2022", formDeadline: "02/02/2022", feeDeadline: "09/02/2022", status: false},
-    {id: "002", startDate: "01/06/2021", endDate: "01/01/2022", formDeadline: "02/07/2021", feeDeadline: "09/07/2021", status: false},
-    {id: "001", startDate: "01/01/2021", endDate: "01/07/2021", formDeadline: "02/02/2021", feeDeadline: "09/02/2021", status: false},
+    {id: "004", startDate: "01/06/2021", endDate: "01/01/2023", formDeadline: "02/07/2022", feeDeadline: 30},
+    {id: "003", startDate: "01/01/2021", endDate: "01/07/2022", formDeadline: "02/02/2022", feeDeadline: 30},
+    {id: "002", startDate: "01/06/2021", endDate: "01/01/2022", formDeadline: "02/07/2021", feeDeadline: 30},
+    {id: "001", startDate: "01/01/2021", endDate: "01/07/2021", formDeadline: "02/02/2021", feeDeadline: 30},
 ]
 
 export default function TermDashboard() {
@@ -149,7 +139,7 @@ function SectionTermList({
 }) {
     return (
     <>
-        <header className="flex-shrink-0 grid grid-flow-col grid-cols-6 w-full h-12 font-bold rounded-tl-lg rounded-tr-lg overflow-hidden shadow-sm">
+        <header className="flex-shrink-0 grid grid-flow-col grid-cols-5 w-full h-12 font-bold rounded-tl-lg rounded-tr-lg overflow-hidden shadow-sm">
         {
             sortingButtons.map(button => 
                 <OrderButtoon
@@ -177,7 +167,7 @@ function SectionTermList({
         <main className="h-full w-full flex flex-col  overflow-auto">
         {filteredTerms.map( term => 
             <div 
-                key={term.id} className="flex-shrink-0 grid grid-cols-6 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa"
+                key={term.id} className="flex-shrink-0 grid grid-cols-5 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa"
                 onClick={() => {
                     setViewedDataId(term.id);
                 }}    
@@ -187,7 +177,6 @@ function SectionTermList({
                 <DataColumn text={term.endDate} />
                 <DataColumn text={term.formDeadline} />
                 <DataColumn text={term.feeDeadline} />
-                <DataColumn text={term.status ? "In progressing" : "Ended"} className={"font-bold " + (term.status ? " text-green " : " text-b")} />
             </div>
         )}
         </main>

@@ -104,7 +104,6 @@ export default function ContractDashboard() {
         const studentId = contract.studentId.toLowerCase().includes(filterValues.studentId.trim().toLowerCase());
         
         const roomId = filterValues.roomId == 'all' ? true : contract.roomId  == filterValues.roomId;
-        console.log(filterValues.roomId);
 
         const checkedStatus = filterValues.status == "all" ? true : contract.status + "" == filterValues.status;
         const checkedGender = filterValues.gender == "all" ? true : contract.gender + "" == filterValues.gender;

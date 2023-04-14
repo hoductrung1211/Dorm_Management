@@ -68,12 +68,13 @@ export default function SectionTemplateCost() {
     const filteredData = templateCosts.filter(data => {
         const checkedID = data.id.includes(filterValues.text);
         const checkedType = filterValues.type == "all" ? true : filterValues.type == data.type + "";
-        const checkedStatus = filterValues.status == "all" ? true : filterValues.status == data.status + "";
 
-        if (checkedID && checkedType && checkedStatus )  
+        if (checkedID && checkedType  ) {
             return true;
+        }
         return false;
     });
+
     // Filtered Room array have been sorted by order button
     filteredData.sort((rowA, rowB) => {
         const sortCB = sortingButtons.find(btn => btn.id == sortingButton.id).handleOrder;

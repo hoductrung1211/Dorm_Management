@@ -28,6 +28,7 @@ export default function InvoiceDashboard() {
         text: "",
         type: "all",
         timeframe: "all",
+        status: "all",
     })
 
     function handleChangeMenu(nextMenuID) {
@@ -118,6 +119,21 @@ function InvoiceFilterBar({
                     setFilterValues({
                         ...filterValues,
                         timeframe: nextTimeframe,
+                    })
+                }}
+            />
+
+            <FilterSelection
+                title="Status"
+                options={[
+                    {text: "All", value: "all"},
+                    {text: "Paid", value: true},
+                    {text: "Unpaid", value: false}, 
+                ]}
+                handleChangeSelection={nextStatus => {
+                    setFilterValues({
+                        ...filterValues,
+                        status: nextStatus,
                     })
                 }}
             />
