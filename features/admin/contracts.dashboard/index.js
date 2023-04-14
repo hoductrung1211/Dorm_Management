@@ -5,8 +5,9 @@ import InputFilter from "../../ui/input-filter";
 import FilterSelection from "../../ui/select-filter";
 import OrderButtoon from "../../ui/button-order";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMars, faRotate, faVenus } from "@fortawesome/free-solid-svg-icons";
+import { faRotate } from "@fortawesome/free-solid-svg-icons";
 import DataColumn from "../../ui/data.column";
+import {moneyConverter} from '../../utils/convert'; 
 
 const sortingButtons = [
     {id: 0, text: "ID", 
@@ -17,17 +18,17 @@ const sortingButtons = [
 
             return rowA.id < rowB.id ? 1 : -1;
         }
-    },
-    {id: 1, text: "contract ID",
+    }, 
+    {id: 1, text: "Student ID", 
         handleOrder: (rowA, rowB, isAsc) => {
             if (isAsc) {
-                return rowA.contractId > rowB.contractId ? 1 : -1;
+                return rowA.studentId > rowB.studentId ? 1 : -1;
             } 
 
-            return rowA.contractId < rowB.contractId ? 1 : -1;
+            return rowA.studentId < rowB.studentId ? 1 : -1;
         }
-    },
-    {id: 2, text: "Room ID",
+    }, 
+    {id: 2, text: "Room ID", 
         handleOrder: (rowA, rowB, isAsc) => {
             if (isAsc) {
                 return rowA.roomId > rowB.roomId ? 1 : -1;
@@ -35,23 +36,23 @@ const sortingButtons = [
 
             return rowA.roomId < rowB.roomId ? 1 : -1;
         }
-    },
-    {id: 3, text: "Term ID",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.termId > rowB.termId ? 1 : -1;
-            } 
-
-            return rowA.termId < rowB.termId ? 1 : -1;
-        }
-    },
-    {id: 4, text: "Date",
+    }, 
+    {id: 3, text: "Date",
         handleOrder: (rowA, rowB, isAsc) => {
             if (isAsc) {
                 return rowA.date > rowB.date ? 1 : -1;
             } 
 
             return rowA.date < rowB.date ? 1 : -1;
+        }
+    },
+    {id: 4, text: "Total Cost",
+        handleOrder: (rowA, rowB, isAsc) => {
+            if (isAsc) {
+                return rowA.termId > rowB.termId ? 1 : -1;
+            } 
+
+            return rowA.termId < rowB.termId ? 1 : -1;
         }
     },
     {id: 5, text: "Status",
@@ -66,27 +67,27 @@ const sortingButtons = [
 ]
 
 const initContracts = [
-    {id: "001", contractId: "N19DCCN001", roomId: "002", gender: true, termId: "03/2022", date: "23/02/2023", status: true},
-    {id: "002", contractId: "N19DCCN002", roomId: "002", gender: false, termId: "02/2023", date: "23/02/2023", status: false},
-    {id: "003", contractId: "N19DCCN003", roomId: "002", gender: true, termId: "03/2023", date: "23/02/2023", status: true},
-    {id: "004", contractId: "N19DCCN005", roomId: "001", gender: true, termId: "02/2023", date: "23/02/2023", status: false},
-    {id: "005", contractId: "N19DCCN007", roomId: "001", gender: false, termId: "03/2022", date: "23/02/2023", status: true},
-    {id: "006", contractId: "N19DCCN011", roomId: "001", gender: true, termId: "02/2023", date: "23/02/2023", status: true},
-    {id: "007", contractId: "N19DCCN021", roomId: "004", gender: false, termId: "02/2023", date: "23/02/2023", status: false},
-    {id: "008", contractId: "N19DCCN030", roomId: "004", gender: true, termId: "03/2022", date: "23/02/2023", status: true},
-    {id: "009", contractId: "N19DCCN031", roomId: "005", gender: false, termId: "02/2023", date: "23/02/2023", status: false}, 
-    {id: "010", contractId: "N19DCCN032", roomId: "006", gender: true, termId: "02/2023", date: "23/02/2023", status: true}, 
-    {id: "011", contractId: "N19DCCN033", roomId: "006", gender: false, termId: "03/2022", date: "23/02/2023", status: false}, 
-    {id: "012", contractId: "N19DCCN034", roomId: "007", gender: true, termId: "02/2023", date: "23/02/2023", status: true}, 
-    {id: "013", contractId: "N19DCCN035", roomId: "006", gender: false, termId: "03/2022", date: "23/02/2023", status: true}, 
+    {id: "001", studentId: "N19DCCN010", roomId: "001", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true},
+    {id: "002", studentId: "N19DCCN011", roomId: "001", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: false},
+    {id: "003", studentId: "N19DCCN012", roomId: "001", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true},
+    {id: "004", studentId: "N19DCCN013", roomId: "001", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: false},
+    {id: "005", studentId: "N19DCCN014", roomId: "002", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true},
+    {id: "006", studentId: "N19DCCN015", roomId: "002", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true},
+    {id: "007", studentId: "N19DCCN016", roomId: "002", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: false},
+    {id: "008", studentId: "N19DCCN017", roomId: "002", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true},
+    {id: "009", studentId: "N19DCCN018", roomId: "003", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: false}, 
+    {id: "010", studentId: "N19DCCN019", roomId: "003", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true}, 
+    {id: "011", studentId: "N19DCCN020", roomId: "003", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: false}, 
+    {id: "012", studentId: "N19DCCN021", roomId: "003", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true}, 
+    {id: "013", studentId: "N19DCCN022", roomId: "004", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true}, 
 ]
 
 export default function ContractDashboard() {
     const [contracts, setContracts] = useState(initContracts);
     const [filterValues, setFilterValues] = useState({
         id: "",
-        contractId: "",
-        roomId: "",
+        studentId: "",
+        roomId: "all",
         gender: "all",
         status: 'all',
     });
@@ -99,14 +100,16 @@ export default function ContractDashboard() {
 
     // contract array have been filtered
     const filteredContracts = contracts.filter(contract => {
-        const checkedID = contract.id.includes(filterValues.id.trim());
-        const checkedcontractID = contract.contractId.includes(filterValues.contractId.trim()); 
-        const checkedRoomID = contract.roomId.includes(filterValues.roomId.trim());
+        // const checkedID = contract.id.includes(filterValues.id.trim());  
+        const studentId = contract.studentId.toLowerCase().includes(filterValues.studentId.trim().toLowerCase());
+        
+        const roomId = filterValues.roomId == 'all' ? true : contract.roomId  == filterValues.roomId;
+        console.log(filterValues.roomId);
 
         const checkedStatus = filterValues.status == "all" ? true : contract.status + "" == filterValues.status;
         const checkedGender = filterValues.gender == "all" ? true : contract.gender + "" == filterValues.gender;
 
-        if (checkedID  && checkedcontractID && checkedRoomID && checkedStatus && checkedGender)
+        if ( roomId &&  studentId && checkedStatus && checkedGender)
             return true;
         return false;
     })
@@ -180,19 +183,17 @@ export default function ContractDashboard() {
                         </header>
                         
                         {/* contract info rows */}
-                        <main className="h-full w-full flex flex-col  overflow-auto">
+                        <main className="h-full w-full flex flex-col overflow-auto">
                         {filteredContracts.map( contract => 
                             <div 
                                 key={contract.id} className={selectedRowID == contract.id ? seletectRowClassName : rowClassName}
                                 onClick={() => handleSelectRow(contract.id)}
                             >
-                                <DataColumn text={contract.id} />
-                                <DataColumn text={contract.contractId} />
-                                <DataColumn text={contract.roomId}>
-                                    {contract.gender ? <FontAwesomeIcon icon={faMars} className=" text-xl mr-1 text-primary" /> : <FontAwesomeIcon icon={faVenus} className="text-xl mr-1 text-pink-500" />}
-                                </DataColumn>
-                                <DataColumn text={contract.termId} />
-                                <DataColumn text={contract.date} />
+                                <DataColumn text={contract.id} /> 
+                                <DataColumn text={contract.studentId} /> 
+                                <DataColumn text={contract.roomId} /> 
+                                <DataColumn text={contract.dateBegin + " - " + contract.dateEnd} />
+                                <DataColumn text={moneyConverter(contract.cost)} />
                                 <DataColumn text={contract.status ? "Paid" : "Unpaid"} className={"font-bold " + (contract.status ? " text-green " : " text-b")} />
                             </div>
                         )}
@@ -224,9 +225,46 @@ function SectionFilter({
     filterValues,
     handleChangeFilterValues,
 }) {
+    // Call API here to get list
+    const rooms = [
+        {id: "001", typeName: "standard", },
+        {id: "002", typeName: "standard", },
+        {id: "003", typeName: "standard", },
+        {id: "004", typeName: "standard", },
+        {id: "005", typeName: "standard", },
+        {id: "006", typeName: "standard", },
+        {id: "007", typeName: "standard", },
+        {id: "008", typeName: "standard", },
+        {id: "009", typeName: "standard", },
+        {id: "010", typeName: "standard", },
+        {id: "011", typeName: "standard", },
+        {id: "012", typeName: "standard", },
+        {id: "013", typeName: "standard", },
+        {id: "014", typeName: "standard", },
+        {id: "015", typeName: "standard", },
+        {id: "016", typeName: "standard", },
+        {id: "017", typeName: "standard", },
+        {id: "018", typeName: "standard", },
+        {id: "019", typeName: "standard", },
+        {id: "020", typeName: "standard", },
+    ]
+
+    const terms = [
+        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
+        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
+        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
+        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
+        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
+        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
+        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
+        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
+        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
+        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
+    ]
+
     return (
         <section className="grid grid-cols-5 h-full gap-4 grow">
-            <InputFilter
+            {/* <InputFilter
                 textValue={filterValues.id}
                 handleTextChange={nextText => {
                     handleChangeFilterValues({
@@ -235,28 +273,57 @@ function SectionFilter({
                     })
                 }}
                 placeholder="Type contract ID here.."
-            />
+            /> */}
 
             <InputFilter
-                textValue={filterValues.contractId}
+                textValue={filterValues.studentId}
                 handleTextChange={nextText => {
                     handleChangeFilterValues({
                         ...filterValues,
-                        contractId: nextText,
+                        studentId: nextText,
                     })
                 }}
-                placeholder="Type contract ID here.."
+                placeholder="Type student ID here.."
             />
-
-            <InputFilter
-                textValue={filterValues.roomId}
-                handleTextChange={nextText => {
+  
+            <FilterSelection
+                title="Room"
+                options={
+                    [
+                        {text: "All", value: "all"},
+                        ...rooms.map(room => ({
+                            text: room.id,
+                            value: room.id,
+                        }))
+                    ]
+                    
+                }
+                handleChangeSelection={nextStatus => {
                     handleChangeFilterValues({
                         ...filterValues,
-                        roomId: nextText,
+                        roomId: nextStatus,
                     })
                 }}
-                placeholder="Type room ID here.."
+            />
+
+            <FilterSelection
+                title="Term"
+                options={
+                    [
+                        {text: "All", value: "all"},
+                        ...rooms.map(room => ({
+                            text: room.id,
+                            value: room.id,
+                        }))
+                    ]
+                    
+                }
+                handleChangeSelection={nextStatus => {
+                    handleChangeFilterValues({
+                        ...filterValues,
+                        roomId: nextStatus,
+                    })
+                }}
             />
 
             <FilterSelection
@@ -273,21 +340,7 @@ function SectionFilter({
                     })
                 }}
             />
-
-            <FilterSelection
-                title="Gender"
-                options={[
-                    {text: "All", value: "all"},
-                    {text: "Male", value: true},
-                    {text: "Female", value: false},
-                ]}
-                handleChangeSelection={nextStatus => {
-                    handleChangeFilterValues({
-                        ...filterValues,
-                        gender: nextStatus,
-                    })
-                }}
-            />
+ 
         </section>
     )
 }
