@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Image from "next/image";
-import {studentURL} from '../../utils/links'
-import Authentication from "../../../pages/api/student-auth/AuthService"
+import {managerURL} from '../../utils/links'
+import Authentication from "../../../pages/api/admin-auth/AuthService"
 import Error from '../../ui/error';
 
 
@@ -18,9 +18,8 @@ export default function OTPModal({
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log(inputOTP)
-        Authentication.verify(inputOTP.id, inputOTP.password, text).then(e=>{
-            router.push(redirect)
+        Authentication.verify(inputOTP.id, inputOTP.password, text).then(()=>{
+            router.push(managerURL.index)
         })
         .catch((error)=>{
             if( error.response ){

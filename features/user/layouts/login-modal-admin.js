@@ -5,8 +5,8 @@ import { faUser, faKey } from "@fortawesome/free-solid-svg-icons"
 import { userURL } from "../../utils/links";
 import InputGroup from "../components/input-group";
 import { authenticate } from "../auth-user";
-import Authentication from "../../../pages/api/student-auth/AuthService"
-import {studentURL} from '../../utils/links'
+import Authentication from "../../../pages/api/admin-auth/AuthService"
+import {managerURL} from '../../utils/links'
 import { useRouter } from "next/router";
 
 
@@ -32,23 +32,24 @@ export default function LoginModal({
 
     function handleSubmit(e) {
         e.preventDefault();
-        Authentication.login(id, password).then(res=>{
-            router.push(studentURL.index)
+        Authentication.login(id, password).then(()=>{
+            // router.push(managerURL.index)
+            handlePushPopup()
+            inputOTP({"id":id,"password": password})
         })
         .catch((error)=>{
             if( error.response ){
                 
                 if(error.response.status===401){
-                    
                     setPasswordError('Username or password incorrect')
                 }
                 else if(error.response.status===400){
                     setPasswordError('Account not accessible')
                 }
                 else{
-                    handlePushPopup()
-                    inputOTP({"id":id,"password": password})
-                    redirect(studentURL.index)
+                    
+                    // redirect(managerURL.index)
+                    console.log(error.response.data)
                 }
                 // error.response.status===403 ? handlePushPopup() : setPasswordError("aaaa")
             }

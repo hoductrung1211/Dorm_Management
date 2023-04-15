@@ -20,6 +20,10 @@ const createContract=(idPhong)=>{
     })
 }
 
+const extendContract=()=>{
+  
+}
+
 const checkForRegistration=()=>{
     return axios.get(API_URL + 'check-registration', { 
       headers: authHeader() 

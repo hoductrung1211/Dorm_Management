@@ -21,10 +21,13 @@ export default function Page() {
             console.log(res.data)
             setUser(res.data)
         }).catch((error)=>{
+            console.log('tata')
             if( error.response ){ 
                 if(error.response.status===401){
                     setErrorApi("Unauthorized")
-                    
+                }
+                else if(error.response.status==403){
+                    router.push(userURL.login)
                 }
             }
             else{
