@@ -36,6 +36,7 @@ export default function InvoiceDashboard() {
             text: "",
             type: "all",
             timeframe: "all",
+            status: "all",
         });
 
         setMenuID(nextMenuID);
