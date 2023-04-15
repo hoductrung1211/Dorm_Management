@@ -10,51 +10,11 @@ import SectionTermEditing from "./term-editing.section";
 
 
 const sortingButtons = [
-    {id: 0, text: "ID", 
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.id > rowB.id ? 1 : -1;
-            } 
-
-            return rowA.id < rowB.id ? 1 : -1;
-        }
-    },
-    {id: 1, text: "Start date",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.startDate > rowB.startDate ? 1 : -1;
-            } 
-
-            return rowA.startDate < rowB.startDate ? 1 : -1;
-        }
-    },
-    {id: 2, text: "End date",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.endDate > rowB.endDate ? 1 : -1;
-            } 
-
-            return rowA.endDate < rowB.endDate ? 1 : -1;
-        }
-    },
-    {id: 3, text: "Form submission deadline",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.formDeadline > rowB.formDeadline ? 1 : -1;
-            } 
-
-            return rowA.formDeadline < rowB.formDeadline ? 1 : -1;
-        }
-    },
-    {id: 4, text: "Tuition fee deadline",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.feeDeadline > rowB.feeDeadline ? 1 : -1;
-            } 
-
-            return rowA.feeDeadline < rowB.feeDeadline ? 1 : -1;
-        }
-    }, 
+    {id: 0, text: "ID" },
+    {id: 1, text: "Start date" },
+    {id: 2, text: "End date" },
+    {id: 3, text: "Form submission deadline" },
+    {id: 4, text: "Tuition fee deadline"}, 
 ]
 
 let initTerms = [ 
@@ -65,12 +25,7 @@ let initTerms = [
 ]
 
 export default function TermDashboard() {
-    // State
     const [terms, setTerms] = useState(initTerms);
-    const [sortingButton, setSortingButton] = useState({
-        id: 0,
-        isAsc: true,
-    });
     const [filterValues, setFilterValues] = useState({
         id: "", 
     });
@@ -85,18 +40,10 @@ export default function TermDashboard() {
         return false;
     })
 
-    // Filtered term array have been sorted by order button
-    filteredTerms.sort((rowA, rowB) => {
-        const sortCB = sortingButtons.find(btn => btn.id == sortingButton.id).handleOrder;
-
-        return sortCB(rowA, rowB, sortingButton.isAsc);
-    })
-
     function handleDeleteTerm(termId) {
         initTerms = initTerms.filter(term =>  term.id != termId);
         setTerms(initTerms);
     }
-
 
     // Handle adding term here
     function handleAddingTerm(tempInfo) {
@@ -138,19 +85,23 @@ export default function TermDashboard() {
         setSectionId(0);
     }
 
+    function handleShowMore() {
+        setTerms([
+            ...terms,
+            ...initTerms,
+        ])
+    }
 
     const displaySections = [
         {
             id: 0,
             section: (
-                <SectionTermList
-                    sortingButtons={sortingButtons}
-                    sortingButton={sortingButton}
-                    setSortingButton={setSortingButton}
+                <SectionTermList 
                     filteredTerms={filteredTerms}
                     handleDeleteTerm={handleDeleteTerm}
                     setSectionId={setSectionId}
                     setInfo={setInfo}
+                    handleShowMore={handleShowMore}
                 />
             )
         },
@@ -198,14 +149,12 @@ export default function TermDashboard() {
     )
 }
 
-function SectionTermList({
-    sortingButtons,
-    sortingButton,
-    setSortingButton,
+function SectionTermList({ 
     filteredTerms,
-    handleDeleteTerm,
     setSectionId,
     setInfo,
+    handleDeleteTerm,
+    handleShowMore,
 }) {
     const [selectedRowID, setSelectedRowID] = useState(null);
     const rowClassName = " flex-shrink-0 grid grid-cols-5 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa ";
@@ -225,21 +174,7 @@ function SectionTermList({
             sortingButtons.map(button => 
                 <OrderButtoon
                     key={button.id}
-                    button={button}
-                    sortingButton={sortingButton}
-                    handleClick={(id) => {
-                        if (id == sortingButton.id) {
-                            setSortingButton({
-                                id,
-                                isAsc: !sortingButton.isAsc,
-                            })
-                        } else {
-                            setSortingButton({
-                                id,
-                                isAsc: true,
-                            })
-                        }
-                    }}
+                    button={button} 
                 />)
         }
         </header>
@@ -278,6 +213,12 @@ function SectionTermList({
                 }}    
             />}
 
+            <button 
+                className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+                onClick={handleShowMore}
+            >
+                Show more
+            </button>
         </div>
     </>
     )

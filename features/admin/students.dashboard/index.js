@@ -14,51 +14,12 @@ import MGMTService from "../../../pages/api/service/MGMT-StudentService"
 
 
 const sortingButtons = [
-    {id: 0, text: "ID", 
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.username > rowB.username ? 1 : -1;
-            } 
 
-            return rowA.username < rowB.username ? 1 : -1;
-        }
-    },
-    {id: 1, text: "Full name",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.name > rowB.name ? 1 : -1;
-            } 
-
-            return rowA.name < rowB.name ? 1 : -1;
-        }
-    },
-    {id: 2, text: "Date of birth",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.birthday > rowB.birthday ? 1 : -1;
-            } 
-
-            return rowA.birthday < rowB.birthday ? 1 : -1;
-        }
-    },
-    {id: 3, text: "Gender",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.gender > rowB.gender ? 1 : -1;
-            } 
-
-            return rowA.gender < rowB.gender ? 1 : -1;
-        }
-    },
-    {id: 4, text: "Identity card number",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.status > rowB.status ? 1 : -1;
-            } 
-
-            return rowA.status < rowB.status ? 1 : -1;
-        }
-    }
+    {id: 0, text: "ID" },
+    {id: 1, text: "Full name" },
+    {id: 2, text: "Date of birth"},
+    {id: 3, text: "Gender"},
+    {id: 4, text: "Status"}
 ]
 
 // const students = [
@@ -102,10 +63,8 @@ export default function StudentsDashboard() {
         })
     }
 
-    const [sortingButton, setSortingButton] = useState({
-        id: 0,
-        isAsc: true,
-    });
+}
+export default function StudentsDashboard() { 
     const [filterValues, setFilterValues] = useState({
         studentID: "",
         gender: "all",
@@ -129,31 +88,23 @@ export default function StudentsDashboard() {
         return false;
     })
 
-    // // Filtered Student array have been sorted by order button
-    filteredStudents.sort((rowA, rowB) => {
-        const sortCB = sortingButtons.find(btn => btn.id == sortingButton.id).handleOrder;
-
-        return sortCB(rowA, rowB, sortingButton.isAsc);
-    })
-
+  
+    function handleShowMore() {
+        
+    }
 
     const [sectionId, setSectionId] = useState(0);
     const displaySections = [
         {
             id: 0,
             section: 
-                <SectionStudentList
-                    sortingButtons={sortingButtons}
-                    sortingButton={sortingButton}
-                    setSortingButton={setSortingButton}
+                <SectionStudentList 
                     filteredStudents={filteredStudents}
-                
                     isLoading={isLoading}
                     setIsLoading={setIsLoading} 
-                
                     setStudentId={setStudentId}
-                    setTypeSort={setTypeSort}
                     setSectionId={setSectionId}
+                    handleShowMore={handleShowMore}
                 />,
         },
         {
@@ -189,16 +140,13 @@ export default function StudentsDashboard() {
     )
 }
 
-function SectionStudentList({
-    sortingButtons,
-    sortingButton,
-    setSortingButton,
+function SectionStudentList({ 
     filteredStudents,
     isLoading,
     setStudentId,
     setIsLoading,
     setSectionId,
-
+    handleShowMore,
 }) {
    
     return (
@@ -209,24 +157,6 @@ function SectionStudentList({
                 <OrderButtoon 
                     key={button.id}
                     button={button}
-                    sortingButton={sortingButton}
-                    handleClick={(id) => {
-
-                        
-
-
-                        if (id == sortingButton.id) {
-                            setSortingButton({
-                                id,
-                                isAsc: !sortingButton.isAsc,
-                            })
-                        } else {
-                            setSortingButton({
-                                id,
-                                isAsc: true,
-                            })
-                        }
-                    }}  
                 />)
         }
         </header>
@@ -265,6 +195,13 @@ function SectionStudentList({
                 Sync
                 {isLoading && <FontAwesomeIcon className="ml-4 animate-spin" icon={faRotate} />}
 
+            </button>
+
+            <button 
+                className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+                onClick={handleShowMore}
+            >
+                Show more
             </button>
         </footer>
     </>

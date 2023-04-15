@@ -10,60 +10,12 @@ import DataColumn from "../../ui/data.column";
 import {moneyConverter} from '../../utils/convert'; 
 
 const sortingButtons = [
-    {id: 0, text: "ID", 
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.id > rowB.id ? 1 : -1;
-            } 
-
-            return rowA.id < rowB.id ? 1 : -1;
-        }
-    }, 
-    {id: 1, text: "Student ID", 
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.studentId > rowB.studentId ? 1 : -1;
-            } 
-
-            return rowA.studentId < rowB.studentId ? 1 : -1;
-        }
-    }, 
-    {id: 2, text: "Room ID", 
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.roomId > rowB.roomId ? 1 : -1;
-            } 
-
-            return rowA.roomId < rowB.roomId ? 1 : -1;
-        }
-    }, 
-    {id: 3, text: "Date",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.date > rowB.date ? 1 : -1;
-            } 
-
-            return rowA.date < rowB.date ? 1 : -1;
-        }
-    },
-    {id: 4, text: "Total Cost",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.termId > rowB.termId ? 1 : -1;
-            } 
-
-            return rowA.termId < rowB.termId ? 1 : -1;
-        }
-    },
-    {id: 5, text: "Status",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.status > rowB.status ? 1 : -1;
-            } 
-
-            return rowA.status < rowB.status ? 1 : -1;
-        }
-    }
+    {id: 0, text: "ID"}, 
+    {id: 1, text: "Student ID" }, 
+    {id: 2, text: "Room ID" }, 
+    {id: 3, text: "Date" },
+    {id: 4, text: "Total Cost" },
+    {id: 5, text: "Status" }
 ]
 
 const initContracts = [
@@ -91,10 +43,6 @@ export default function ContractDashboard() {
         gender: "all",
         status: 'all',
     });
-    const [sortingButton, setSortingButton] = useState({
-        id: 0,
-        isAsc: true,
-    });
     const [selectedRowID, setSelectedRowID] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -112,18 +60,10 @@ export default function ContractDashboard() {
             return true;
         return false;
     })
-    // Filtered contract array have been sorted by order button
-    filteredContracts.sort((rowA, rowB) => {
-        const sortCB = sortingButtons.find(btn => btn.id == sortingButton.id).handleOrder;
-
-        return sortCB(rowA, rowB, sortingButton.isAsc);
-    })
-
     const rowClassName = " flex-shrink-0 grid grid-cols-6 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa ";
     const seletectRowClassName = rowClassName + " bg-fa border-l-2 border-r-2 "
     const selectedRow = selectedRowID == null ? null : filteredContracts.find(invoice => invoice.id == selectedRowID);
 
-    // Filtered Row array have been sorted by order button
     function handleSelectRow(nextID) {
         if (nextID == selectedRowID)
             nextID = null;
@@ -142,6 +82,9 @@ export default function ContractDashboard() {
         setSelectedRowID(null);
     }
 
+    function handleShowMore() {
+        
+    }
 
     return (
         <>
@@ -163,20 +106,6 @@ export default function ContractDashboard() {
                                 <OrderButtoon
                                     key={button.id}
                                     button={button}
-                                    sortingButton={sortingButton}
-                                    handleClick={(id) => {
-                                        if (id == sortingButton.id) {
-                                            setSortingButton({
-                                                id,
-                                                isAsc: !sortingButton.isAsc,
-                                            })
-                                        } else {
-                                            setSortingButton({
-                                                id,
-                                                isAsc: true,
-                                            })
-                                        }
-                                    }}
                                 />)
                         }
                         </header>
@@ -211,6 +140,13 @@ export default function ContractDashboard() {
                                 {isLoading && <FontAwesomeIcon className="ml-4 animate-spin" icon={faRotate} />}
                             </button>
                             { selectedRow && <ActionsBoard selectedRow={selectedRow} handleAction={handleMarkStatus} />}
+
+                            <button 
+                                className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+                                onClick={handleShowMore}
+                            >
+                                Show more
+                            </button>
                         </footer>
                     </section>
                 </Container>

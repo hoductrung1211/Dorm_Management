@@ -7,54 +7,12 @@ import { faBolt, faFaucetDrip, faRotate } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const sortingButtons = [
-    {id: 0, text: "ID", 
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.id > rowB.id ? 1 : -1;
-            } 
-            return rowA.id < rowB.id ? 1 : -1;
-        }
-    },
-    {id: 1, text: "Room ID",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.roomId > rowB.roomId ? 1 : -1;
-            } 
-            return rowA.roomId < rowB.roomId ? 1 : -1;
-        }
-    },
-    {id: 2, text: "Date",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.date > rowB.date ? 1 : -1;
-            } 
-            return rowA.date < rowB.date ? 1 : -1;
-        }
-    },
-    {id: 3, text: "Comsumption",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.comsumption > rowB.comsumption ? 1 : -1;
-            } 
-            return rowA.comsumption < rowB.comsumption ? 1 : -1;
-        }
-    },
-    {id: 4, text: "Total Cost",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.cost > rowB.cost ? 1 : -1;
-            } 
-            return rowA.cost < rowB.cost ? 1 : -1;
-        }
-    },
-    {id: 5, text: "Status",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.status > rowB.status ? 1 : -1;
-            } 
-            return rowA.status < rowB.status ? 1 : -1;
-        }
-    },
+    {id: 0, text: "ID" },
+    {id: 1, text: "Room ID" },
+    {id: 2, text: "Date" },
+    {id: 3, text: "Comsumption" },
+    {id: 4, text: "Total Cost" },
+    {id: 5, text: "Status" },
 ]
 
 const initInvoices = [
@@ -81,10 +39,6 @@ export default function SectionInvoices() {
         }
     }));
     const filterValues = useContext(FilterValuesContext); 
-    const [sortingButton, setSortingButton] = useState({
-        id: 0,
-        isAsc: true,
-    });
     const [selectedRowID, setSelectedRowID] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -99,17 +53,10 @@ export default function SectionInvoices() {
             return true;
         return false;
     });
-    filteredInvoices.sort((rowA, rowB) => {
-        const sortCB = sortingButtons.find(btn => btn.id == sortingButton.id).handleOrder;
-
-        return sortCB(rowA, rowB, sortingButton.isAsc);
-    });
-
     const rowClassName = " flex-shrink-0 grid grid-cols-6 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa ";
     const seletectRowClassName = rowClassName + " bg-fa border-l-2 border-r-2 "
     const selectedRow = selectedRowID == null ? null : filteredInvoices.find(invoice => invoice.id == selectedRowID);
 
-    // Filtered Row array have been sorted by order button
     function handleSelectRow(nextID) {
         if (nextID == selectedRowID)
             nextID = null;
@@ -128,6 +75,10 @@ export default function SectionInvoices() {
         setSelectedRowID(null);
     }
     
+    function handleShowMore() {
+        
+    }
+
     return (
         <section className="h-full w-full p-4 flex flex-col">
             <header className="flex-shrink-0 grid grid-flow-col grid-cols-6 w-full h-12 font-bold rounded-tl-lg rounded-tr-lg overflow-hidden shadow-sm">
@@ -136,20 +87,6 @@ export default function SectionInvoices() {
                     <OrderButtoon 
                         key={button.id}
                         button={button}
-                        sortingButton={sortingButton}
-                        handleClick={(id) => {
-                            if (id == sortingButton.id) {
-                                setSortingButton({
-                                    id,
-                                    isAsc: !sortingButton.isAsc,
-                                })
-                            } else {
-                                setSortingButton({
-                                    id,
-                                    isAsc: true,
-                                })
-                            }
-                        }}
                     />)
             }
             </header>
@@ -185,6 +122,13 @@ export default function SectionInvoices() {
                     {isLoading && <FontAwesomeIcon className="ml-4 animate-spin" icon={faRotate} />}
                 </button>
                 { selectedRow && <ActionsBoard selectedRow={selectedRow} handleAction={handleMarkStatus} />}
+
+                <button 
+                    className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+                    onClick={handleShowMore}
+                >
+                    Show more
+                </button>
             </footer>
         </section>
     )

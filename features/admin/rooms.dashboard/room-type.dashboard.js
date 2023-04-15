@@ -9,56 +9,11 @@ import SectionRoomTypeInfo from "./room-type-info.section";
 import SectionAddingRoom from "./room-type-adding.section";
 
 const sortingButtons = [
-  {
-    id: 0,
-    text: "ID",
-    handleOrder: (rowA, rowB, isAsc) => {
-      if (isAsc) {
-        return rowA.id > rowB.id ? 1 : -1;
-      }
-      return rowA.id < rowB.id ? 1 : -1;
-    },
-  },
-  {
-    id: 1,
-    text: "Type name",
-    handleOrder: (rowA, rowB, isAsc) => {
-      if (isAsc) {
-        return rowA.typeName > rowB.typeName ? 1 : -1;
-      }
-      return rowA.typeName < rowB.typeName ? 1 : -1;
-    },
-  },
-  {
-    id: 2,
-    text: "For gender",
-    handleOrder: (rowA, rowB, isAsc) => {
-      if (isAsc) {
-        return rowA.gender > rowB.gender ? 1 : -1;
-      }
-      return rowA.gender < rowB.gender ? 1 : -1;
-    },
-  },
-  {
-    id: 3,
-    text: "Number of beds",
-    handleOrder: (rowA, rowB, isAsc) => {
-      if (isAsc) {
-        return rowA.beds > rowB.beds ? 1 : -1;
-      }
-      return rowA.beds < rowB.beds ? 1 : -1;
-    },
-  },
-  {
-    id: 4,
-    text: "Cost per month",
-    handleOrder: (rowA, rowB, isAsc) => {
-      if (isAsc) {
-        return rowA.cost > rowB.cost ? 1 : -1;
-      }
-      return rowA.cost < rowB.cost ? 1 : -1;
-    },
-  },
+  {id: 0,text: "ID" },
+  {id: 1,text: "Type name" },
+  {id: 2,text: "For gender" },
+  {id: 3,text: "Number of beds" },
+  {id: 4,text: "Cost per month" },
 ];
 
 const initRoomTypes = [
@@ -120,24 +75,13 @@ const initRoomTypes = [
 
 export default function SectionRoomTypes() {
   const [roomTypes, setRoomTypes] = useState(initRoomTypes);
-  const [sortingButton, setSortingButton] = useState({
-    id: 0,
-    isAsc: true,
-  });
   const [sectionId, setSectionId] = useState(0);
   const [roomTypeInfoId, setRoomTypeInfoId] = useState(0);
 
   const roomTypeInfo = roomTypes.find(
     (roomType) => roomType.id == roomTypeInfoId
   );
-  // Sorting Filtered RoomType array by order button
-  roomTypes.sort((rowA, rowB) => {
-    const sortCB = sortingButtons.find(
-      (btn) => btn.id == sortingButton.id
-    ).handleOrder;
-
-    return sortCB(rowA, rowB, sortingButton.isAsc);
-  });
+ 
 
   function handleUpdateInfo(updatedInfo) {
     setRoomTypes(
@@ -151,19 +95,20 @@ export default function SectionRoomTypes() {
     setRoomTypes(roomTypes.filter((roomtype) => roomtype.id !== roomTypeId));
   }
 
+  function handleShowMore() {
+    
+  }
 
 
   const displaySections = [
     {
       id: 0,
       section: (
-        <SectionRoomTypeList
-          sortingButton={sortingButton}
-          sortingButtons={sortingButtons}
-          setSortingButton={setSortingButton}
+        <SectionRoomTypeList 
           roomTypes={roomTypes}
           setRoomTypeInfoId={setRoomTypeInfoId}
           setSectionId={setSectionId}
+          handleShowMore={handleShowMore}
         />
       ),
     },
@@ -210,13 +155,11 @@ export default function SectionRoomTypes() {
   return <div className="h-full w-full p-4 flex flex-col">{section}</div>;
 }
 
-function SectionRoomTypeList({
-  sortingButtons,
-  sortingButton,
-  setSortingButton,
+function SectionRoomTypeList({ 
   roomTypes,
   setRoomTypeInfoId,
   setSectionId,
+  handleShowMore,
 }) {
   return (
     <>
@@ -225,20 +168,6 @@ function SectionRoomTypeList({
           <OrderButtoon
             key={button.id}
             button={button}
-            sortingButton={sortingButton}
-            handleClick={(id) => {
-              if (id == sortingButton.id) {
-                setSortingButton({
-                  id,
-                  isAsc: !sortingButton.isAsc,
-                });
-              } else {
-                setSortingButton({
-                  id,
-                  isAsc: true,
-                });
-              }
-            }}
           />
         ))}
       </header>
@@ -283,6 +212,13 @@ function SectionRoomTypeList({
             onClick={() => setSectionId(3)}
           >
               Add
+          </button>
+
+          <button 
+              className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+              onClick={handleShowMore}
+          >
+              Show more
           </button>
       </div>
     </>
