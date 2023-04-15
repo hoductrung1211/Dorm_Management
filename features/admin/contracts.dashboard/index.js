@@ -82,6 +82,9 @@ export default function ContractDashboard() {
         setSelectedRowID(null);
     }
 
+    function handleShowMore() {
+        
+    }
 
     return (
         <>
@@ -137,6 +140,13 @@ export default function ContractDashboard() {
                                 {isLoading && <FontAwesomeIcon className="ml-4 animate-spin" icon={faRotate} />}
                             </button>
                             { selectedRow && <ActionsBoard selectedRow={selectedRow} handleAction={handleMarkStatus} />}
+
+                            <button 
+                                className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+                                onClick={handleShowMore}
+                            >
+                                Show more
+                            </button>
                         </footer>
                     </section>
                 </Container>

@@ -57,6 +57,9 @@ export default function StudentsDashboard() {
         return false;
     })
   
+    function handleShowMore() {
+        
+    }
 
     const [sectionId, setSectionId] = useState(0);
     const displaySections = [
@@ -69,6 +72,7 @@ export default function StudentsDashboard() {
                     setIsLoading={setIsLoading} 
                     setStudentId={setStudentId}
                     setSectionId={setSectionId}
+                    handleShowMore={handleShowMore}
                 />,
         },
         {
@@ -105,12 +109,12 @@ export default function StudentsDashboard() {
 }
 
 function SectionStudentList({ 
-    setSortingButton,
     filteredStudents,
     isLoading,
     setStudentId,
     setIsLoading,
     setSectionId,
+    handleShowMore,
 }) {
     return (
     <>
@@ -157,6 +161,13 @@ function SectionStudentList({
                 Sync
                 {isLoading && <FontAwesomeIcon className="ml-4 animate-spin" icon={faRotate} />}
 
+            </button>
+
+            <button 
+                className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+                onClick={handleShowMore}
+            >
+                Show more
             </button>
         </footer>
     </>

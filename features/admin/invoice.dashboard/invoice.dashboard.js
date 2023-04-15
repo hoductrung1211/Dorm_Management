@@ -75,6 +75,10 @@ export default function SectionInvoices() {
         setSelectedRowID(null);
     }
     
+    function handleShowMore() {
+        
+    }
+
     return (
         <section className="h-full w-full p-4 flex flex-col">
             <header className="flex-shrink-0 grid grid-flow-col grid-cols-6 w-full h-12 font-bold rounded-tl-lg rounded-tr-lg overflow-hidden shadow-sm">
@@ -118,6 +122,13 @@ export default function SectionInvoices() {
                     {isLoading && <FontAwesomeIcon className="ml-4 animate-spin" icon={faRotate} />}
                 </button>
                 { selectedRow && <ActionsBoard selectedRow={selectedRow} handleAction={handleMarkStatus} />}
+
+                <button 
+                    className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+                    onClick={handleShowMore}
+                >
+                    Show more
+                </button>
             </footer>
         </section>
     )

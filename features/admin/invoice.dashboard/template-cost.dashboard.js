@@ -43,14 +43,19 @@ export default function SectionTemplateCost() {
         return false;
     });
 
+    function handleShowMore() {
+        
+    }
+
     const [sectionId, setSectionId] = useState(0);
     const displaySections = [
         {
             id: 0,
             section: <SectionRoomList 
-                        filteredData={filteredData}
-                        setViewedDataId={setViewedDataId}
-                        setSectionId={setSectionId} />,
+                filteredData={filteredData}
+                setViewedDataId={setViewedDataId}
+                setSectionId={setSectionId}
+                handleShowMore={handleShowMore} />,
         },
         {
             id: 1,
@@ -73,6 +78,7 @@ function SectionRoomList({
     filteredData ,
     setViewedDataId , 
     setSectionId,
+    handleShowMore,
 }) {
     return (
     <>
@@ -112,6 +118,13 @@ function SectionRoomList({
               
             >
                 Add
+            </button>
+
+            <button 
+                className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+                onClick={handleShowMore}
+            >
+                Show more
             </button>
         </div>
     </>

@@ -202,6 +202,9 @@ export default function SectionRooms() {
     );
   }
 
+  function handleShowMore() {
+    
+  }
 
   const displaySections = [
     {
@@ -211,6 +214,7 @@ export default function SectionRooms() {
           filteredRooms={filteredRooms}
           setRoomId={setRoomId}
           setSectionId={setSectionId}
+          handleShowMore={handleShowMore}
         />
       ),
     },
@@ -256,6 +260,7 @@ function SectionRoomList({
   filteredRooms,
   setRoomId,
   setSectionId,
+  handleShowMore,
 }) {
   return (
     <>
@@ -316,6 +321,13 @@ function SectionRoomList({
           }}
         >
           Add
+        </button>
+
+        <button 
+            className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+            onClick={handleShowMore}
+        >
+            Show more
         </button>
       </div>
     </>

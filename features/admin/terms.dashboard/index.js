@@ -85,6 +85,12 @@ export default function TermDashboard() {
         setSectionId(0);
     }
 
+    function handleShowMore() {
+        setTerms([
+            ...terms,
+            ...initTerms,
+        ])
+    }
 
     const displaySections = [
         {
@@ -95,6 +101,7 @@ export default function TermDashboard() {
                     handleDeleteTerm={handleDeleteTerm}
                     setSectionId={setSectionId}
                     setInfo={setInfo}
+                    handleShowMore={handleShowMore}
                 />
             )
         },
@@ -144,9 +151,10 @@ export default function TermDashboard() {
 
 function SectionTermList({ 
     filteredTerms,
-    handleDeleteTerm,
     setSectionId,
     setInfo,
+    handleDeleteTerm,
+    handleShowMore,
 }) {
     const [selectedRowID, setSelectedRowID] = useState(null);
     const rowClassName = " flex-shrink-0 grid grid-cols-5 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa ";
@@ -204,6 +212,13 @@ function SectionTermList({
                     setSectionId(2)
                 }}    
             />}
+
+            <button 
+                className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+                onClick={handleShowMore}
+            >
+                Show more
+            </button>
         </div>
     </>
     )

@@ -95,6 +95,9 @@ export default function SectionRoomTypes() {
     setRoomTypes(roomTypes.filter((roomtype) => roomtype.id !== roomTypeId));
   }
 
+  function handleShowMore() {
+    
+  }
 
 
   const displaySections = [
@@ -105,6 +108,7 @@ export default function SectionRoomTypes() {
           roomTypes={roomTypes}
           setRoomTypeInfoId={setRoomTypeInfoId}
           setSectionId={setSectionId}
+          handleShowMore={handleShowMore}
         />
       ),
     },
@@ -155,6 +159,7 @@ function SectionRoomTypeList({
   roomTypes,
   setRoomTypeInfoId,
   setSectionId,
+  handleShowMore,
 }) {
   return (
     <>
@@ -207,6 +212,13 @@ function SectionRoomTypeList({
             onClick={() => setSectionId(3)}
           >
               Add
+          </button>
+
+          <button 
+              className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
+              onClick={handleShowMore}
+          >
+              Show more
           </button>
       </div>
     </>
