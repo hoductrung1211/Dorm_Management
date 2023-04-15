@@ -8,38 +8,10 @@ import { faBolt, faFaucetDrip  } from "@fortawesome/free-solid-svg-icons";
 import TemplateCostInfo from "./template-cost-info.section";
 
 const sortingButtons = [
-    {id: 0, text: "ID", 
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.id > rowB.id ? 1 : -1;
-            } 
-            return rowA.id < rowB.id ? 1 : -1;
-        }
-    },
-    {id: 1, text: "Month",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.month > rowB.month ? 1 : -1;
-            } 
-            return rowA.month < rowB.month ? 1 : -1;
-        }
-    },
-    {id: 2, text: "Year",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.year > rowB.year ? 1 : -1;
-            } 
-            return rowA.year < rowB.year ? 1 : -1;
-        }
-    },
-    {id: 3, text: "Cost",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.cost > rowB.cost ? 1 : -1;
-            } 
-            return rowA.cost < rowB.cost ? 1 : -1;
-        }
-    }, 
+    {id: 0, text: "ID" },
+    {id: 1, text: "Month" },
+    {id: 2, text: "Year" },
+    {id: 3, text: "Cost" }, 
 ]
 
 const templateCosts = [
@@ -54,10 +26,6 @@ const templateCosts = [
 ]
 
 export default function SectionTemplateCost() {
-    const [sortingButton, setSortingButton] = useState({
-        id: 0,
-        isAsc: true,
-    });
     const filterValues = useContext(FilterValuesContext);
     const [viewedDataId, setViewedDataId] = useState(null);
 
@@ -75,21 +43,11 @@ export default function SectionTemplateCost() {
         return false;
     });
 
-    // Filtered Room array have been sorted by order button
-    filteredData.sort((rowA, rowB) => {
-        const sortCB = sortingButtons.find(btn => btn.id == sortingButton.id).handleOrder;
-
-        return sortCB(rowA, rowB, sortingButton.isAsc);
-    });
-
     const [sectionId, setSectionId] = useState(0);
     const displaySections = [
         {
             id: 0,
-            section: <SectionRoomList
-                        sortingButton={sortingButton}
-                        sortingButtons={sortingButtons}
-                        setSortingButton={setSortingButton}
+            section: <SectionRoomList 
                         filteredData={filteredData}
                         setViewedDataId={setViewedDataId}
                         setSectionId={setSectionId} />,
@@ -111,10 +69,7 @@ export default function SectionTemplateCost() {
     )
 }
 
-function SectionRoomList({
-    sortingButtons,
-    sortingButton ,
-    setSortingButton,
+function SectionRoomList({ 
     filteredData ,
     setViewedDataId , 
     setSectionId,
@@ -127,20 +82,6 @@ function SectionRoomList({
                 <OrderButtoon 
                     key={button.id}
                     button={button}
-                    sortingButton={sortingButton}
-                    handleClick={(id) => {
-                        if (id == sortingButton.id) {
-                            setSortingButton({
-                                id,
-                                isAsc: !sortingButton.isAsc,
-                            })
-                        } else {
-                            setSortingButton({
-                                id,
-                                isAsc: true,
-                            })
-                        }
-                    }}
                 />)
         }
         </header>

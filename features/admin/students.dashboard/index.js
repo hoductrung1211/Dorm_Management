@@ -10,51 +10,11 @@ import DataColumn from "../../ui/data.column";
 import SectionStudentInfo from "./student-info.section";
 
 const sortingButtons = [
-    {id: 0, text: "ID", 
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.id > rowB.id ? 1 : -1;
-            } 
-
-            return rowA.id < rowB.id ? 1 : -1;
-        }
-    },
-    {id: 1, text: "Full name",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.name > rowB.name ? 1 : -1;
-            } 
-
-            return rowA.name < rowB.name ? 1 : -1;
-        }
-    },
-    {id: 2, text: "Date of birth",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.birthday > rowB.birthday ? 1 : -1;
-            } 
-
-            return rowA.birthday < rowB.birthday ? 1 : -1;
-        }
-    },
-    {id: 3, text: "Gender",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.gender > rowB.gender ? 1 : -1;
-            } 
-
-            return rowA.gender < rowB.gender ? 1 : -1;
-        }
-    },
-    {id: 4, text: "Status",
-        handleOrder: (rowA, rowB, isAsc) => {
-            if (isAsc) {
-                return rowA.status > rowB.status ? 1 : -1;
-            } 
-
-            return rowA.status < rowB.status ? 1 : -1;
-        }
-    }
+    {id: 0, text: "ID" },
+    {id: 1, text: "Full name" },
+    {id: 2, text: "Date of birth"},
+    {id: 3, text: "Gender"},
+    {id: 4, text: "Status"}
 ]
 
 const students = [
@@ -73,11 +33,7 @@ const students = [
     {id: "N19DCCN035", name: "Tran Quang K", birthday: "01/12/2001", gender: true, status: true}, 
 ]
 
-export default function StudentsDashboard() {
-    const [sortingButton, setSortingButton] = useState({
-        id: 0,
-        isAsc: true,
-    });
+export default function StudentsDashboard() { 
     const [filterValues, setFilterValues] = useState({
         studentID: "",
         gender: "all",
@@ -100,31 +56,18 @@ export default function StudentsDashboard() {
             return true;
         return false;
     })
-
-    // Filtered Student array have been sorted by order button
-    filteredStudents.sort((rowA, rowB) => {
-        const sortCB = sortingButtons.find(btn => btn.id == sortingButton.id).handleOrder;
-
-        return sortCB(rowA, rowB, sortingButton.isAsc);
-    })
-
+  
 
     const [sectionId, setSectionId] = useState(0);
     const displaySections = [
         {
             id: 0,
             section: 
-                <SectionStudentList
-                    sortingButtons={sortingButtons}
-                    sortingButton={sortingButton}
-                    setSortingButton={setSortingButton}
+                <SectionStudentList 
                     filteredStudents={filteredStudents}
-                
                     isLoading={isLoading}
                     setIsLoading={setIsLoading} 
-                
                     setStudentId={setStudentId}
-
                     setSectionId={setSectionId}
                 />,
         },
@@ -161,9 +104,7 @@ export default function StudentsDashboard() {
     )
 }
 
-function SectionStudentList({
-    sortingButtons,
-    sortingButton,
+function SectionStudentList({ 
     setSortingButton,
     filteredStudents,
     isLoading,
@@ -179,20 +120,6 @@ function SectionStudentList({
                 <OrderButtoon 
                     key={button.id}
                     button={button}
-                    sortingButton={sortingButton}
-                    handleClick={(id) => {
-                        if (id == sortingButton.id) {
-                            setSortingButton({
-                                id,
-                                isAsc: !sortingButton.isAsc,
-                            })
-                        } else {
-                            setSortingButton({
-                                id,
-                                isAsc: true,
-                            })
-                        }
-                    }}
                 />)
         }
         </header>

@@ -9,66 +9,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 
 const sortingButtons = [
-  {
-    id: 0,
-    text: "ID",
-    handleOrder: (rowA, rowB, isAsc) => {
-      if (isAsc) {
-        return rowA.id > rowB.id ? 1 : -1;
-      }
-      return rowA.id < rowB.id ? 1 : -1;
-    },
-  },
-  {
-    id: 1,
-    text: "Type name",
-    handleOrder: (rowA, rowB, isAsc) => {
-      if (isAsc) {
-        return rowA.type > rowB.type ? 1 : -1;
-      }
-      return rowA.type < rowB.type ? 1 : -1;
-    },
-  },
-  {
-    id: 2,
-    text: "For gender",
-    handleOrder: (rowA, rowB, isAsc) => {
-      if (isAsc) {
-        return rowA.gender > rowB.gender ? 1 : -1;
-      }
-      return rowA.gender < rowB.gender ? 1 : -1;
-    },
-  },
-  {
-    id: 3,
-    text: "Number of beds",
-    handleOrder: (rowA, rowB, isAsc) => {
-      if (isAsc) {
-        return rowA.beds > rowB.beds ? 1 : -1;
-      }
-      return rowA.beds < rowB.beds ? 1 : -1;
-    },
-  },
-  {
-    id: 4,
-    text: "Current Students",
-    handleOrder: (rowA, rowB, isAsc) => {
-      if (isAsc) {
-        return rowA.students > rowB.students ? 1 : -1;
-      }
-      return rowA.students < rowB.students ? 1 : -1;
-    },
-  },
-  {
-    id: 5,
-    text: "Status",
-    handleOrder: (rowA, rowB, isAsc) => {
-      if (isAsc) {
-        return rowA.status > rowB.status ? 1 : -1;
-      }
-      return rowA.status < rowB.status ? 1 : -1;
-    },
-  },
+  {id: 0,text: "ID" },
+  {id: 1,text: "Type name"},
+  {id: 2,text: "For gender"},
+  {id: 3,text: "Number of beds"},
+  {id: 4,text: "Current Students"},
+  {id: 5,text: "Status"},
 ];
 
 const initRooms = [
@@ -164,10 +110,7 @@ export default function SectionRooms() {
       };
     })
   );
-  const [sortingButton, setSortingButton] = useState({
-    id: 0,
-    isAsc: true,
-  });
+ 
   const [sectionId, setSectionId] = useState(0);
   const filterValues = useContext(FilterValuesContext);
   const [roomId, setRoomId] = useState(null);
@@ -189,14 +132,7 @@ export default function SectionRooms() {
     return false;
   });
 
-  // Sorting filtered Room array by order button
-  filteredRooms.sort((rowA, rowB) => {
-    const sortCB = sortingButtons.find(
-      (btn) => btn.id == sortingButton.id
-    ).handleOrder;
-
-    return sortCB(rowA, rowB, sortingButton.isAsc);
-  });
+ 
 
   // Call API with PUT status, after that update the state
   function handleUpdateRoom(roomId, typeId) {
@@ -271,10 +207,7 @@ export default function SectionRooms() {
     {
       id: 0,
       section: (
-        <SectionRoomList
-          sortingButton={sortingButton}
-          sortingButtons={sortingButtons}
-          setSortingButton={setSortingButton}
+        <SectionRoomList 
           filteredRooms={filteredRooms}
           setRoomId={setRoomId}
           setSectionId={setSectionId}
@@ -319,10 +252,7 @@ export default function SectionRooms() {
   return <div className="h-full w-full p-4 flex flex-col">{section}</div>;
 }
 
-function SectionRoomList({
-  sortingButtons,
-  sortingButton,
-  setSortingButton,
+function SectionRoomList({ 
   filteredRooms,
   setRoomId,
   setSectionId,
@@ -334,20 +264,6 @@ function SectionRoomList({
           <OrderButtoon
             key={button.id}
             button={button}
-            sortingButton={sortingButton}
-            handleClick={(id) => {
-              if (id == sortingButton.id) {
-                setSortingButton({
-                  id,
-                  isAsc: !sortingButton.isAsc,
-                });
-              } else {
-                setSortingButton({
-                  id,
-                  isAsc: true,
-                });
-              }
-            }}
           />
         ))}
       </header>
