@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import HeaderSection from "../../layouts/section-header";
 import Container from "../../user/layouts/db-container";
 import InputFilter from "../../ui/input-filter";
@@ -8,15 +8,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMars, faRotate, faVenus } from "@fortawesome/free-solid-svg-icons";
 import DataColumn from "../../ui/data.column";
 import SectionStudentInfo from "./student-info.section";
+import MGMTService from "../../../pages/api/service/MGMT-StudentService"
+
+
+
 
 const sortingButtons = [
     {id: 0, text: "ID", 
         handleOrder: (rowA, rowB, isAsc) => {
             if (isAsc) {
-                return rowA.id > rowB.id ? 1 : -1;
+                return rowA.username > rowB.username ? 1 : -1;
             } 
 
-            return rowA.id < rowB.id ? 1 : -1;
+            return rowA.username < rowB.username ? 1 : -1;
         }
     },
     {id: 1, text: "Full name",
@@ -46,7 +50,7 @@ const sortingButtons = [
             return rowA.gender < rowB.gender ? 1 : -1;
         }
     },
-    {id: 4, text: "Status",
+    {id: 4, text: "Identity card number",
         handleOrder: (rowA, rowB, isAsc) => {
             if (isAsc) {
                 return rowA.status > rowB.status ? 1 : -1;
@@ -57,23 +61,47 @@ const sortingButtons = [
     }
 ]
 
-const students = [
-    {id: "N19DCCN001", name: "Nguyen Van A", birthday: "21/11/2001", gender: true, status: true},
-    {id: "N19DCCN002", name: "Nguyen Thi A", birthday: "19/01/2001", gender: false, status: false},
-    {id: "N19DCCN003", name: "Nguyen Van B", birthday: "15/05/2001", gender: true, status: true},
-    {id: "N19DCCN005", name: "Tran Quang D", birthday: "22/07/2001", gender: true, status: true},
-    {id: "N19DCCN007", name: "Hoang Van E", birthday: "21/11/2001", gender: true, status: true},
-    {id: "N19DCCN011", name: "Huynh Thi Thanh F", birthday: "21/02/2001", gender: false, status: true},
-    {id: "N19DCCN021", name: "Pham Van G", birthday: "14/04/2001", gender: true, status: false},
-    {id: "N19DCCN030", name: "Nguyen Van H", birthday: "18/07/2001", gender: true, status: true},
-    {id: "N19DCCN031", name: "Le Van K", birthday: "01/12/2001", gender: true, status: false}, 
-    {id: "N19DCCN032", name: "Le Thi K", birthday: "01/12/2001", gender: false, status: true}, 
-    {id: "N19DCCN033", name: "Le Van K", birthday: "01/12/2001", gender: true, status: false}, 
-    {id: "N19DCCN034", name: "Le Thi K", birthday: "01/12/2001", gender: false, status: true}, 
-    {id: "N19DCCN035", name: "Tran Quang K", birthday: "01/12/2001", gender: true, status: true}, 
-]
+// const students = [
+//     {username: "N19DCCN001", hoTen: "Nguyen Van A", ngaySinh: "21/11/2001", gioiTinh: true, cmnd:"0123456789"},
+//     {username: "N19DCCN002", hoTen: "Nguyen Thi A", ngaySinh: "19/01/2001", gioiTinh: false, cmnd:"0123456789"},
+//     {username: "N19DCCN003", hoTen: "Nguyen Van B", ngaySinh: "15/05/2001", gioiTinh: true, cmnd:"0123456789"},
+//     {username: "N19DCCN005", hoTen: "Tran Quang D", ngaySinh: "22/07/2001", gioiTinh: true, cmnd:"0123456789"},
+//     {username: "N19DCCN007", hoTen: "Hoang Van E", ngaySinh: "21/11/2001", gioiTinh: true, cmnd:"0123456789"},
+//     {username: "N19DCCN011", hoTen: "Huynh Thi Thanh F", ngaySinh: "21/02/2001", gioiTinh: false, cmnd:"0123456789"},
+//     {username: "N19DCCN021", hoTen: "Pham Van G", ngaySinh: "14/04/2001", gioiTinh: true, cmnd:"0123456789"},
+//     {username: "N19DCCN030", hoTen: "Nguyen Van H", ngaySinh: "18/07/2001", gioiTinh: true, cmnd:"0123456789"},
+//     {username: "N19DCCN031", hoTen: "Le Van K", ngaySinh: "01/12/2001", gioiTinh: true, cmnd:"0123456789"}, 
+//     {username: "N19DCCN032", hoTen: "Le Thi K", ngaySinh: "01/12/2001", gioiTinh: false, cmnd:"0123456789"}, 
+//     {username: "N19DCCN033", hoTen: "Le Van K", ngaySinh: "01/12/2001", gioiTinh: true, cmnd:"0123456789"}, 
+//     {username: "N19DCCN034", hoTen: "Le Thi K", ngaySinh: "01/12/2001", gioiTinh: false, cmnd:"0123456789"}, 
+//     {username: "N19DCCN035", hoTen: "Tran Quang K", ngaySinh: "01/12/2001", gioiTinh: true, cmnd:"0123456789"}, 
+// ]
 
 export default function StudentsDashboard() {
+
+    const [students, setStudents] = useState([])
+
+    const [typeSort, setTypeSort] = useState(true)
+    useEffect(()=>{
+        MGMTService.getListStudentInDorm(20, 'username', typeSort).then(res=>{
+            setStudents(res.data)
+        }).catch((error)=>{
+            if(error.response){
+                console.log(error.response.data)
+            }
+        })
+    })
+
+    function handleChangeSort(){
+        MGMTService.getListStudentInDorm(10, 'username', typeSort).then(res=>{
+            setStudents(res.data)
+        }).catch((error)=>{
+            if(error.response){
+                console.log(error.response.data)
+            }
+        })
+    }
+
     const [sortingButton, setSortingButton] = useState({
         id: 0,
         isAsc: true,
@@ -87,12 +115,12 @@ export default function StudentsDashboard() {
     const [studentId, setStudentId] = useState(null);
 
     // Student Info display on info dashboard
-    const studentInfo = students.find(student => student.id == studentId);
+    const studentInfo = students.find(student => student.username == studentId);
 
     // Student array have been filtered
     const filteredStudents = students.filter(student => {
-        const checkedName = student.name.includes(filterValues.studentID.trim());
-        const checkedID = student.id.includes(filterValues.studentID.trim());
+        const checkedName = student.hoTen.includes(filterValues.studentID.trim());
+        const checkedID = student.username.includes(filterValues.studentID.trim());
         const checkedStatus = filterValues.status == "all" ? true : student.status + "" == filterValues.status;
         const checkedGender = filterValues.gender == "all" ? true : student.gender + "" == filterValues.gender;
 
@@ -101,7 +129,7 @@ export default function StudentsDashboard() {
         return false;
     })
 
-    // Filtered Student array have been sorted by order button
+    // // Filtered Student array have been sorted by order button
     filteredStudents.sort((rowA, rowB) => {
         const sortCB = sortingButtons.find(btn => btn.id == sortingButton.id).handleOrder;
 
@@ -124,7 +152,7 @@ export default function StudentsDashboard() {
                     setIsLoading={setIsLoading} 
                 
                     setStudentId={setStudentId}
-
+                    setTypeSort={setTypeSort}
                     setSectionId={setSectionId}
                 />,
         },
@@ -170,7 +198,9 @@ function SectionStudentList({
     setStudentId,
     setIsLoading,
     setSectionId,
+
 }) {
+   
     return (
     <>
         <header className="flex-shrink-0 grid grid-flow-col grid-cols-5 w-full h-12 font-bold rounded-tl-lg rounded-tr-lg overflow-hidden shadow-sm">
@@ -181,6 +211,10 @@ function SectionStudentList({
                     button={button}
                     sortingButton={sortingButton}
                     handleClick={(id) => {
+
+                        
+
+
                         if (id == sortingButton.id) {
                             setSortingButton({
                                 id,
@@ -192,7 +226,7 @@ function SectionStudentList({
                                 isAsc: true,
                             })
                         }
-                    }}
+                    }}  
                 />)
         }
         </header>
@@ -201,19 +235,20 @@ function SectionStudentList({
         <main className="h-full w-full flex flex-col  overflow-auto">
         {filteredStudents.map( student => 
             <div 
-                key={student.id} className="flex-shrink-0 grid grid-cols-5 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa"
+                key={student.username} className="flex-shrink-0 grid grid-cols-5 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa"
                 onClick={() => {
-                    setStudentId(student.id);
+                    setStudentId(student.username);
                     setSectionId(1);
                 }}    
             >
-                <DataColumn text={student.id} />
-                <DataColumn text={student.name} />
-                <DataColumn text={student.birthday} />
-                <DataColumn text={student.gender ? "Male" : "Female"}>
-                {student.gender ? <FontAwesomeIcon icon={faMars} className=" text-xl mr-1 text-primary" /> : <FontAwesomeIcon icon={faVenus} className="text-xl mr-1 text-pink-500" />}
+                <DataColumn text={student.username} />
+                <DataColumn text={student.hoTen} />
+                <DataColumn text={student.ngaySinh} />
+                <DataColumn text={student.gioiTinh ? "Male" : "Female"}>
+                {student.gioiTinh ? <FontAwesomeIcon icon={faMars} className=" text-xl mr-1 text-primary" /> : <FontAwesomeIcon icon={faVenus} className="text-xl mr-1 text-pink-500" />}
                 </DataColumn>
-                <DataColumn text={student.status ? "In Dorm" : "Out Dorm"} className={"font-bold " + (student.status ? " text-green " : " text-b")} />
+                {/* <DataColumn text={student.status ? "In Dorm" : "Out Dorm"} className={"font-bold " + (student.status ? " text-green " : " text-b")} /> */}
+                <DataColumn text={student.cmnd} />
             </div>
         )}
         </main>

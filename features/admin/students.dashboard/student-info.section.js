@@ -63,12 +63,12 @@ function SectionPersonalInformation({
         <section className="flex flex-col w-full ">
             <AttributeText title="Personal Information">
                 <div className="max-w-xs h-full flex flex-col justify-between gap-6 p-4 border-2 rounded-lg ">
-                    <AttributeValue icon={faIdCard} value={studentInfo.id} />
-                    <AttributeValue icon={faSignature} value={studentInfo.name} />
-                    <AttributeValue icon={studentInfo.gender ? faMars : faVenus} value={studentInfo.gender ? "Male" : "Female"} />
-                    <AttributeValue icon={faCakeCandles} value={studentInfo.birthday} />
-                    <AttributeValue icon={faAt} value="nguyendangbac@gmail.com.vn" />
-                    <AttributeValue icon={faMobile} value="0123431456" />
+                    <AttributeValue icon={faIdCard} value={studentInfo.username} />
+                    <AttributeValue icon={faSignature} value={studentInfo.hoTen} />
+                    <AttributeValue icon={studentInfo.gioiTinh ? faMars : faVenus} value={studentInfo.gioiTinh ? "Male" : "Female"} />
+                    <AttributeValue icon={faCakeCandles} value={studentInfo.ngaySinh} />
+                    <AttributeValue icon={faAt} value={studentInfo.mail} />
+                    <AttributeValue icon={faMobile} value={studentInfo.sdt} />
                 </div>
             </AttributeText>
         </section>
