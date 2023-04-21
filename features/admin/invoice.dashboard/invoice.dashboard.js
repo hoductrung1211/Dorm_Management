@@ -115,7 +115,8 @@ export default function SectionInvoices() {
                     className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
                     onClick={() => {
                         setIsLoading(true);
-                        setTimeout(() => setIsLoading(false), 1000)
+                        setTimeout(() => setIsLoading(false), 1000);
+
                     }}
                 >
                     Sync

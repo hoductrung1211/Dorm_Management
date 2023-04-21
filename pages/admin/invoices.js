@@ -4,6 +4,9 @@ import AdminNav from '../../features/admin/nav';
 import Main from "../../features/layouts/main";
 import { useRouter } from "next/router";
 import InvoiceDashboard from "../../features/admin/invoice.dashboard";
+import {alertContext} from "../../features/utils/alert.context";
+import Alert from "../../features/ui/alert";
+import { useState } from "react";
 
 export default function Page() {
     const user = {
@@ -20,8 +23,34 @@ export default function Page() {
         router.push(nextURL); 
     }
 
+
+    
+    const [alert, setAlert] = useState({
+        type: true,
+        message: "Add successfully",
+        isShow: false,
+    });
+
+    function showAlert(type, message) {
+        setAlert({
+            type: type,
+            message: message,
+            isShow: true
+        });
+
+        setTimeout(() => {
+            setAlert({
+                ...alert,
+                isShow: false,
+            })
+        }, 3000);
+    }
+
+
     return (
         <userContext.Provider value={user}>
+        <alertContext.Provider value={showAlert}>
+        
             <Sidebar
                 activeNavID={activeNavID}
                 handleNavigate={handleNavigate}
@@ -35,6 +64,13 @@ export default function Page() {
             <Main> 
                 <InvoiceDashboard />
             </Main>
+
+            <Alert
+                type={alert.type}
+                message={alert.message}
+                isShow={alert.isShow}
+            />
+        </alertContext.Provider>
         </userContext.Provider>
     )
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import HeaderSection from "../../layouts/section-header";
 import Container from "../../user/layouts/db-container";
 import InputFilter from "../../ui/input-filter";
@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotate } from "@fortawesome/free-solid-svg-icons";
 import DataColumn from "../../ui/data.column";
 import {moneyConverter} from '../../utils/convert'; 
+import { alertContext } from "../../utils/alert.context";
 
 const sortingButtons = [
     {id: 0, text: "ID"}, 
@@ -35,6 +36,8 @@ const initContracts = [
 ]
 
 export default function ContractDashboard() {
+    const showAlert = useContext(alertContext);
+
     const [contracts, setContracts] = useState(initContracts);
     const [filterValues, setFilterValues] = useState({
         id: "",
@@ -133,7 +136,8 @@ export default function ContractDashboard() {
                                 className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
                                 onClick={() => {
                                     setIsLoading(true);
-                                    setTimeout(() => setIsLoading(false), 1000)
+                                    setTimeout(() => setIsLoading(false), 1000);
+                                    showAlert(false, "Syncing failed");
                                 }}
                             >
                                 Sync
