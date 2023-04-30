@@ -7,7 +7,7 @@ export default function InputEditing({
     handleChange,
 }) {
     return (
-        <label className="relative ">
+        <label className="relative w-full">
             <FontAwesomeIcon icon={icon} className="absolute text-xl text-primary left-6 -translate-x-1/2 top-1/2 -translate-y-1/2" />
 
             <input
