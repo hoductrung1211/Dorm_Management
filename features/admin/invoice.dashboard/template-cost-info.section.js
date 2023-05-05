@@ -4,18 +4,41 @@ import AttributeText from '../../ui/attribute-text';
 import AttributeValue from '../../ui/attribute-value';
 import { moneyConverter } from "../../utils/convert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import MGMTService from "../../../pages/api/service/MGMT-InvoicesService"
 
 export default function TemplateCostInfo({
     info,
     setSectionId,
+    setInfoChanged
 }) {
+
     const [isEditing, setIsEditing] = useState(false);
-    const [tempCost, setTempCost] = useState(info.cost)
     const formRef = useRef(null);
+    
+    const [tempCost, setTempCost] = useState('giaDien' in info ? info.giaDien : info.giaNuoc)
+
+    useEffect(()=>{
+        setInfoChanged(false)
+    },[])
 
     function handleChangeCost() {
-        setSectionId(0);
+        try{
+            ('giaDien' in info) ? 
+            MGMTService.updateCostElectricity(info.id, tempCost).then(res=>{
+                setInfoChanged(true)
+                console.log(res.data)
+            }) :
+            MGMTService.updateCostWater(info.id, tempCost).then(res=>{
+                setInfoChanged(true)
+                console.log(res.data)
+            })
+            setSectionId(0);
+        }catch(error){
+            console.log(error.response.data)
+        }
+    
+        
     }
 
     return (
@@ -33,17 +56,17 @@ export default function TemplateCostInfo({
                 </AttributeText>
 
                 <AttributeText title="Type">
-                    <AttributeValue value={info.type ? "Electricity" : "Water"}>
-                    {info.type ? <FontAwesomeIcon icon={faBolt} className=" text-2xl text-orange" /> : <FontAwesomeIcon icon={faFaucetDrip} className=" text-2xl text-primary" /> }
+                    <AttributeValue value={('giaDien' in info) ? "Electricity" : "Water"}>
+                    {('giaDien' in info) ? <FontAwesomeIcon icon={faBolt} className=" text-2xl text-orange" /> : <FontAwesomeIcon icon={faFaucetDrip} className=" text-2xl text-primary" /> }
                     </AttributeValue>
                 </AttributeText>
 
                 <AttributeText title="Month">
-                    <AttributeValue icon={faCalendarWeek} value={info.month} />
+                    <AttributeValue icon={faCalendarWeek} value={info.thang} />
                 </AttributeText>
 
                 <AttributeText title="Year">
-                    <AttributeValue icon={faCalendar} value={info.year} />
+                    <AttributeValue icon={faCalendar} value={info.nam} />
                 </AttributeText>
 
                 <AttributeText title="Cost">
@@ -60,7 +83,7 @@ export default function TemplateCostInfo({
                                 onChange={e => setTempCost(e.target.value)} /> 
                             <FontAwesomeIcon icon={faMoneyBill} className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl text-primary" />
                         </form> :
-                        <AttributeValue icon={faMoneyBill} value={moneyConverter(info.cost) + (info.type ? "/kW" : "/m3")} /> 
+                        <AttributeValue icon={faMoneyBill} value={moneyConverter(('giaDien' in info) ? info.giaDien : info.giaNuoc) + (('giaDien' in info) ? "/kW" : "/m3")} /> 
                     }
                 </AttributeText>
             </section>

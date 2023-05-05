@@ -35,9 +35,9 @@ export default function SectionStudentInfo({
                     </SectionActions>
                 </section>
 
-                <section className="grid grid-cols-3 gap-3 w-full h-full ">
+                {/* <section className="grid grid-cols-3 gap-3 w-full h-full ">
                     <SectionAnalysis />
-                </section>
+                </section> */}
             </main>
         </>
     )
@@ -50,7 +50,8 @@ function SectionImage({
         <section className="w-full">
             <AttributeText title="Student Image" />
             <div className="flex justify-center items-center w-full aspect-square">
-                <div className="w-10/12 aspect-square bg-ec rounded-md" />
+                {/* <div className="w-10/12 aspect-square bg-ec rounded-md" /> */}
+                <img alt="" src="https://img.freepik.com/premium-photo/young-guy-with-yellow-cap-light-blue-top-render-pink-background_393577-61.jpg?w=740"/>
             </div> 
         </section>
     )

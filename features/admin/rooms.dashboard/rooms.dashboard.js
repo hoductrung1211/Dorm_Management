@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import OrderButtoon from "../../ui/button-order";
 import { FilterValuesContext } from "../filterValues.context";
 import DataColumn from "../../ui/data.column";
@@ -6,7 +6,8 @@ import SectionRoomInfo from "./room-info.section";
 import SectionRoomAdding from "./room-adding.section";
 import SectionRoomEditing from "./room-editing.section";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
+import { faMars, faVenus, faSortDown, faUnsorted, faSort, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import MGMTService from "../../../pages/api/service/MGMT-RoomService"
 
 const sortingButtons = [
   {id: 0,text: "ID" },
@@ -17,193 +18,75 @@ const sortingButtons = [
   {id: 5,text: "Status"},
 ];
 
-const initRooms = [
-  { id: "001", typeId: "001", students: 6 },
-  { id: "002", typeId: "002", students: 4 },
-  { id: "003", typeId: "003", students: 1 },
-  { id: "004", typeId: "004", students: 4 },
-  { id: "005", typeId: "005", students: 0 },
-  { id: "006", typeId: "006", students: 2 },
-  { id: "007", typeId: "001", students: 6 },
-  { id: "008", typeId: "002", students: 4 },
-  { id: "009", typeId: "003", students: 2 },
-  { id: "010", typeId: "004", students: 2 },
-  { id: "011", typeId: "005", students: 2 },
-  { id: "012", typeId: "006", students: 2 },
-  { id: "013", typeId: "001", students: 2 },
-  { id: "014", typeId: "002", students: 0 },
-  { id: "015", typeId: "003", students: 4 },
-  { id: "016", typeId: "004", students: 2 },
-];
 
-const roomTypes = [
-  {
-    id: "001",
-    typeName: "standard",
-    gender: true,
-    beds: 6,
-    cost: 240000,
-    imgUrl: "/rooms/basic/8.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-  {
-    id: "002",
-    typeName: "standard",
-    gender: false,
-    beds: 6,
-    cost: 240000,
-    imgUrl: "/rooms/basic/13.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-  {
-    id: "003",
-    typeName: "deluxe",
-    gender: true,
-    beds: 4,
-    cost: 360000,
-    imgUrl: "/rooms/medium/8.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-  {
-    id: "004",
-    typeName: "deluxe",
-    gender: false,
-    beds: 4,
-    cost: 360000,
-    imgUrl: "/rooms/medium/12.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-  {
-    id: "005",
-    typeName: "premium",
-    gender: true,
-    beds: 2,
-    cost: 420000,
-    imgUrl: "/rooms/highend/4.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-  {
-    id: "006",
-    typeName: "premium",
-    gender: false,
-    beds: 2,
-    cost: 420000,
-    imgUrl: "/rooms/highend/5.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-];
 
-export default function SectionRooms() {
-  const [rooms, setRooms] = useState(
-    initRooms.map((room) => {
-      const { typeName, gender, beds, cost, imgUrl, desc } = roomTypes.find(
-        (roomtype) => roomtype.id == room.typeId
-      );
-      return {
-        ...room,
-        typeName,
-        gender,
-        beds,
-        cost,
-        imgUrl,
-        desc,
-      };
+export default function SectionRooms({roomTypes, filtering}) {
+  // const [status, setStatus] = useState(status)
+  
+  const [rooms, setRooms] = useState([]);
+  const [sortByType, setSortByType] = useState(false)
+  function getListRoom(){   
+    MGMTService.listAllRoom(filtering.status, filtering.gender, filtering.roomType, filtering.id, sortByType).then(res=>{
+      setRooms(res.data)
+    }).catch((error)=>{
+      if(error.response){
+          console.log(error.response.data)
+      }
     })
-  );
+    
+  }
+  
+  useEffect(()=>{
+    getListRoom()  
+  },[filtering, sortByType])
+  
+  
  
   const [sectionId, setSectionId] = useState(0);
   const filterValues = useContext(FilterValuesContext);
   const [roomId, setRoomId] = useState(null);
-
+  
   // Room Info display on info dashboard
-  const roomInfo = rooms.find((room) => room.id == roomId);
-
-  // Room array have been filtered
-  const filteredRooms = rooms.filter((room) => {
-    const checkedID = room.id.includes(filterValues.text);
-    const checkedType =
-      filterValues.type == "all" ? true : filterValues.type == room.type + "";
-    const checkedStatus =
-      filterValues.status == "all"
-        ? true
-        : filterValues.status == room.status + "";
-
-    if (checkedID && checkedType && checkedStatus) return true;
-    return false;
-  });
-
+  const roomInfo = rooms.find((room) => room.phongKTX.id == roomId);
  
 
   // Call API with PUT status, after that update the state
   function handleUpdateRoom(roomId, typeId) {
-    initRooms.find((room) => room.id == roomId).typeId = typeId;
-    setRooms(
-        initRooms.map((room) => {
-            const { typeName, gender, beds, cost, imgUrl, desc } = roomTypes.find(
-            (roomtype) => roomtype.id == room.typeId
-            );
-
-            return {
-                ...room,
-                typeName,
-                gender,
-                beds,
-                cost,
-                imgUrl,
-                desc,
-            };
-        })
-    );
+    MGMTService.updateRoom(roomId,typeId).then(res=>{
+      getListRoom()
+    }).catch((error)=>{
+      if(error.response){
+          console.log(error.response.data)
+      }
+    })
   }
 
   function handleDeleteRoom(roomId) {
-    setRooms(rooms.filter((room) => room.id !== roomId));
+    MGMTService.deleteRoom(roomId).then(res=>{
+      getListRoom()
+    }).catch((error)=>{
+     if(error.response){
+         console.log(error.response.data)
+     }
+   })
   }
 
 
   function handleAddRoom(typeId) {
-    let initId;
-
-    while (true) {
-      initId = Math.random() * 100;
-      initId = parseInt(initId);
-      initId = (initId + "").padStart(3, 0);
-
-      let flag = true;
-
-      initRooms.forEach(room => {
-        if (room.id == initId)
-          flag = false;
-      })
-
-      if (flag) break;
-    }
-
-    initRooms.push({
-      id:  initId,
-      typeId: typeId,
-      students: 0,
+     MGMTService.addRoom(typeId, true).then(res=>{
+      getListRoom()
+     }).catch((error)=>{
+      if(error.response){
+          console.log(error.response.data)
+      }
     })
-
-    setRooms(initRooms.map((room) => {
-        const { typeName, gender, beds, cost, imgUrl, desc } = roomTypes.find(
-          (roomtype) => roomtype.id == room.typeId
-        );
-
-        return {
-          ...room,
-          typeName,
-          gender,
-          beds,
-          cost,
-          imgUrl,
-          desc,
-        }})
-    );
   }
 
   function handleShowMore() {
     
+  }
+  function handleClickType(){
+    setSortByType(!sortByType)
   }
 
   const displaySections = [
@@ -211,10 +94,12 @@ export default function SectionRooms() {
       id: 0,
       section: (
         <SectionRoomList 
-          filteredRooms={filteredRooms}
+          rooms={rooms}
           setRoomId={setRoomId}
           setSectionId={setSectionId}
-          handleShowMore={handleShowMore}
+          sortByType={sortByType}
+          handleClickType={handleClickType}
+          // checkInRoom={getAmountContract}
         />
       ),
     },
@@ -257,36 +142,55 @@ export default function SectionRooms() {
 }
 
 function SectionRoomList({ 
-  filteredRooms,
+  rooms,
   setRoomId,
   setSectionId,
-  handleShowMore,
+  handleClickType,
+  sortByType,
 }) {
+  
   return (
     <>
+      
+      
       <header className="flex-shrink-0 grid grid-flow-col grid-cols-6 w-full h-12 font-bold rounded-tl-lg rounded-tr-lg overflow-hidden shadow-sm">
-        {sortingButtons.map((button) => (
+        {sortingButtons.map((button) => button.id==1 ? 
+        (<OrderButtoon handleClick={handleClickType}
+            key={button.id}
+            button={button}
+            children={
+              sortByType ? <></> : <FontAwesomeIcon
+              icon={faSortDown}
+              className="text-xl mb-2 pl-2 text-primary"
+              />
+            }
+          />
+          
+           ) :
+        (
           <OrderButtoon
             key={button.id}
             button={button}
           />
-        ))}
+        )
+        )}
       </header>
 
       <main className="h-full w-full flex flex-col overflow-auto">
-        {filteredRooms.map((room) => (
+        {rooms.map((room) => (
+          
           <div
-            key={room.id}
+            key={room.phongKTX.id}
             className="flex-shrink-0 grid grid-cols-6 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa"
             onClick={() => {
-              setRoomId(room.id);
+              setRoomId(room.phongKTX.id);
               setSectionId(1);
             }}
           >
-            <DataColumn text={room.id} />
-            <DataColumn text={room.typeName} />
-            <DataColumn text={room.gender ? "Male" : "Female"}>
-              {room.gender ? (
+            <DataColumn text={room.phongKTX.id} />
+            <DataColumn text={room.phongKTX.loaiKTX.tenLoai} />
+            <DataColumn text={room.phongKTX.loaiKTX.gioiTinh ? "Male" : "Female"}>
+              {room.phongKTX.loaiKTX.gioiTinh ? (
                 <FontAwesomeIcon
                   icon={faMars}
                   className=" text-xl mr-1 text-primary"
@@ -298,15 +202,16 @@ function SectionRoomList({
                 />
               )}
             </DataColumn>
-            <DataColumn text={room.beds} />
-            <DataColumn text={room.students} />
+            <DataColumn text={room.phongKTX.loaiKTX.soGiuong} />
+            
+            <DataColumn text={
+                room.currentContract
+            } />
             <DataColumn
               text={
-                room.beds == room.students
-                  ? "Full"
-                  : room.students == 0
-                  ? "Empty"
-                  : "Available"
+                room.phongKTX.trangThai ? 
+                <span className="text-blue-500">Enable</span>
+                : <span className="text-red-600">Disable</span>
               }
             />
           </div>
@@ -323,12 +228,12 @@ function SectionRoomList({
           Add
         </button>
 
-        <button 
+        {/* <button 
             className="ml-auto w-32 h-full rounded-lg bg-green text-white font-bold active:opacity-90 transition"
             onClick={handleShowMore}
         >
             Show more
-        </button>
+        </button> */}
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HeaderSection from "../../layouts/section-header";
 import Container from "../../user/layouts/db-container";
 import InputFilter from "../../ui/input-filter";
@@ -6,6 +6,7 @@ import OrderButtoon from "../../ui/button-order";
 import DataColumn from "../../ui/data.column";
 import SectionTermAdding from "./term-adding.section";
 import SectionTermEditing from "./term-editing.section";
+import MGMTService from "../../../pages/api/service/MMGMT-TermService"
 
 
 
@@ -17,79 +18,85 @@ const sortingButtons = [
     {id: 4, text: "Tuition fee deadline"}, 
 ]
 
-let initTerms = [ 
-    {id: "004", startDate: "2023-04-28", endDate: "2023-04-28", formDeadline: "2023-04-28", feeDeadline: 30},
-    {id: "003", startDate: "2023-04-28", endDate: "2023-04-28", formDeadline: "2023-04-28", feeDeadline: 30},
-    {id: "002", startDate: "2023-04-28", endDate: "2023-04-28", formDeadline: "2023-04-28", feeDeadline: 30},
-    {id: "001", startDate: "2023-04-28", endDate: "2023-04-28", formDeadline: "2023-04-28", feeDeadline: 30},
-]
 
 export default function TermDashboard() {
-    const [terms, setTerms] = useState(initTerms);
+    const [terms, setTerms] = useState([]);
     const [filterValues, setFilterValues] = useState({
         id: "", 
     });
+
+    function loadListTerm(){
+        filterValues.id == "" ?
+            MGMTService.listTerm().then(res=>{
+                setTerms(res.data)
+            }).catch((error)=>{
+                if(error.response){
+                    console.log(error.response.data)
+                }
+            }) : 
+            MGMTService.searchTerm(filterValues.id).then(res=>{
+                setTerms([res.data])
+            }).catch((error)=>{
+                if(error.response){
+                    console.log(error.response.data)
+                }
+            })
+    }
+
+    useEffect(()=>{
+        console.log(filterValues.id)
+        loadListTerm()
+    },[filterValues])
+
     const [sectionId, setSectionId] = useState(0);
     const [info, setInfo] = useState(null);
  
-    const filteredTerms = terms.filter(term => {
-        const checkedID = term.id.includes(filterValues.id.trim()); 
-
-        if (checkedID)
-            return true;
-        return false;
-    })
+  
 
     function handleDeleteTerm(termId) {
-        initTerms = initTerms.filter(term =>  term.id != termId);
-        setTerms(initTerms);
+        MGMTService.deleteTerm(termId).then(res=>{
+            loadListTerm()
+        }).catch((error)=>{
+            if(error.response){
+                console.log(error.response.data)
+            }
+        })
     }
 
     // Handle adding term here
     function handleAddingTerm(tempInfo) {
-        
-        let initId;
-        while (true) {
-            initId = Math.random() * 100;
-            initId = parseInt(initId);
-            initId = (initId + "").padStart(3, 0);
-
-            let flag = true;
-
-            terms.forEach(term => {
-                if (term.id == initId)
-                    flag = false;
-            })
-
-            if (flag) break;
-        }
-
-        setTerms([
-            ...terms,
-            {
-                id: initId,
-                ...tempInfo,
+        MGMTService.createTerm(tempInfo).then(res=>{
+            console.log(tempInfo)
+            console.log(res.data)
+            loadListTerm()
+            setSectionId(0);
+        }).catch((error)=>{
+            if(error.response){
+                console.log(error.response.data)
             }
-        ]);
-        console.log(terms)
-        setSectionId(0);
+        })
+
     }
 
     function handleEditingTerm(editedTerm) {
-        setTerms(terms.map(term => {
-            if (term.id == editedTerm.id)
-                return editedTerm;
-            return term;
-        }))
+        console.log(editedTerm)
+        MGMTService.updateTerm(editedTerm.id, editedTerm).then(res=>{
+            loadListTerm()
+            console.log(res.data)
+        }).catch(error=>{
+            if(error.response){
+                console.log(error.response.data)
+            }
+        })
 
         setSectionId(0);
     }
 
     function handleShowMore() {
-        setTerms([
-            ...terms,
-            ...initTerms,
-        ])
+        // setTerms([
+        //     ...terms,
+        //     ...initTerms,
+        // ])
     }
 
     const displaySections = [
@@ -97,7 +104,7 @@ export default function TermDashboard() {
             id: 0,
             section: (
                 <SectionTermList 
-                    filteredTerms={filteredTerms}
+                    filteredTerms={terms}
                     handleDeleteTerm={handleDeleteTerm}
                     setSectionId={setSectionId}
                     setInfo={setInfo}
@@ -187,10 +194,10 @@ function SectionTermList({
                 onClick={() => handleSelectRow(term.id)}
             >
                 <DataColumn text={term.id} />
-                <DataColumn text={term.startDate} />
-                <DataColumn text={term.endDate} />
-                <DataColumn text={term.formDeadline} />
-                <DataColumn text={term.feeDeadline} />
+                <DataColumn text={term.ngayMoDangKy} />
+                <DataColumn text={term.ngayKetThuc} />
+                <DataColumn text={term.ngayKetThucDangKy} />
+                <DataColumn text={term.hanDongPhi} />
             </div>
         )}
         </main>

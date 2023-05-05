@@ -11,7 +11,16 @@ export default function SectionTermEditing({
 }) {
 
     const [tempInfo, setTempInfo] = useState(info)
- 
+
+    function formatDate(dateStr) {
+        var isoDate=  dateStr.split("/").reverse().join("-")
+        return isoDate;
+    }
+    function reFormatDate(date){
+        var isoDate=  date.split("-").reverse().join("/")
+        return isoDate;
+    }
+    
     return (
         <>
         <SectionInfoHeader 
@@ -29,11 +38,11 @@ export default function SectionTermEditing({
                 <AttributeText title="Start date">
                     <InputEditing 
                         icon={faRightToBracket} 
-                        value={tempInfo.startDate} 
+                        value={formatDate(tempInfo.ngayMoDangKy)} 
                         type="date"
                         handleChange={nextDateStart => setTempInfo({
                             ...tempInfo,
-                            startDate: nextDateStart,
+                            ngayMoDangKy: nextDateStart,
                         })}
                     />
                 </AttributeText>
@@ -41,11 +50,11 @@ export default function SectionTermEditing({
                 <AttributeText title="End date">
                     <InputEditing 
                         icon={faRightFromBracket} 
-                        value={tempInfo.endDate} 
+                        value={formatDate(tempInfo.ngayKetThuc)} 
                         type="date"
                         handleChange={nextDateEnd => setTempInfo({
                             ...tempInfo,
-                            endDate: nextDateEnd,
+                            ngayKetThuc: nextDateEnd,
                         })}
                     />
                 </AttributeText>
@@ -53,11 +62,11 @@ export default function SectionTermEditing({
                 <AttributeText title="Form submission deadline">
                     <InputEditing 
                         icon={faCalendar} 
-                        value={tempInfo.formDeadline} 
+                        value={formatDate(tempInfo.ngayKetThucDangKy)} 
                         type="date"
                         handleChange={nextSubmissionDeadline => setTempInfo({
                             ...tempInfo,
-                            formDeadline: nextSubmissionDeadline,
+                            ngayKetThucDangKy: nextSubmissionDeadline,
                         })}
                     />
                 </AttributeText>
@@ -65,10 +74,10 @@ export default function SectionTermEditing({
                 <AttributeText title="Tuition fee deadline">
                     <InputEditing 
                         icon={faMoneyBill} 
-                        value={tempInfo.feeDeadline} 
+                        value={tempInfo.hanDongPhi} 
                         handleChange={nextFeeDeadline => setTempInfo({
                             ...tempInfo,
-                            feeDeadline: nextFeeDeadline,
+                            hanDongPhi: nextFeeDeadline,
                         })}
                     />
                 </AttributeText>
@@ -76,7 +85,12 @@ export default function SectionTermEditing({
 
             <section className="w-96 h-16 flex ">
                 <Button text="Save" handleClick={() => {
-                    handleEditingTerm(tempInfo)
+                    const term = {...tempInfo,
+                        ngayMoDangKy: reFormatDate(tempInfo.ngayMoDangKy),
+                        ngayKetThuc: reFormatDate(tempInfo.ngayKetThuc),
+                        ngayKetThucDangKy: reFormatDate(tempInfo.ngayKetThucDangKy)
+                    }
+                    handleEditingTerm(term)
                 }}/>
             </section>
         </main>

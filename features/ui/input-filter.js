@@ -7,7 +7,7 @@ export default function InputFilter({
     textValue,
 }) {
     return (
-        <placeholder className="relative h-full w-full">
+        <div className="relative h-full w-full">
             <input 
                 className="h-full w-full pl-4 pr-12 outline-none bg-fa rounded-md"
                 placeholder={placeholder}
@@ -15,7 +15,7 @@ export default function InputFilter({
                 value={textValue}
             />
             {
-                textValue == "" ? 
+                textValue =="" ? 
                 <FontAwesomeIcon
                     className="absolute right-4 top-1/2 -translate-y-1/2"
                     icon={faMagnifyingGlass}
@@ -23,11 +23,11 @@ export default function InputFilter({
                 <FontAwesomeIcon
                     className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer hover:text-red"
                     icon={faXmarkCircle}
-                    onClick={() => handleTextChange("")}
+                    onClick={() =>handleTextChange("")}
                 />
             }
             
-        </placeholder>
+        </div>
     )
 }
 

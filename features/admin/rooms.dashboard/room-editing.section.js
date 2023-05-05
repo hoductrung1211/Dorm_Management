@@ -22,11 +22,11 @@ export default function SectionRoomEditing({
   setSectionId,
   handleUpdateRoom,
 }) {
-  const [roomTypeId, setRoomTypeId] = useState(info.typeId);
+  info= info.phongKTX
+  const [roomTypeId, setRoomTypeId] = useState(info.idLoaiKTX);
   const roomTypeInfo = roomTypeList.find(
     (roomType) => roomType.id == roomTypeId
   ); 
-
   return (
     <>
       <SectionInfoHeader
@@ -85,17 +85,18 @@ function ImageSection({ roomTypeInfo }) {
   return (
     <section className="w-full">
       <div className="relative w-10/12 aspect-square">
-        <Image
+        {/* <Image
             className="object-cover rounded-lg"
-            src={roomTypeInfo.imgUrl}
+            
             alt="A picture of room"
             fill
-        />
+        /> */}
+        <img src={roomTypeInfo.image} alt="A picture of room" className="object-cover rounded-lg"/>
       </div>
       <AttributeText title="Cost">
         <AttributeValue
             icon={faMoneyBill}
-            value={moneyConverter(roomTypeInfo.cost)}
+            value={moneyConverter(roomTypeInfo.giaPhong)}
         />
       </AttributeText>
     </section>
@@ -121,9 +122,9 @@ function InfoSection({
             text:
               roomType.id +
               " " +
-              roomType.typeName +
+              roomType.tenLoai +
               " " +
-              (roomType.gender ? "male" : "female"),
+              (roomType.gioiTinh ? "male" : "female"),
           }))}
           value={roomTypeInfo.id}
           handleChange={(nextRoomTypeId) => {
@@ -132,16 +133,16 @@ function InfoSection({
         />
       </AttributeText>
       <AttributeText title="Type name">
-        <AttributeValue icon={faDiamond} value={roomTypeInfo.typeName} />
+        <AttributeValue icon={faDiamond} value={roomTypeInfo.tenLoai} />
       </AttributeText>
       <AttributeText title="For gender">
         <AttributeValue
-          icon={roomTypeInfo.gender ? faMars : faVenus}
-          value={roomTypeInfo.gender ? "male" : "female"}
+          icon={roomTypeInfo.gioiTinh ? faMars : faVenus}
+          value={roomTypeInfo.gioiTinh ? "male" : "female"}
         />
       </AttributeText>
       <AttributeText title="Number of beds">
-        <AttributeValue icon={faBed} value={roomTypeInfo.beds} />
+        <AttributeValue icon={faBed} value={roomTypeInfo.soGiuong} />
       </AttributeText>
     </section>
   );

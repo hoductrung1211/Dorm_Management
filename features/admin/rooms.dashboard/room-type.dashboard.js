@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import OrderButtoon from "../../ui/button-order";
 import DataColumn from "../../ui/data.column";
@@ -7,6 +7,7 @@ import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 import SectionRoomTypeEditing from "./room-type-editing.section";
 import SectionRoomTypeInfo from "./room-type-info.section";
 import SectionAddingRoom from "./room-type-adding.section";
+import MGMTService from "../../../pages/api/service/MGMT-RoomService"
 
 const sortingButtons = [
   {id: 0,text: "ID" },
@@ -16,87 +17,84 @@ const sortingButtons = [
   {id: 4,text: "Cost per month" },
 ];
 
-const initRoomTypes = [
-  {
-    id: "001",
-    typeName: "standard",
-    gender: true,
-    beds: 6,
-    cost: 240000,
-    imgUrl: "/rooms/basic/8.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-  {
-    id: "002",
-    typeName: "standard",
-    gender: false,
-    beds: 6,
-    cost: 240000,
-    imgUrl: "/rooms/basic/13.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-  {
-    id: "003",
-    typeName: "deluxe",
-    gender: true,
-    beds: 4,
-    cost: 360000,
-    imgUrl: "/rooms/medium/8.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-  {
-    id: "004",
-    typeName: "deluxe",
-    gender: false,
-    beds: 4,
-    cost: 360000,
-    imgUrl: "/rooms/medium/12.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-  {
-    id: "005",
-    typeName: "premium",
-    gender: true,
-    beds: 2,
-    cost: 420000,
-    imgUrl: "/rooms/highend/4.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-  {
-    id: "006",
-    typeName: "premium",
-    gender: false,
-    beds: 2,
-    cost: 420000,
-    imgUrl: "/rooms/highend/5.jfif",
-    desc: "A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.",
-  },
-];
 
-export default function SectionRoomTypes() {
-  const [roomTypes, setRoomTypes] = useState(initRoomTypes);
+export default function SectionRoomTypes({roomTypes, setRoomTypes}) {
+  // const [roomTypes, setRoomTypes] = useState(initRoomTypes);
   const [sectionId, setSectionId] = useState(0);
   const [roomTypeInfoId, setRoomTypeInfoId] = useState(0);
 
+
+
+  function loadListTypeRoom(){
+    MGMTService.getListTypeRooms().then(res=>{
+      setRoomTypes(res.data)
+      setSectionId(0);
+    })
+    .catch((error)=>{
+    if(error.response){
+        console.log(error.response.data)
+    }
+    })
+  }
+  
   const roomTypeInfo = roomTypes.find(
     (roomType) => roomType.id == roomTypeInfoId
   );
  
 
-  function handleUpdateInfo(updatedInfo) {
-    setRoomTypes(
-      roomTypes.map((roomType) => {
-        if (roomType.id == updatedInfo.id) return updatedInfo;
-        return roomType;
-      })
-    );
+
+  async function handleUpdateInfo(updatedInfo) {
+    try{
+      const response= await MGMTService.updateTypeRoom(updatedInfo.id, updatedInfo)
+      loadListTypeRoom()
+      return response.data
+    }catch(error){
+      if (error.response) { 
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) { // no response
+        console.log(error.request);
+      } else { // Something wrong in setting up the request
+        console.log('Error', error.message);
+      }
+      console.log(error.config); 
+      return null
+    }    
+
   }
   function handleDeleteRoomType(roomTypeId) {
-    setRoomTypes(roomTypes.filter((roomtype) => roomtype.id !== roomTypeId));
+    MGMTService.deleteTypeRoom(roomTypeId).then(res=>{
+      console.log(res.data)
+    }).catch((error)=>{
+    if(error.response){
+        console.log(error.response.data)
+    }
+    })
   }
 
   function handleShowMore() {
     
+  }
+  async function handleAddingRoomType(data){
+    // console.log(data)
+    try{
+      const response= await MGMTService.createNewTypeRoom(data)
+      loadListTypeRoom()
+      return response.data
+    }catch(error){
+      if (error.response) { 
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) { // no response
+        console.log(error.request);
+      } else { // Something wrong in setting up the request
+        console.log('Error', error.message);
+      }
+      console.log(error.config); 
+      return null
+    }    
   }
 
 
@@ -137,14 +135,7 @@ export default function SectionRoomTypes() {
       section: (
         <SectionAddingRoom
           info={roomTypeInfo}
-          handleAddingRoomType={(data) => {
-            initRoomTypes.push({
-              id: "new room type",
-              ...data,
-            });
-
-            setRoomTypes(initRoomTypes);
-          }}
+          handleAddingRoomType={handleAddingRoomType}
           setSectionId={setSectionId}
         />
       ),
@@ -183,9 +174,9 @@ function SectionRoomTypeList({
             }}
           >
             <DataColumn text={roomType.id} />
-            <DataColumn text={roomType.typeName} />
-            <DataColumn text={roomType.gender ? "Male" : "Female"}>
-              {roomType.gender ? (
+            <DataColumn text={roomType.tenLoai} />
+            <DataColumn text={roomType.gioiTinh ? "Male" : "Female"}>
+              {roomType.gioiTinh ? (
                 <FontAwesomeIcon
                   icon={faMars}
                   className=" text-xl mr-1 text-primary"
@@ -197,9 +188,9 @@ function SectionRoomTypeList({
                 />
               )}
             </DataColumn>
-            <DataColumn text={roomType.beds} />
+            <DataColumn text={roomType.soGiuong} />
             <DataColumn
-              text={moneyConverter(roomType.cost)}
+              text={moneyConverter(roomType.giaPhong)}
               className="font-bold"
             />
           </div>

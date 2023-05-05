@@ -12,6 +12,7 @@ export default function SectionRoomInfo({
     setSectionId,
     handleDeleteRoom,
 }) {
+    info= info.phongKTX
     return (
         <>
             <SectionInfoHeader 
@@ -20,7 +21,8 @@ export default function SectionRoomInfo({
 
             <main className="flex flex-col h-full gap-12 p-4 border-2 border-ec  border-t-0 rounded-bl-lg rounded-br-lg">
                 <section className="w-full flex gap-3">
-                    <ImageSection info={info} />
+                    <ImageSection imgUrl={info.loaiKTX.image}
+                                    cost={info.loaiKTX.giaPhong} />
                     <InfoSection info={info} />
                     <ActionsSection>
                         <ActionButton 
@@ -28,7 +30,9 @@ export default function SectionRoomInfo({
                             handleClick={() => setSectionId(2)}    
                         />
                         <ActionButton 
-                            title="Delete" 
+                            title={
+                                info.trangThai ? "Delete" : "Restore"
+                            } 
                             bgRed={true}
                             handleClick={() => {
                                 let result = confirm("Do you really want to delete this room?");
@@ -58,16 +62,17 @@ export default function SectionRoomInfo({
     )
 }
 
-function ImageSection({ info: {imgUrl, cost}}) {
+function ImageSection({imgUrl, cost}) {
     return (
         <section className="w-full">
             <div className="relative w-10/12 aspect-square">
-                <Image
+                <img src={imgUrl}  alt="A picture of room" className="object-cover rounded-lg"/>
+                {/* <Image
                     className="object-cover rounded-lg"
                     src={imgUrl}
                     alt="A picture of room"
                     fill
-                />
+                /> */}
             </div>
             <AttributeText title="Cost">
                 <AttributeValue icon={faMoneyBill} value={moneyConverter(cost)} />
@@ -76,27 +81,23 @@ function ImageSection({ info: {imgUrl, cost}}) {
     )
 }
 
-function InfoSection({info: {
-    id,
-    typeName,
-    gender,
-    beds,
-}}) {
+function InfoSection({info}) {
+    
     return (
         <section className="relative w-full ">
             <AttributeText title="Room ID">
                 <span className="text-5xl text-primary font-bold">
-                    {id}
+                    {info.id}
                 </span>
             </AttributeText>
             <AttributeText title="Type name">
-                <AttributeValue icon={faDiamond} value={typeName} />
+                <AttributeValue icon={faDiamond} value={info.loaiKTX.tenLoai} />
             </AttributeText>
             <AttributeText title="For gender">
-                <AttributeValue icon={gender ? faMars : faVenus} value={gender ? 'male' : 'female' } />
+                <AttributeValue icon={info.loaiKTX.gioiTinh ? faMars : faVenus} value={info.loaiKTX.gioiTinh ? 'male' : 'female' } />
             </AttributeText>
             <AttributeText title="Number of beds">
-                <AttributeValue icon={faBed} value={beds } />
+                <AttributeValue icon={faBed} value={info.loaiKTX.soGiuong } />
             </AttributeText>
         </section>
     )

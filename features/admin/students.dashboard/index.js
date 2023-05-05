@@ -5,7 +5,7 @@ import InputFilter from "../../ui/input-filter";
 import FilterSelection from "../../ui/select-filter";
 import OrderButtoon from "../../ui/button-order";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMars, faRotate, faVenus } from "@fortawesome/free-solid-svg-icons";
+import { faMars, faRotate, faVenus, faSortDown, faUnsorted, faSort, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import DataColumn from "../../ui/data.column";
 import SectionStudentInfo from "./student-info.section";
 import MGMTService from "../../../pages/api/service/MGMT-StudentService"
@@ -19,42 +19,30 @@ const sortingButtons = [
     {id: 1, text: "Full name" },
     {id: 2, text: "Date of birth"},
     {id: 3, text: "Gender"},
-    {id: 4, text: "Status"}
+    {id: 4, text: "Identity card number"}
 ]
 
-// const students = [
-//     {username: "N19DCCN001", hoTen: "Nguyen Van A", ngaySinh: "21/11/2001", gioiTinh: true, cmnd:"0123456789"},
-//     {username: "N19DCCN002", hoTen: "Nguyen Thi A", ngaySinh: "19/01/2001", gioiTinh: false, cmnd:"0123456789"},
-//     {username: "N19DCCN003", hoTen: "Nguyen Van B", ngaySinh: "15/05/2001", gioiTinh: true, cmnd:"0123456789"},
-//     {username: "N19DCCN005", hoTen: "Tran Quang D", ngaySinh: "22/07/2001", gioiTinh: true, cmnd:"0123456789"},
-//     {username: "N19DCCN007", hoTen: "Hoang Van E", ngaySinh: "21/11/2001", gioiTinh: true, cmnd:"0123456789"},
-//     {username: "N19DCCN011", hoTen: "Huynh Thi Thanh F", ngaySinh: "21/02/2001", gioiTinh: false, cmnd:"0123456789"},
-//     {username: "N19DCCN021", hoTen: "Pham Van G", ngaySinh: "14/04/2001", gioiTinh: true, cmnd:"0123456789"},
-//     {username: "N19DCCN030", hoTen: "Nguyen Van H", ngaySinh: "18/07/2001", gioiTinh: true, cmnd:"0123456789"},
-//     {username: "N19DCCN031", hoTen: "Le Van K", ngaySinh: "01/12/2001", gioiTinh: true, cmnd:"0123456789"}, 
-//     {username: "N19DCCN032", hoTen: "Le Thi K", ngaySinh: "01/12/2001", gioiTinh: false, cmnd:"0123456789"}, 
-//     {username: "N19DCCN033", hoTen: "Le Van K", ngaySinh: "01/12/2001", gioiTinh: true, cmnd:"0123456789"}, 
-//     {username: "N19DCCN034", hoTen: "Le Thi K", ngaySinh: "01/12/2001", gioiTinh: false, cmnd:"0123456789"}, 
-//     {username: "N19DCCN035", hoTen: "Tran Quang K", ngaySinh: "01/12/2001", gioiTinh: true, cmnd:"0123456789"}, 
-// ]
 
-export default function StudentsDashboard() {
 
+export default function StudentsDashboard() { 
     const [students, setStudents] = useState([])
-
     const [typeSort, setTypeSort] = useState(true)
+    const [amountElement, setAmountElement] = useState(20)
     useEffect(()=>{
-        MGMTService.getListStudentInDorm(20, 'username', typeSort).then(res=>{
+        MGMTService.getListStudentInDorm(amountElement, 'username', typeSort).then(res=>{
             setStudents(res.data)
         }).catch((error)=>{
             if(error.response){
                 console.log(error.response.data)
             }
         })
-    })
+    },[])
 
     function handleChangeSort(){
-        MGMTService.getListStudentInDorm(10, 'username', typeSort).then(res=>{
+        
+        MGMTService.getListStudentInDorm(amountElement, 'username', !typeSort).then(res=>{
+            // console.log(res.data.length)
+            setTypeSort(!typeSort)
             setStudents(res.data)
         }).catch((error)=>{
             if(error.response){
@@ -63,34 +51,86 @@ export default function StudentsDashboard() {
         })
     }
 
-}
-export default function StudentsDashboard() { 
-    const [filterValues, setFilterValues] = useState({
-        studentID: "",
-        gender: "all",
-        status: 'all',
-    });
+
+    // const [filterValues, setFilterValues] = useState({
+    //     studentID: "",
+    //     gender: "all",
+    //     status: 'all',
+    // });
     const [isLoading, setIsLoading] = useState(false);
     const [studentId, setStudentId] = useState(null);
 
     // Student Info display on info dashboard
     const studentInfo = students.find(student => student.username == studentId);
 
-    // Student array have been filtered
-    const filteredStudents = students.filter(student => {
-        const checkedName = student.hoTen.includes(filterValues.studentID.trim());
-        const checkedID = student.username.includes(filterValues.studentID.trim());
-        const checkedStatus = filterValues.status == "all" ? true : student.status + "" == filterValues.status;
-        const checkedGender = filterValues.gender == "all" ? true : student.gender + "" == filterValues.gender;
+    // // Student array have been filtered
+    // const filteredStudents = students.filter(student => {
+    //     const checkedName = student.hoTen.includes(filterValues.studentID.trim());
+    //     const checkedID = student.username.includes(filterValues.studentID.trim());
+    //     const checkedStatus = filterValues.status == "all" ? true : student.status + "" == filterValues.status;
+    //     const checkedGender = filterValues.gender == "all" ? true : student.gender + "" == filterValues.gender;
 
-        if ((checkedID || checkedName) && checkedStatus && checkedGender)
-            return true;
-        return false;
-    })
+    //     if ((checkedID || checkedName) && checkedStatus && checkedGender)
+    //         return true;
+    //     return false;
+    // })
 
   
     function handleShowMore() {
         
+        MGMTService.getListStudentInDorm(amountElement+20, 'username', typeSort).then(res=>{
+            setAmountElement(amountElement+20)
+            setStudents(res.data)
+        }).catch((error)=>{
+            if(error.response){
+                console.log(error.response.data)
+            }
+        })
+    }
+
+    const [textValue, setTextValue] = useState('')
+    function lookupById(text){
+        // search function
+        if(/^[a-z]/i.test(text) || text.length==0 || /^[0-9]/i.test(text)){
+            setTextValue(text)
+            MGMTService.getListStudentSearch(text,text).then(res=>{
+                setStudents(res.data)
+            }).catch((error)=>{
+                if(error.response){
+                    console.log(error.response.data)
+                }
+            })
+        }
+    }
+
+    function genderSelection(selected){
+        MGMTService.getListStudentInDorm(amountElement, 'username', !typeSort, selected).then(res=>{
+            // console.log(res.data.length)
+            setTypeSort(!typeSort)
+            setStudents(res.data)
+        }).catch((error)=>{
+            if(error.response){
+                console.log(error.response.data)
+            }
+        })
+    }
+
+    async function requestSyncStudents(){
+        try{
+            setIsLoading(true)
+            const res= await MGMTService.syncStudents()
+            setIsLoading(false)
+            return res.data
+        }catch(error){
+            if(error.response){
+                console.log(error.response.data)
+            }
+        }
+        
+        // MGMTService.syncStudents().then((res)=>{
+            
+        //     console.log(res.data)
+        // })
     }
 
     const [sectionId, setSectionId] = useState(0);
@@ -99,12 +139,14 @@ export default function StudentsDashboard() {
             id: 0,
             section: 
                 <SectionStudentList 
-                    filteredStudents={filteredStudents}
+                    filteredStudents={students}
                     isLoading={isLoading}
-                    setIsLoading={setIsLoading} 
                     setStudentId={setStudentId}
                     setSectionId={setSectionId}
                     handleShowMore={handleShowMore}
+                    
+                    requestSyncStudents={requestSyncStudents}
+                    handleChangeSort={handleChangeSort}
                 />,
         },
         {
@@ -123,8 +165,10 @@ export default function StudentsDashboard() {
             {/* *** Header contains filter fields *** */}
             <HeaderSection> 
                 <SectionFilter 
-                    filterValues={filterValues}
-                    handleChangeFilterValues={setFilterValues} />
+                    lookupById={lookupById}
+                    textValue={textValue}
+                    genderSelection={genderSelection}
+                    />
             </HeaderSection>
 
 
@@ -144,17 +188,34 @@ function SectionStudentList({
     filteredStudents,
     isLoading,
     setStudentId,
-    setIsLoading,
     setSectionId,
     handleShowMore,
+
+    handleChangeSort,
+    requestSyncStudents
 }) {
-   
+    function handleClickHeader(){       
+        handleChangeSort() 
+    }
+
     return (
     <>
         <header className="flex-shrink-0 grid grid-flow-col grid-cols-5 w-full h-12 font-bold rounded-tl-lg rounded-tr-lg overflow-hidden shadow-sm">
         {
             sortingButtons.map(button => 
-                <OrderButtoon 
+                button.id==0 ?
+                    <OrderButtoon 
+                    key={button.id}
+                    button={button}
+                    handleClick={handleClickHeader}
+                    children={
+                        <FontAwesomeIcon
+                        icon={faSort}
+                        className="text-xl pl-2 text-primary"
+                        />
+                      }
+                    /> :
+                    <OrderButtoon 
                     key={button.id}
                     button={button}
                 />)
@@ -188,8 +249,10 @@ function SectionStudentList({
             <button 
                 className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
                 onClick={() => {
-                    setIsLoading(true);
-                    setTimeout(() => setIsLoading(false), 1000)
+                    // handleClickSync()    
+                    
+                    requestSyncStudents()
+                    
                 }}
             >
                 Sync
@@ -209,26 +272,30 @@ function SectionStudentList({
 }
 
 function SectionFilter({
-    filterValues,
-    handleChangeFilterValues,
+    
+
+    lookupById,
+    textValue,
+    genderSelection
+
 }) {
+    
     return (
-        <section className="grid grid-cols-4 h-full gap-4 grow">
+        <section className="grid grid-cols-3 h-full gap-4 grow">
             <InputFilter
-                textValue={filterValues.studentID}
+                // textValue={filterValues.studentID}
+                textValue={textValue}
                 handleTextChange={nextText => {
-                    handleChangeFilterValues({
-                        ...filterValues,
-                        studentID: nextText,
-                    })
+                    lookupById(nextText)
                 }}
+                
                 placeholder="Type student ID here.."
             />
 
-            <FilterSelection
+            {/* <FilterSelection
                 title="Status"
                 options={[
-                    {text: "All", value: "all"},
+                    // {text: "All", value: "all"},
                     {text: "In Dormitory", value: true},
                     {text: "Out Dormitory", value: false},
                 ]}
@@ -238,20 +305,17 @@ function SectionFilter({
                         status: nextStatus,
                     })
                 }}
-            />
+            /> */}
 
             <FilterSelection
                 title="Gender"
                 options={[
-                    {text: "All", value: "all"},
+                    {text: "All", value: ''},
                     {text: "Male", value: true},
                     {text: "Female", value: false},
                 ]}
-                handleChangeSelection={nextStatus => {
-                    handleChangeFilterValues({
-                        ...filterValues,
-                        gender: nextStatus,
-                    })
+                handleChangeSelection={selected=>{
+                    genderSelection(selected)
                 }}
             />
         </section>

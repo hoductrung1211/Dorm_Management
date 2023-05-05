@@ -5,7 +5,7 @@ import AttributeText from '../../ui/attribute-text';
 import ActionButton from "../../ui/button-action";
 import SectionInfoHeader from "../../layouts/info-header.section";
 import InputEditing from "../../ui/input-editing";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SelectEditing from "../../ui/select-editing";
 import TextareaEditing from "../../ui/textarea-editing";
 import InputImageEditing from "../../ui/input-image-editing";
@@ -15,13 +15,14 @@ export default function SectionRoomTypeEditing({
     setSectionId,
 }) {
     const [tempInfo, setTempInfo] = useState({
-        typeName: "",
-        gender: true,
-        beds: 0,
-        cost: 100_000,
-        desc: "",
+        tenLoai: "",
+        gioiTinh: true,
+        soGiuong: 0,
+        giaPhong: 100_000,
+        description: "",
+        file: ""
     });
-
+    
     return (
         <>
             <SectionInfoHeader 
@@ -39,7 +40,7 @@ export default function SectionRoomTypeEditing({
                                 let result = confirm("Do you really want to save the changes?");
                                 if (result) {
                                     handleAddingRoomType(tempInfo);
-                                    setSectionId(0);
+                                    
                                 }
                             }}
                         />
@@ -49,10 +50,10 @@ export default function SectionRoomTypeEditing({
 
                 <section className="grid grid-cols-3 gap-3 w-full h-full ">
                     <DescriptionSection
-                        info={tempInfo.desc}
+                        info={tempInfo.description}
                         handleChangeDesc={nextDesc => setTempInfo({
                             ...tempInfo,
-                            desc: nextDesc,
+                            description: nextDesc,
                         })}
                     />
                     
@@ -69,7 +70,10 @@ function ImageSection({
     return (
         <section className="w-full h-full flex justify-center items-center">
             <div className="relative w-10/12 aspect-square">
-                <InputImageEditing />
+                <InputImageEditing handleChange={nextFile => handleChangeInfo({
+                        ...info,
+                        file: nextFile.target.files[0],
+                    })}/>
             </div>
         </section>
     )
@@ -85,10 +89,10 @@ function InfoSection({
             <AttributeText title="Type name">
                 <InputEditing 
                     icon={faDiamond} 
-                    value={info.typeName}
+                    value={info.tenLoai}
                     handleChange={nextTypeName => handleChangeInfo({
                         ...info,
-                        typeName: nextTypeName,
+                        tenLoai: nextTypeName,
                     })} />
             </AttributeText>
             <AttributeText title="For gender">
@@ -98,30 +102,30 @@ function InfoSection({
                         {text: "Male", value: true},
                         {text: "Female", value: false},
                     ]}
-                    value={info.gender}
+                    value={info.gioiTinh}
                     handleChange={nextGender => handleChangeInfo({
                         ...info,
-                        gender: nextGender == "true" ? true : false,
+                        gioiTinh: nextGender
                     })}
                 />
             </AttributeText>
             <AttributeText title="Number of beds">
                 <InputEditing 
                     icon={faBed} 
-                    value={info.beds} type="number"
+                    value={info.soGiuong} type="number"
                     handleChange={nextBeds => handleChangeInfo({
                         ...info,
-                        beds: nextBeds,
+                        soGiuong: nextBeds,
                     })} />
             </AttributeText>
             <AttributeText title="Cost">
                 <InputEditing 
                     icon={faMoneyBill} 
-                    value={info.cost} 
+                    value={info.giaPhong} 
                     type="number"
                     handleChange={nextCost => handleChangeInfo({
                         ...info, 
-                        cost: nextCost,
+                        giaPhong: nextCost,
                     })}    
                 />
             </AttributeText>

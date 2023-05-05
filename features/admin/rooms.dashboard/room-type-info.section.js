@@ -59,19 +59,18 @@ export default function SectionRoomTypeInfo({
 }
 
 
-function ImageSection({ info: {imgUrl, cost}}) {
+function ImageSection({ info: {image, giaPhong}}) {
     return (
         <section className="w-full">
             <div className="relative w-10/12 aspect-square">
-                <Image
+                <img
                     className="object-cover rounded-lg"
-                    src={imgUrl}
+                    src={image}
                     alt="A picture of room"
-                    fill
                 />
             </div>
             <AttributeText title="Cost">
-                <AttributeValue icon={faMoneyBill} value={moneyConverter(cost)} />
+                <AttributeValue icon={faMoneyBill} value={moneyConverter(giaPhong)} />
             </AttributeText>
         </section>
     )
@@ -79,9 +78,9 @@ function ImageSection({ info: {imgUrl, cost}}) {
 
 function InfoSection({info: {
     id,
-    type,
-    gender,
-    beds,
+    tenLoai,
+    gioiTinh,
+    soGiuong,
 }}) {
     return (
         <section className="relative w-full ">
@@ -91,13 +90,13 @@ function InfoSection({info: {
                 </span>
             </AttributeText>
             <AttributeText title="Type name">
-                <AttributeValue icon={faDiamond} value={type == 0 ? 'standard' : type == 1 ? 'deluxe' : 'premium'} />
+                <AttributeValue icon={faDiamond} value={tenLoai} />
             </AttributeText>
             <AttributeText title="For gender">
-                <AttributeValue icon={gender ? faMars : faVenus} value={gender ? 'male' : 'female' } />
+                <AttributeValue icon={gioiTinh ? faMars : faVenus} value={gioiTinh ? 'male' : 'female' } />
             </AttributeText>
             <AttributeText title="Number of beds">
-                <AttributeValue icon={faBed} value={beds } />
+                <AttributeValue icon={faBed} value={soGiuong } />
             </AttributeText>
         </section>
     )
@@ -125,7 +124,7 @@ function DescriptionSection({
         <div className="col-span-2 flex flex-col">
             <AttributeText title="Description" />
             <p className="h-full flex flex-col gap-2 border-2 rounded-md p-2">
-                {info.desc}
+                {info.description}
             </p>
         </div>
         </>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import HeaderSection from "../../layouts/section-header";
 import Container from "../../user/layouts/db-container";
 import InputFilter from "../../ui/input-filter";
@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotate } from "@fortawesome/free-solid-svg-icons";
 import DataColumn from "../../ui/data.column";
 import {moneyConverter} from '../../utils/convert'; 
+import MGMTService from "../../../pages/api/service/MGMT-ContractService"
+
 
 const sortingButtons = [
     {id: 0, text: "ID"}, 
@@ -18,24 +20,10 @@ const sortingButtons = [
     {id: 5, text: "Status" }
 ]
 
-const initContracts = [
-    {id: "001", studentId: "N19DCCN010", roomId: "001", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true},
-    {id: "002", studentId: "N19DCCN011", roomId: "001", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: false},
-    {id: "003", studentId: "N19DCCN012", roomId: "001", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true},
-    {id: "004", studentId: "N19DCCN013", roomId: "001", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: false},
-    {id: "005", studentId: "N19DCCN014", roomId: "002", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true},
-    {id: "006", studentId: "N19DCCN015", roomId: "002", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true},
-    {id: "007", studentId: "N19DCCN016", roomId: "002", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: false},
-    {id: "008", studentId: "N19DCCN017", roomId: "002", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true},
-    {id: "009", studentId: "N19DCCN018", roomId: "003", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: false}, 
-    {id: "010", studentId: "N19DCCN019", roomId: "003", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true}, 
-    {id: "011", studentId: "N19DCCN020", roomId: "003", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: false}, 
-    {id: "012", studentId: "N19DCCN021", roomId: "003", gender: true, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true}, 
-    {id: "013", studentId: "N19DCCN022", roomId: "004", gender: false, dateBegin: "23/02/2023", dateEnd: "01/03/2023", cost: 1_000_000, status: true}, 
-]
+
 
 export default function ContractDashboard() {
-    const [contracts, setContracts] = useState(initContracts);
+    const [contracts, setContracts] = useState([]);
     const [filterValues, setFilterValues] = useState({
         id: "",
         studentId: "",
@@ -45,24 +33,86 @@ export default function ContractDashboard() {
     });
     const [selectedRowID, setSelectedRowID] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [rooms, setRooms] = useState([])
+    const [terms, setTerms] = useState([])
+    // data dropdown
+    const [status, setStatus] = useState(false)
+    const [idRoom, setIdRoom] = useState(0)
+    const [idTerm, setIdTerm] = useState(0)
+    const [elements, setElements] = useState(10)
+    // Search box 
+    const [textValue, setTextValue] = useState('')
 
-    // contract array have been filtered
-    const filteredContracts = contracts.filter(contract => {
-        // const checkedID = contract.id.includes(filterValues.id.trim());  
-        const studentId = contract.studentId.toLowerCase().includes(filterValues.studentId.trim().toLowerCase());
+    function loadAllContract(elm, idRoom, idTerm, status ){
+        if(elm===undefined)
+            elm=elements
         
-        const roomId = filterValues.roomId == 'all' ? true : contract.roomId  == filterValues.roomId;
+        MGMTService.getListContract(elm, idRoom, idTerm, status).then(res=>{
+            setContracts(res.data)
+                
+        }).catch((error)=>{
+            if(error.response){
+                console.log(error.response.data)
+            }
+        })
+    }
+    function loadDropDownTerm(){
+        MGMTService.getListTerm().then(res=>{        
+            setTerms(res.data)
+        }).catch((error)=>{
+            if(error.response){
+                console.log(error.response.data)
+            }
+        })
+    }
+    function loadDropDownIdRoom(status){
+        MGMTService.getListIdRoom(status).then(res=>{        
+            setRooms(res.data)
+        }).catch((error)=>{
+            if(error.response){
+                console.log(error.response.data)
+            }
+        })
+    }
+    function selectedIdRoom(id){
+        setIdRoom(id)
+        loadAllContract(elements, id, idTerm, status)
+    }
+    function selectedTerm(term){
+        setIdTerm(term)
+        loadAllContract(elements, idRoom, term, status)
+    }
+    function selectedStatus(stt){
+        setStatus(stt)
+        loadDropDownIdRoom(stt)
+        loadAllContract(elements, idRoom, idTerm, stt)
+    }
+    function valueSearching(text){
+        setTextValue(text)
+        if(text.length==0){
+            loadAllContract()
+        }
+        else{
+            MGMTService.searchListContract(text).then((res)=>{
+                setContracts(res.data)
+            }).catch((error)=>{
+                
+                if(error.response){
+                    console.log(error.response.data)
+                }
+            })
+        }
+        
+    }
+    useEffect(()=>{
+        loadAllContract()
+        loadDropDownIdRoom(status)
+        loadDropDownTerm()
+    },[])
 
-        const checkedStatus = filterValues.status == "all" ? true : contract.status + "" == filterValues.status;
-        const checkedGender = filterValues.gender == "all" ? true : contract.gender + "" == filterValues.gender;
-
-        if ( roomId &&  studentId && checkedStatus && checkedGender)
-            return true;
-        return false;
-    })
     const rowClassName = " flex-shrink-0 grid grid-cols-6 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa ";
     const seletectRowClassName = rowClassName + " bg-fa border-l-2 border-r-2 "
-    const selectedRow = selectedRowID == null ? null : filteredContracts.find(invoice => invoice.id == selectedRowID);
+    const selectedRow = selectedRowID == null ? null : contracts.find(invoice => invoice.id == selectedRowID);
 
     function handleSelectRow(nextID) {
         if (nextID == selectedRowID)
@@ -70,20 +120,19 @@ export default function ContractDashboard() {
         setSelectedRowID(nextID);
     }
     function handleMarkStatus() {
-        setContracts(filteredContracts.map(contract => {
-            if (contract.id == selectedRowID)
-                return {
-                    ...contract,
-                    status: !contract.status,
-                }
-            return contract;
-        }));
-
-        setSelectedRowID(null);
+        MGMTService.updateStatusContract(selectedRow.id).then(res=>{
+            console.log(res.data)
+            loadAllContract()
+        }).catch((error)=>{
+            if(error.response){
+                console.log(error.response.data)
+            }
+        })
     }
 
     function handleShowMore() {
-        
+        loadAllContract(elements+5, idRoom, idTerm, status)
+        setElements(elements+5)
     }
 
     return (
@@ -91,8 +140,14 @@ export default function ContractDashboard() {
             {/* *** Header contains filter fields *** */}
             <HeaderSection> 
                 <SectionFilter 
-                    filterValues={filterValues}
-                    handleChangeFilterValues={setFilterValues} />
+                    rooms={rooms}
+                    selectedIdRoom={selectedIdRoom}
+                    terms={terms}
+                    selectedTerm={selectedTerm}
+                    selectedStatus={selectedStatus}
+                    valueSearching={valueSearching}
+                    textValue={textValue}
+                    />
             </HeaderSection>
 
 
@@ -112,17 +167,17 @@ export default function ContractDashboard() {
                         
                         {/* contract info rows */}
                         <main className="h-full w-full flex flex-col overflow-auto">
-                        {filteredContracts.map( contract => 
+                        {contracts.map( contract => 
                             <div 
                                 key={contract.id} className={selectedRowID == contract.id ? seletectRowClassName : rowClassName}
                                 onClick={() => handleSelectRow(contract.id)}
                             >
                                 <DataColumn text={contract.id} /> 
-                                <DataColumn text={contract.studentId} /> 
-                                <DataColumn text={contract.roomId} /> 
-                                <DataColumn text={contract.dateBegin + " - " + contract.dateEnd} />
-                                <DataColumn text={moneyConverter(contract.cost)} />
-                                <DataColumn text={contract.status ? "Paid" : "Unpaid"} className={"font-bold " + (contract.status ? " text-green " : " text-b")} />
+                                <DataColumn text={contract.mssv} /> 
+                                <DataColumn text={contract.idPhongKTX} /> 
+                                <DataColumn text={contract.ngayLamDon} />   
+                                <DataColumn text={moneyConverter(contract.tongTien)} />
+                                <DataColumn text={contract.trangThai ? "Paid" : "Unpaid"} className={"font-bold " + (contract.trangThai ? " text-green " : " text-b")} />
                             </div>
                         )}
                         </main>
@@ -133,10 +188,14 @@ export default function ContractDashboard() {
                                 className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
                                 onClick={() => {
                                     setIsLoading(true);
-                                    setTimeout(() => setIsLoading(false), 1000)
+                                    
+                                    setTimeout(() => {
+                                        setIsLoading(false)
+                                        loadAllContract()
+                                    }, 700)
                                 }}
                             >
-                                Sync
+                                Reload
                                 {isLoading && <FontAwesomeIcon className="ml-4 animate-spin" icon={faRotate} />}
                             </button>
                             { selectedRow && <ActionsBoard selectedRow={selectedRow} handleAction={handleMarkStatus} />}
@@ -157,75 +216,32 @@ export default function ContractDashboard() {
  
 
 function SectionFilter({
-    filterValues,
-    handleChangeFilterValues,
+    rooms,
+    terms,
+    selectedStatus,
+    selectedIdRoom,
+    selectedTerm,
+    textValue,
+    valueSearching,
 }) {
-    // Call API here to get list
-    const rooms = [
-        {id: "001", typeName: "standard", },
-        {id: "002", typeName: "standard", },
-        {id: "003", typeName: "standard", },
-        {id: "004", typeName: "standard", },
-        {id: "005", typeName: "standard", },
-        {id: "006", typeName: "standard", },
-        {id: "007", typeName: "standard", },
-        {id: "008", typeName: "standard", },
-        {id: "009", typeName: "standard", },
-        {id: "010", typeName: "standard", },
-        {id: "011", typeName: "standard", },
-        {id: "012", typeName: "standard", },
-        {id: "013", typeName: "standard", },
-        {id: "014", typeName: "standard", },
-        {id: "015", typeName: "standard", },
-        {id: "016", typeName: "standard", },
-        {id: "017", typeName: "standard", },
-        {id: "018", typeName: "standard", },
-        {id: "019", typeName: "standard", },
-        {id: "020", typeName: "standard", },
-    ]
-
-    const terms = [
-        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
-        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
-        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
-        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
-        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
-        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
-        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
-        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
-        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
-        {dateBegin: "01/01/2023", dateEnd: "02/05/2023"},
-    ]
-
+    
+    
     return (
-        <section className="grid grid-cols-5 h-full gap-4 grow">
-            {/* <InputFilter
-                textValue={filterValues.id}
-                handleTextChange={nextText => {
-                    handleChangeFilterValues({
-                        ...filterValues,
-                        id: nextText,
-                    })
-                }}
-                placeholder="Type contract ID here.."
-            /> */}
+        <section className="grid grid-cols-4 h-full gap-4 grow">
 
             <InputFilter
-                textValue={filterValues.studentId}
+                textValue={textValue}
                 handleTextChange={nextText => {
-                    handleChangeFilterValues({
-                        ...filterValues,
-                        studentId: nextText,
-                    })
+                    valueSearching(nextText)
                 }}
-                placeholder="Type student ID here.."
+                placeholder="Type student ID or ID here.."
             />
   
             <FilterSelection
                 title="Room"
                 options={
                     [
-                        {text: "All", value: "all"},
+                        {text: "All", value: "0"},
                         ...rooms.map(room => ({
                             text: room.id,
                             value: room.id,
@@ -233,11 +249,9 @@ function SectionFilter({
                     ]
                     
                 }
-                handleChangeSelection={nextStatus => {
-                    handleChangeFilterValues({
-                        ...filterValues,
-                        roomId: nextStatus,
-                    })
+                handleChangeSelection={idRoom => {
+                    selectedIdRoom(idRoom)
+                  
                 }}
             />
 
@@ -245,34 +259,28 @@ function SectionFilter({
                 title="Term"
                 options={
                     [
-                        {text: "All", value: "all"},
-                        ...rooms.map(room => ({
-                            text: room.id,
-                            value: room.id,
+                        {text: "All", value: "0"},
+                        ...terms.map(term => ({
+                            text: term.ngayMoDangKy,
+                            value: term.id,
                         }))
                     ]
                     
                 }
-                handleChangeSelection={nextStatus => {
-                    handleChangeFilterValues({
-                        ...filterValues,
-                        roomId: nextStatus,
-                    })
+                handleChangeSelection={term => {
+                    selectedTerm(term)
+                    
                 }}
             />
 
             <FilterSelection
                 title="Status"
                 options={[
-                    {text: "All", value: "all"},
-                    {text: "Paid", value: true},
                     {text: "Unpaid", value: false},
+                    {text: "Paid", value: true},
                 ]}
-                handleChangeSelection={nextStatus => {
-                    handleChangeFilterValues({
-                        ...filterValues,
-                        status: nextStatus,
-                    })
+                handleChangeSelection={stt => {
+                    selectedStatus(stt)
                 }}
             />
  
@@ -294,7 +302,7 @@ function ActionsBoard({
             className={classname}
             onClick={handleAction}
         >
-        {selectedRow.status ? "Mark Unpaid" : "Mark paid"}
+        {selectedRow.trangThai ? "Mark Unpaid" : "Mark paid"}
         </button>
         </>
     )

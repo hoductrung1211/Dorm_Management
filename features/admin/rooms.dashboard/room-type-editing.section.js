@@ -5,7 +5,7 @@ import AttributeText from '../../ui/attribute-text';
 import ActionButton from "../../ui/button-action";
 import SectionInfoHeader from "../../layouts/info-header.section";
 import InputEditing from "../../ui/input-editing";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SelectEditing from "../../ui/select-editing";
 import TextareaEditing from "../../ui/textarea-editing";
 
@@ -14,8 +14,15 @@ export default function SectionRoomTypeEditing({
     handleUpdateInfo,
     setSectionId,
 }) {
-    const [tempInfo, setTempInfo] = useState(info);
 
+    useEffect(()=>{
+        info.file=''
+    },[info])
+
+    
+    // console.log(info)
+    const [tempInfo, setTempInfo] = useState(info);
+    
     return (
         <>
             <SectionInfoHeader 
@@ -33,7 +40,7 @@ export default function SectionRoomTypeEditing({
                                 let result = confirm("Do you really want to save the changes?");
                                 if (result) {
                                     handleUpdateInfo(tempInfo);
-                                    setSectionId(1);
+                                    
                                 }
                             }}
                         />
@@ -70,24 +77,35 @@ function ImageSection({
     info,
     handleChangeInfo,
 }) {
+    function handleChangeFile(select){
+        handleChangeInfo({
+            ...info,
+            file: select.target.files[0],
+        })
+    }
     return (
         <section className="w-full">
             <div className="relative w-10/12 aspect-square">
-                <Image
+                <img
+                    id="image_changed"
                     className="object-cover rounded-lg"
-                    src={info.imgUrl}
+                    src={info.image}
                     alt="A picture of room"
-                    fill
                 />
+                <label className="h-12 w-full flex justify-center items-center outline-none">
+                    <input 
+                        type="file" name="file" onChange={handleChangeFile} accept="image/gif, image/jpeg, image/png"
+                    />
+                </label>
             </div>
             <AttributeText title="Cost">
                 <InputEditing 
                     icon={faMoneyBill} 
-                    value={info.cost} 
+                    value={info.giaPhong} 
                     type="number"
                     handleChange={nextCost => handleChangeInfo({
                         ...info, 
-                        cost: nextCost,
+                        giaPhong: nextCost,
                     })}    
                 />
             </AttributeText>
@@ -109,33 +127,34 @@ function InfoSection({
             <AttributeText title="Type name">
                 <InputEditing 
                     icon={faDiamond} 
-                    value={info.typeName}
+                    value={info.tenLoai}
                     handleChange={nextTypeName => handleChangeInfo({
                         ...info,
-                        typeName: nextTypeName,
+                        tenLoai: nextTypeName,
                     })} />
             </AttributeText>
             <AttributeText title="For gender">
                 <SelectEditing
+
                     icon={faMarsAndVenus}
                     options={[
                         {text: "Male", value: true},
                         {text: "Female", value: false},
                     ]}
-                    value={info.gender}
+                    value={info.gioiTinh}
                     handleChange={nextGender => handleChangeInfo({
                         ...info,
-                        gender: nextGender == "true" ? true : false,
+                        gioiTinh: nextGender == "true" ? true : false,
                     })}
                 />
             </AttributeText>
             <AttributeText title="Number of beds">
                 <InputEditing 
                     icon={faBed} 
-                    value={info.beds} type="number"
+                    value={info.soGiuong} type="number"
                     handleChange={nextBeds => handleChangeInfo({
                         ...info,
-                        beds: nextBeds,
+                        soGiuong: nextBeds,
                     })} />
             </AttributeText>
         </section>
@@ -168,10 +187,10 @@ function DescriptionSection({
                 A standard room is a basic dormitory room that includes essential furnishings such as a bed, desk, and storage space. This option is typically the most affordable and may include access to shared common areas such as kitchens, lounges, and study spaces.
             </p> */}
             <TextareaEditing
-                value={info.desc}
+                value={info.description}
                 handleChange={nextDesc => handleChangeInfo({
                         ...info,
-                        desc: nextDesc,
+                        description: nextDesc,
                     })} 
             />
         </div>

@@ -9,35 +9,46 @@ export default function SectionTermAdding({
     handleAddingTerm,
 }) {
 
+    function mockDate(num){
+        let currentDate = new Date();
+        let nextDay = new Date();
+        nextDay.setDate(currentDate.getDate() + 1 + num);
+        return nextDay.toISOString().slice(0, 10);
+    }
+    function formatDate(date){
+        var isoDate=  date.split("-").reverse().join("/")
+        return isoDate;
+    }
+
     const [tempInfo, setTempInfo] = useState({
-        startDate: null,
-        endDate: null,
-        formDeadline: null,
-        feeDeadline: 0,
+        ngayMoDangKy: mockDate(0),
+        ngayKetThuc: mockDate(92),
+        ngayKetThucDangKy: mockDate(5),
+        hanDongPhi: 5,
     })
 
-    function authenInfo() {
-        if (tempInfo.startDate == null) {
-            alert("Cannot leave the Start Date blank!")
-            return false;
-        }
+    // function authenInfo() {
+    //     if (tempInfo.startDate == null) {
+    //         alert("Cannot leave the Start Date blank!")
+    //         return false;
+    //     }
         
-        else if (tempInfo.endDate == null) {
-            alert("Cannot leave the End Date blank!")
-            return false;
-        }
+    //     else if (tempInfo.endDate == null) {
+    //         alert("Cannot leave the End Date blank!")
+    //         return false;
+    //     }
         
-        else if (tempInfo.formDeadline == null) {
-            alert("Cannot leave the Form deadline blank!")
-            return false;
-        }
-        else if (tempInfo.feeDeadline == 0) {
-            alert("Cannot leave the fee Deadline equals 0!")
-            return false;
-        }
+    //     else if (tempInfo.formDeadline == null) {
+    //         alert("Cannot leave the Form deadline blank!")
+    //         return false;
+    //     }
+    //     else if (tempInfo.feeDeadline == 0) {
+    //         alert("Cannot leave the fee Deadline equals 0!")
+    //         return false;
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     return (
         <>
@@ -56,11 +67,11 @@ export default function SectionTermAdding({
                 <AttributeText title="Start date">
                     <InputEditing 
                         icon={faRightToBracket} 
-                        value={tempInfo.startDate} 
+                        value={tempInfo.ngayMoDangKy} 
                         type="date"
                         handleChange={nextDateStart => setTempInfo({
                             ...tempInfo,
-                            startDate: nextDateStart,
+                            ngayMoDangKy: nextDateStart,
                         })}
                     />
                 </AttributeText>
@@ -68,11 +79,11 @@ export default function SectionTermAdding({
                 <AttributeText title="End date">
                     <InputEditing 
                         icon={faRightFromBracket} 
-                        value={tempInfo.endDate} 
+                        value={tempInfo.ngayKetThuc} 
                         type="date"
                         handleChange={nextDateEnd => setTempInfo({
                             ...tempInfo,
-                            endDate: nextDateEnd,
+                            ngayKetThuc: nextDateEnd,
                         })}
                     />
                 </AttributeText>
@@ -80,11 +91,11 @@ export default function SectionTermAdding({
                 <AttributeText title="Form submission deadline">
                     <InputEditing 
                         icon={faCalendar} 
-                        value={tempInfo.formDeadline} 
+                        value={tempInfo.ngayKetThucDangKy} 
                         type="date"
                         handleChange={nextSubmissionDeadline => setTempInfo({
                             ...tempInfo,
-                            formDeadline: nextSubmissionDeadline,
+                            ngayKetThucDangKy: nextSubmissionDeadline,
                         })}
                     />
                 </AttributeText>
@@ -92,10 +103,10 @@ export default function SectionTermAdding({
                 <AttributeText title="Tuition fee deadline">
                     <InputEditing 
                         icon={faMoneyBill} 
-                        value={tempInfo.feeDeadline} 
+                        value={tempInfo.hanDongPhi} 
                         handleChange={nextFeeDeadline => setTempInfo({
                             ...tempInfo,
-                            feeDeadline: nextFeeDeadline,
+                            hanDongPhi: nextFeeDeadline,
                         })}
                     />
                 </AttributeText>
@@ -103,8 +114,13 @@ export default function SectionTermAdding({
 
             <section className="w-96 h-16 flex ">
                 <Button text="Save" handleClick={() => {
-                    if (authenInfo())
-                        handleAddingTerm(tempInfo)
+                    const term = {...tempInfo,
+                        ngayMoDangKy: formatDate(tempInfo.ngayMoDangKy),
+                        ngayKetThuc: formatDate(tempInfo.ngayKetThuc),
+                        ngayKetThucDangKy: formatDate(tempInfo.ngayKetThucDangKy)
+                    }
+                    handleAddingTerm(term)
+                        
                 }}/>
             </section>
         </main>
