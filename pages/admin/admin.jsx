@@ -3,7 +3,7 @@ import { userContext } from "../../features/user/user.context";
 import AdminNav from '../../features/admin/nav';
 import Main from "../../features/layouts/main";
 import { useRouter } from "next/router";
-import StudentsDashboard from "../../features/admin/students.dashboard";
+import AdminsDashboard from "../../features/admin/admin.dashboard";
 import {alertContext} from "../../features/utils/alert.context";
 import Alert from "../../features/ui/alert";
 import { useState } from "react";
@@ -18,7 +18,7 @@ export default function Page() {
         dateOfBirth: '01-01-2001',
     };
     const router = useRouter();
-    const activeNavID = 0;
+    const activeNavID = 5;
     
     function handleNavigate(nextURL) {
         router.push(nextURL); 
@@ -60,7 +60,7 @@ export default function Page() {
             </Sidebar>
 
             <Main>
-                <StudentsDashboard />
+                <AdminsDashboard />
             </Main>
 
             <Alert

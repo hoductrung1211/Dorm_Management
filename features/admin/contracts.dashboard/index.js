@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import HeaderSection from "../../layouts/section-header";
 import Container from "../../user/layouts/db-container";
 import InputFilter from "../../ui/input-filter";
@@ -9,7 +9,7 @@ import { faRotate } from "@fortawesome/free-solid-svg-icons";
 import DataColumn from "../../ui/data.column";
 import {moneyConverter} from '../../utils/convert'; 
 import MGMTService from "../../../pages/api/service/MGMT-ContractService"
-
+import { alertContext } from "../../utils/alert.context";
 
 const sortingButtons = [
     {id: 0, text: "ID"}, 
@@ -24,6 +24,8 @@ const sortingButtons = [
 
 export default function ContractDashboard() {
     const [contracts, setContracts] = useState([]);
+    const showAlert = useContext(alertContext);
+
     const [filterValues, setFilterValues] = useState({
         id: "",
         studentId: "",
@@ -193,6 +195,7 @@ export default function ContractDashboard() {
                                         setIsLoading(false)
                                         loadAllContract()
                                     }, 700)
+                                    showAlert(false, "Syncing failed");
                                 }}
                             >
                                 Reload

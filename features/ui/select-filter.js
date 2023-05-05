@@ -11,7 +11,7 @@ export default function FilterSelection({
                 onChange={e => handleChangeSelection(e.target.value)}    
             >
             {options.map(option => 
-                <option key={option.value} value={option.value+""}>{option.text}</option>
+                <option key={option.value} value={option.value + ""}>{option.text}</option>
             )}
             </select>
         </div>

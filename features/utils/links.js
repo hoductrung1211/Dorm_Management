@@ -23,4 +23,5 @@ export const managerURL = {
     invoices: '/admin/invoices',
     contracts: '/admin/contracts',
     terms: '/admin/terms ',
+    admins: '/admin/admin',
 }

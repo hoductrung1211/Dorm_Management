@@ -1,10 +1,33 @@
-export default function Page() {
+import { useRef } from "react"
+
+export default function RootComponent() {
+    const alertRef = useRef(null);
+
+
+    function handleToast() {
+        alertRef.current.classList.remove('hidden');
+
+        setTimeout(() => {
+            alertRef.current.classList.add('hidden')
+        }, 3000);
+    }
+
     return (
-        <div className="grid grid-flow-col">
-            <div className="col-span-1 h-80 bg-slate-100" />
-            <div className="col-span-1 h-80 bg-slate-900" />
-            <div className="col-span-1 h-80 bg-slate-100" />
-            <div className="col-span-1 h-80 bg-slate-900" />
-        </div>
+        <>
+            <button onClick={handleToast}>
+                Click me
+            </button>
+
+            <div 
+                id="alert" 
+                className="flex items-center gap-2 p-2 mt-10 bg-green-100"
+                ref={alertRef} 
+            >
+                <i className="fa-solid fa-circle-check text-xl text-green"></i>
+                <span className="type font-bold text-green">Successful</span>
+                <span className="message text-green">Add successfully</span>
+            </div>
+        </>
     )
 }
+
