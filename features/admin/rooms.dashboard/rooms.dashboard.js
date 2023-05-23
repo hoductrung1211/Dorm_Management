@@ -8,6 +8,7 @@ import SectionRoomEditing from "./room-editing.section";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMars, faVenus, faSortDown, faUnsorted, faSort, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import MGMTService from "../../../pages/api/service/MGMT-RoomService"
+import { alertContext } from "../../utils/alert.context";
 
 const sortingButtons = [
   {id: 0,text: "ID" },
@@ -22,9 +23,13 @@ const sortingButtons = [
 
 export default function SectionRooms({roomTypes, filtering}) {
   // const [status, setStatus] = useState(status)
-  
+  const showAlert = useContext(alertContext);
   const [rooms, setRooms] = useState([]);
   const [sortByType, setSortByType] = useState(false)
+  const [roomAlert, setRoomAlert] = useState({
+    type: true,
+    desc: 'Add Successfully'
+  })
   function getListRoom(){   
     MGMTService.listAllRoom(filtering.status, filtering.gender, filtering.roomType, filtering.id, sortByType).then(res=>{
       setRooms(res.data)
@@ -53,19 +58,28 @@ export default function SectionRooms({roomTypes, filtering}) {
   // Call API with PUT status, after that update the state
   function handleUpdateRoom(roomId, typeId) {
     MGMTService.updateRoom(roomId,typeId).then(res=>{
+      showAlert(true, res.data)
+      
       getListRoom()
     }).catch((error)=>{
       if(error.response){
-          console.log(error.response.data)
+        showAlert(false, error.response.data)
+          
+        console.log(error.response.data)
       }
     })
   }
 
   function handleDeleteRoom(roomId) {
     MGMTService.deleteRoom(roomId).then(res=>{
+      
+      showAlert(true, res.data)
       getListRoom()
+      setSectionId(0)
     }).catch((error)=>{
      if(error.response){
+        
+        showAlert(false, error.response.data)
          console.log(error.response.data)
      }
    })
@@ -74,9 +88,12 @@ export default function SectionRooms({roomTypes, filtering}) {
 
   function handleAddRoom(typeId) {
      MGMTService.addRoom(typeId, true).then(res=>{
-      getListRoom()
+        getListRoom()
+        showAlert(true, 'Add Successfully')
      }).catch((error)=>{
       if(error.response){
+        
+        showAlert(false, "Add Room Failed")
           console.log(error.response.data)
       }
     })
@@ -107,7 +124,7 @@ export default function SectionRooms({roomTypes, filtering}) {
       id: 1,
       section: (
         <SectionRoomInfo
-          info={roomInfo}
+          roomInfo={roomInfo}
           setViewedId={setRoomId}
           setSectionId={setSectionId}
           handleDeleteRoom={handleDeleteRoom}

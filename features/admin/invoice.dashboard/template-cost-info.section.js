@@ -4,15 +4,16 @@ import AttributeText from '../../ui/attribute-text';
 import AttributeValue from '../../ui/attribute-value';
 import { moneyConverter } from "../../utils/convert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import MGMTService from "../../../pages/api/service/MGMT-InvoicesService"
+import { alertContext } from "../../utils/alert.context";
 
 export default function TemplateCostInfo({
     info,
     setSectionId,
     setInfoChanged
 }) {
-
+    const showAlert = useContext(alertContext);
     const [isEditing, setIsEditing] = useState(false);
     const formRef = useRef(null);
     
@@ -33,8 +34,10 @@ export default function TemplateCostInfo({
                 setInfoChanged(true)
                 console.log(res.data)
             })
+            showAlert(true, "Change cost successfully!")
             setSectionId(0);
         }catch(error){
+            showAlert(false, error.response.data)
             console.log(error.response.data)
         }
     

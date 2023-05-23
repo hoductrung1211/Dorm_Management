@@ -6,13 +6,21 @@ import AttributeValue from '../../ui/attribute-value';
 import ActionButton from "../../ui/button-action";
 import {moneyConverter} from '../../utils/convert';
 import SectionInfoHeader from "../../layouts/info-header.section";
-
+import { useContext, useEffect, useState } from "react";
+import { alertContext } from "../../utils/alert.context";
 export default function SectionRoomInfo({
-    info,
+    roomInfo,
     setSectionId,
     handleDeleteRoom,
+    // roomAlert
 }) {
-    info= info.phongKTX
+    const info= {...roomInfo.phongKTX}
+    // const [info, setInfo] = useState({})
+    // useEffect(()=>{
+    //     console.log(roomInfo.phongKTX)
+    //     setInfo(roomInfo.phongKTX)
+    // },[roomInfo])
+    // const showAlert = useContext(alertContext);
     return (
         <>
             <SectionInfoHeader 
@@ -38,7 +46,8 @@ export default function SectionRoomInfo({
                                 let result = confirm("Do you really want to delete this room?");
                                 if (result) {
                                     handleDeleteRoom(info.id)
-                                    setSectionId(0);
+                                    // showAlert(roomAlert.type, roomAlert.desc)
+                                    // roomAlert.type && setSectionId(0);
                                 }
                             }}
                         />

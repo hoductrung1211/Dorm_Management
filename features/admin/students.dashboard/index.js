@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, use } from "react";
 import HeaderSection from "../../layouts/section-header";
 import Container from "../../user/layouts/db-container";
 import InputFilter from "../../ui/input-filter";
@@ -9,7 +9,7 @@ import { faMars, faRotate, faVenus, faSortDown, faUnsorted, faSort, faSortUp } f
 import DataColumn from "../../ui/data.column";
 import SectionStudentInfo from "./student-info.section";
 import MGMTService from "../../../pages/api/service/MGMT-StudentService"
-
+import { alertContext } from "../../utils/alert.context";
 
 
 
@@ -25,13 +25,16 @@ const sortingButtons = [
 
 
 export default function StudentsDashboard() { 
+    const showAlert = useContext(alertContext);
     const [students, setStudents] = useState([])
     const [typeSort, setTypeSort] = useState(true)
     const [amountElement, setAmountElement] = useState(20)
+
     useEffect(()=>{
         MGMTService.getListStudentInDorm(amountElement, 'username', typeSort).then(res=>{
             setStudents(res.data)
-        }).catch((error)=>{
+        })
+        .catch((error)=>{
             if(error.response){
                 console.log(error.response.data)
             }
@@ -63,17 +66,6 @@ export default function StudentsDashboard() {
     // Student Info display on info dashboard
     const studentInfo = students.find(student => student.username == studentId);
 
-    // // Student array have been filtered
-    // const filteredStudents = students.filter(student => {
-    //     const checkedName = student.hoTen.includes(filterValues.studentID.trim());
-    //     const checkedID = student.username.includes(filterValues.studentID.trim());
-    //     const checkedStatus = filterValues.status == "all" ? true : student.status + "" == filterValues.status;
-    //     const checkedGender = filterValues.gender == "all" ? true : student.gender + "" == filterValues.gender;
-
-    //     if ((checkedID || checkedName) && checkedStatus && checkedGender)
-    //         return true;
-    //     return false;
-    // })
 
   
     function handleShowMore() {
@@ -119,7 +111,7 @@ export default function StudentsDashboard() {
         try{
             setIsLoading(true)
             const res= await MGMTService.syncStudents()
-            setIsLoading(false)
+            setIsLoading(false)            
             return res.data
         }catch(error){
             if(error.response){
@@ -162,7 +154,6 @@ export default function StudentsDashboard() {
     const section = displaySections.find(st => st.id == sectionId).section;
     return (
         <>
-            {/* *** Header contains filter fields *** */}
             <HeaderSection> 
                 <SectionFilter 
                     lookupById={lookupById}
@@ -194,6 +185,7 @@ function SectionStudentList({
     handleChangeSort,
     requestSyncStudents
 }) {
+    const showAlert = useContext(alertContext);
     function handleClickHeader(){       
         handleChangeSort() 
     }
@@ -248,11 +240,11 @@ function SectionStudentList({
         <footer className="flex-shrink-0 w-full h-14 flex gap-3 pt-2">
             <button 
                 className="w-32 h-full rounded-lg bg-primary text-white font-bold active:opacity-90 transition"
-                onClick={() => {
+                onClick={async() => {
                     // handleClickSync()    
                     
-                    requestSyncStudents()
-                    
+                    await requestSyncStudents()
+                    !isLoading ? showAlert(true, "Sync Successfully") : showAlert(false, "Sync Failed")
                 }}
             >
                 Sync

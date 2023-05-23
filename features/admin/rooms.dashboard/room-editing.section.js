@@ -14,16 +14,19 @@ import ActionButton from "../../ui/button-action";
 import { moneyConverter } from "../../utils/convert";
 import SectionInfoHeader from "../../layouts/info-header.section";
 import SelectEditing from "../../ui/select-editing";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { alertContext } from "../../utils/alert.context";
 
 export default function SectionRoomEditing({
   info,
   roomTypeList,
   setSectionId,
   handleUpdateRoom,
+  // roomAlert
 }) {
   info= info.phongKTX
   const [roomTypeId, setRoomTypeId] = useState(info.idLoaiKTX);
+  const showAlert = useContext(alertContext);
   const roomTypeInfo = roomTypeList.find(
     (roomType) => roomType.id == roomTypeId
   ); 
@@ -50,7 +53,8 @@ export default function SectionRoomEditing({
                     const result = confirm("Do you really want to save the changes?");
                     if (result) {
                         handleUpdateRoom(info.id, roomTypeId);
-                        setSectionId(1);
+                        // showAlert(roomAlert.type, roomAlert.desc)
+                        // roomAlert.type && setSectionId(1);
                     }
                 }}    
             />

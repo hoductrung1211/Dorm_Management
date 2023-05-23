@@ -8,6 +8,7 @@ import { authenticate } from "../auth-user";
 import Authentication from "../../../pages/api/admin-auth/AuthService"
 import {managerURL} from '../../utils/links'
 import { useRouter } from "next/router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 export default function LoginModal({

@@ -16,7 +16,6 @@ export default function Alert({
                     Success!
                 </p>
 
-    message = "Add successfully!"
 
     if (type == false) {
         bgColor = "bg-red-100";

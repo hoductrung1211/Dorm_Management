@@ -8,10 +8,10 @@ const getListContract=(numPage, idPhongKTX, idTerm, status)=>{
             idPhongKTX: idPhongKTX,
             idTerm: idTerm,
             status: status
-        }}
-    // ,{
-    //   headers: authHeader() 
-    // }
+        },
+        headers: authHeader() 
+    }
+    
     )
 }
 
@@ -19,10 +19,10 @@ const getListIdRoom=(status)=>{
     return axios.get(API_URL+"room/combobox",{
         params:{
             statusContract: status
-        }}
-    // ,{
-    //   headers: authHeader() 
-    // }
+        },
+        headers: authHeader() 
+    }
+   
     )
 }
 
@@ -30,20 +30,18 @@ const searchListContract=(id)=>{
     return axios.get(API_URL+"contract/search",{
         params:{
             id: id
-        }
+        },
+        headers: authHeader() 
+    
     }
-        
-    // ,{
-    //   headers: authHeader() 
-    // }
     )
 }
 
 const getListTerm=()=>{
     return axios.get(API_URL+ "term/",
-     // ,{
-    //   headers: authHeader() 
-    // }
+    {
+      headers: authHeader() 
+    }
     )
 }
 
@@ -52,11 +50,11 @@ const updateStatusContract=(idContract)=>{
         {
             params:{
                 idContract: idContract
-        }
+        },
+        headers: authHeader() 
+    
     }
-    // {
-        //   headers: authHeader() 
-        // }
+   
     )
 }
 const MGMTService={

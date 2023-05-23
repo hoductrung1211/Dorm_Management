@@ -1,14 +1,16 @@
 import {   faCalendar,   faMoneyBill, faRightFromBracket, faRightToBracket, faSquare } from "@fortawesome/free-solid-svg-icons";
 import SectionInfoHeader from "../../layouts/info-header.section";
 import AttributeText from '../../ui/attribute-text';
-import {  useState } from "react";
+import {  useState, useContext } from "react";
 import InputEditing from "../../ui/input-editing";
+import { alertContext } from "../../utils/alert.context";
 
 export default function SectionTermAdding({ 
     setSectionId,
     handleAddingTerm,
+    termAlert
 }) {
-
+    const showAlert = useContext(alertContext);
     function mockDate(num){
         let currentDate = new Date();
         let nextDay = new Date();
@@ -120,7 +122,7 @@ export default function SectionTermAdding({
                         ngayKetThucDangKy: formatDate(tempInfo.ngayKetThucDangKy)
                     }
                     handleAddingTerm(term)
-                        
+                    showAlert(termAlert.type, termAlert.desc)    
                 }}/>
             </section>
         </main>

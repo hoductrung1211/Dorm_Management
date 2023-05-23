@@ -4,11 +4,31 @@ import AdminNav from '../../features/admin/nav';
 import Main from "../../features/layouts/main";
 import { useRouter } from "next/router";
 import ContractDashboard from "../../features/admin/contracts.dashboard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {alertContext} from "../../features/utils/alert.context";
 import Alert from "../../features/ui/alert";
+import { managerURL } from "../../features/utils/links";
+import Authorities from "../api/admin-auth/AuthRoles"
 
 export default function Page() {
+    const router = useRouter(); 
+    const [authority, setAuthority]= useState(null)
+    function getAuthorities(){
+        Authorities().then(res=>{
+            console.log(res.data[0])
+            setAuthority(res.data[0]['authority']) 
+        }).catch(error=>{
+            console.log("error", error);
+            if(error.response.status==401){
+                router.push(managerURL.login)
+            }
+        })
+    }
+
+    useEffect(()=>{
+        getAuthorities()
+    },[authority])
+
     const user = {
         id: "N19DCCN018", 
         name: "Ho Duc Trung", 
@@ -16,7 +36,6 @@ export default function Page() {
         gender: true,
         dateOfBirth: '01-01-2001',
     };
-    const router = useRouter();
     const activeNavID = 3;
 
     function handleNavigate(nextURL) {
@@ -45,29 +64,35 @@ export default function Page() {
     }
 
     return (
-        <userContext.Provider value={user}>
-        <alertContext.Provider value={showAlert}>
-            <Sidebar
-                activeNavID={activeNavID}
-                handleNavigate={handleNavigate}
-            >
-                <AdminNav
+        <>
+            <userContext.Provider value={user}>
+            <alertContext.Provider value={showAlert}>
+                <Sidebar
                     activeNavID={activeNavID}
                     handleNavigate={handleNavigate}
+                >
+                    <AdminNav
+                        key={authority}
+
+                        activeNavID={activeNavID}
+                        handleNavigate={handleNavigate}
+                        authority={authority}
+                    />
+                </Sidebar>
+
+                <Main> 
+                    <ContractDashboard />
+                </Main>
+
+                <Alert
+                    type={alert.type}
+                    message={alert.message}
+                    isShow={alert.isShow}
                 />
-            </Sidebar>
-
-            <Main> 
-                <ContractDashboard />
-            </Main>
-
-            <Alert
-                type={alert.type}
-                message={alert.message}
-                isShow={alert.isShow}
-            />
-        </alertContext.Provider>
-        </userContext.Provider>
+            </alertContext.Provider>
+            </userContext.Provider>
+        </>
+        
     )
 }
 

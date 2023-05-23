@@ -8,6 +8,8 @@ import SectionRoomTypeEditing from "./room-type-editing.section";
 import SectionRoomTypeInfo from "./room-type-info.section";
 import SectionAddingRoom from "./room-type-adding.section";
 import MGMTService from "../../../pages/api/service/MGMT-RoomService"
+import { useContext } from "react";
+import { alertContext } from "../../utils/alert.context";
 
 const sortingButtons = [
   {id: 0,text: "ID" },
@@ -22,7 +24,8 @@ export default function SectionRoomTypes({roomTypes, setRoomTypes}) {
   // const [roomTypes, setRoomTypes] = useState(initRoomTypes);
   const [sectionId, setSectionId] = useState(0);
   const [roomTypeInfoId, setRoomTypeInfoId] = useState(0);
-
+  const [roomTypeAlert, setRoomTypeAlert]= useState({})
+  const showAlert = useContext(alertContext);
 
 
   function loadListTypeRoom(){
@@ -33,7 +36,7 @@ export default function SectionRoomTypes({roomTypes, setRoomTypes}) {
     .catch((error)=>{
     if(error.response){
         console.log(error.response.data)
-    }
+    } 
     })
   }
   
@@ -46,16 +49,15 @@ export default function SectionRoomTypes({roomTypes, setRoomTypes}) {
   async function handleUpdateInfo(updatedInfo) {
     try{
       const response= await MGMTService.updateTypeRoom(updatedInfo.id, updatedInfo)
-      loadListTypeRoom()
+      showAlert(true, 'Update Successfully')
+      setSectionId(1)
       return response.data
     }catch(error){
       if (error.response) { 
+        
+        showAlert(false, error.response.data)
         console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) { // no response
-        console.log(error.request);
-      } else { // Something wrong in setting up the request
+       } else { // Something wrong in setting up the request
         console.log('Error', error.message);
       }
       console.log(error.config); 
@@ -65,10 +67,12 @@ export default function SectionRoomTypes({roomTypes, setRoomTypes}) {
   }
   function handleDeleteRoomType(roomTypeId) {
     MGMTService.deleteTypeRoom(roomTypeId).then(res=>{
-      console.log(res.data)
+      showAlert(true, 'Delete Successfully')
+      loadListTypeRoom()
     }).catch((error)=>{
-    if(error.response){
-        console.log(error.response.data)
+        if(error.response){
+          showAlert(false, error.response.data)
+          console.log(error.response.data)
     }
     })
   }
@@ -81,14 +85,12 @@ export default function SectionRoomTypes({roomTypes, setRoomTypes}) {
     try{
       const response= await MGMTService.createNewTypeRoom(data)
       loadListTypeRoom()
+      showAlert(true, 'Add Successfully')
       return response.data
     }catch(error){
       if (error.response) { 
         console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) { // no response
-        console.log(error.request);
+        showAlert(false, error.response.data)
       } else { // Something wrong in setting up the request
         console.log('Error', error.message);
       }
@@ -117,6 +119,7 @@ export default function SectionRoomTypes({roomTypes, setRoomTypes}) {
           info={roomTypeInfo}
           setSectionId={setSectionId}
           handleDeleteRoomType={handleDeleteRoomType}
+          roomTypeAlert={roomTypeAlert}
         />
       ),
     },
@@ -127,6 +130,7 @@ export default function SectionRoomTypes({roomTypes, setRoomTypes}) {
           info={roomTypeInfo}
           handleUpdateInfo={handleUpdateInfo}
           setSectionId={setSectionId}
+          roomTypeAlert={roomTypeAlert}
         />
       ),
     },
@@ -137,6 +141,7 @@ export default function SectionRoomTypes({roomTypes, setRoomTypes}) {
           info={roomTypeInfo}
           handleAddingRoomType={handleAddingRoomType}
           setSectionId={setSectionId}
+          roomTypeAlert={roomTypeAlert}
         />
       ),
     },

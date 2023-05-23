@@ -6,9 +6,29 @@ import { useRouter } from "next/router";
 import InvoiceDashboard from "../../features/admin/invoice.dashboard";
 import {alertContext} from "../../features/utils/alert.context";
 import Alert from "../../features/ui/alert";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { managerURL } from "../../features/utils/links";
+import Authorities from "../api/admin-auth/AuthRoles"
 export default function Page() {
+    const router = useRouter();
+    const [auth, setAuth] = useState(false);
+    const [authority, setAuthority]= useState(null)
+    function getAuthorities(){
+        Authorities().then(res=>{
+            console.log(res.data[0])
+            setAuthority(res.data[0]['authority'])
+            setAuth(true)
+        }).catch(error=>{
+            if(error.response.status==403){
+                router.push(managerURL.login)
+            }
+        })
+    }
+
+    useEffect(()=>{
+        getAuthorities()
+    },[])
+
     const user = {
         id: "N19DCCN018", 
         name: "Ho Duc Trung", 
@@ -16,7 +36,6 @@ export default function Page() {
         gender: true,
         dateOfBirth: '01-01-2001',
     };
-    const router = useRouter();
     const activeNavID = 2;
     
     function handleNavigate(nextURL) {
@@ -48,30 +67,35 @@ export default function Page() {
 
 
     return (
-        <userContext.Provider value={user}>
-        <alertContext.Provider value={showAlert}>
-        
-            <Sidebar
-                activeNavID={activeNavID}
-                handleNavigate={handleNavigate}
-            >
-                <AdminNav
+        auth && 
+        <>
+            <userContext.Provider value={user}>
+            <alertContext.Provider value={showAlert}>
+            
+                <Sidebar
                     activeNavID={activeNavID}
                     handleNavigate={handleNavigate}
+                >
+                    <AdminNav
+                        activeNavID={activeNavID}
+                        handleNavigate={handleNavigate}
+                        authority={authority}
+                    />
+                </Sidebar>
+
+                <Main> 
+                    <InvoiceDashboard />
+                </Main>
+
+                <Alert
+                    type={alert.type}
+                    message={alert.message}
+                    isShow={alert.isShow}
                 />
-            </Sidebar>
-
-            <Main> 
-                <InvoiceDashboard />
-            </Main>
-
-            <Alert
-                type={alert.type}
-                message={alert.message}
-                isShow={alert.isShow}
-            />
-        </alertContext.Provider>
-        </userContext.Provider>
+            </alertContext.Provider>
+            </userContext.Provider>
+        </>
+        
     )
 }
 

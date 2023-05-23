@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import HeaderSection from "../../layouts/section-header";
 import Container from "../../user/layouts/db-container";
 import InputFilter from "../../ui/input-filter";
@@ -7,86 +7,72 @@ import DataColumn from "../../ui/data.column";
 import SectionAdminAdding from "./admin-adding.section";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
+import MGMTService from "../../../pages/api/service/MGMT-Admin"
+import { alertContext } from "../../utils/alert.context";
 
 const sortingButtons = [
     {id: 0, text: "ID" },
     {id: 1, text: "Full name" },
-    {id: 2, text: "Date of birth"},
+    {id: 2, text: "Mail"},
     {id: 3, text: "Gender"},
     {id: 4, text: "Role"},
 ]
 
-let initAdmins = [
-    {id: "N19DCCN001", name: "Nguyen Van A", birthday: "21/11/2001", gender: true, role: 0},
-    {id: "N19DCCN002", name: "Nguyen Thi A", birthday: "19/01/2001", gender: false, role: 0},
-    {id: "N19DCCN003", name: "Nguyen Van B", birthday: "15/05/2001", gender: true, role: 0},
-    {id: "N19DCCN005", name: "Tran Quang D", birthday: "22/07/2001", gender: true, role: 0},
-    {id: "N19DCCN007", name: "Hoang Van E", birthday: "21/11/2001", gender: true, role: 0},
-    {id: "N19DCCN011", name: "Huynh Thi Thanh F", birthday: "21/02/2001", gender: false, role: 0},
-    {id: "N19DCCN021", name: "Pham Van G", birthday: "14/04/2001", gender: true, role: 0},
-    {id: "N19DCCN030", name: "Nguyen Van H", birthday: "18/07/2001", gender: true, role: 0},
-    {id: "N19DCCN031", name: "Le Van K", birthday: "01/12/2001", gender: true, role: 0}, 
-    {id: "N19DCCN032", name: "Le Thi K", birthday: "01/12/2001", gender: false, role: 0}, 
-    {id: "N19DCCN033", name: "Le Van K", birthday: "01/12/2001", gender: true, role: 0}, 
-    {id: "N19DCCN034", name: "Le Thi K", birthday: "01/12/2001", gender: false, role: 0}, 
-    {id: "N19DCCN035", name: "Tran Quang K", birthday: "01/12/2001", gender: true, role: 0}, 
-]
+
 
 export default function AdminDashboard() {
-    const [admins, setAdmins] = useState(initAdmins);
+    const showAlert = useContext(alertContext);
+    const [admins, setAdmins] = useState([]);
     const [filterValues, setFilterValues] = useState({
-        id: "", 
+        username: "", 
     });
     const [sectionId, setSectionId] = useState(0);
     const [info, setInfo] = useState(null);
  
-    const filteredAdmins = admins.filter(admin => {
-        const checkedID = admin.id.includes(filterValues.id.trim()); 
+    function loadListAdmins(){
+        MGMTService.listAdmins().then((res)=>{
+            console.log(res.data)
+            setAdmins(res.data)
+        }).catch((error)=>{
+                if(error.response){
+                    console.log(error.response.data)
+                }
+            })
+    }
 
-        if (checkedID)
-            return true;
-        return false;
-    })
+    useEffect(()=>{
+        loadListAdmins()
+    },[])
+
+    
 
     function handleDeleteAdmin(adminId) {
-        initAdmins = initAdmins.filter(admin =>  admin.id != adminId);
-        setAdmins(initAdmins);
+       MGMTService.deleteAccount(adminId).then(res=>{
+            loadListAdmins()
+            res.data ? showAlert(true,'Delete Successfully!' ) : showAlert(false,'Delete Failed!' )
+       }).catch(error=>{
+            showAlert(false,'Delete Failed!')
+            console.log(error.response.data)
+       })
     }
 
     // Handle adding admin here
     function handleAddingAdmin(tempInfo) {
-        
-        let initId;
-        while (true) {
-            initId = Math.random() * 100;
-            initId = parseInt(initId);
-            initId = (initId + "").padStart(3, 0);
-
-            let flag = true;
-
-            admins.forEach(admin => {
-                if (admin.id == initId)
-                    flag = false;
-            })
-
-            if (flag) break;
-        }
-
-        setAdmins([
-            ...admins,
-            {
-                id: initId,
-                ...tempInfo,
+        console.log(tempInfo)
+        MGMTService.createAccount(tempInfo).then(res=>{
+            console.log(res.data)
+            loadListAdmins()
+            setSectionId(0);
+        }).catch((error)=>{
+            if(error.response){
+                console.log(error.response.data)
             }
-        ]);
-        setSectionId(0);
+        })
+        
     } 
 
     function handleShowMore() {
-        setAdmins([
-            ...admins,
-            ...initAdmins,
-        ])
+        
     }
 
     const displaySections = [
@@ -94,7 +80,7 @@ export default function AdminDashboard() {
             id: 0,
             section: (
                 <SectionAdminList 
-                    filteredAdmins={filteredAdmins}
+                    filteredAdmins={admins}
                     handleDeleteAdmin={handleDeleteAdmin}
                     setSectionId={setSectionId}
                     setInfo={setInfo}
@@ -146,7 +132,7 @@ function SectionAdminList({
     const [selectedRowID, setSelectedRowID] = useState(null);
     const rowClassName = " flex-shrink-0 grid grid-cols-5 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa ";
     const seletectRowClassName = rowClassName + " bg-fa border-l-2 border-r-2 "
-    const selectedRow = selectedRowID == null ? null : filteredAdmins.find(invoice => invoice.id == selectedRowID);
+    const selectedRow = selectedRowID == null ? null : filteredAdmins.find(invoice => invoice.username == selectedRowID);
 
     function handleSelectRow(nextID) {
         if (nextID == selectedRowID)
@@ -170,16 +156,16 @@ function SectionAdminList({
         <main className="h-full w-full flex flex-col  overflow-auto">
         {filteredAdmins.map( admin => 
             <div 
-                key={admin.id} className={admin.id == selectedRowID ? seletectRowClassName : rowClassName}
-                onClick={() => handleSelectRow(admin.id)}
+                key={admin.username} className={admin.username == selectedRowID ? seletectRowClassName : rowClassName}
+                onClick={() => handleSelectRow(admin.username)}
             >
-                <DataColumn text={admin.id} />
-                <DataColumn text={admin.name} />
-                <DataColumn text={admin.birthday} />
-                <DataColumn text={admin.gender ? "Male" : "Female"}>
-                {admin.gender ? <FontAwesomeIcon icon={faMars} className=" text-xl mr-1 text-primary" /> : <FontAwesomeIcon icon={faVenus} className="text-xl mr-1 text-pink-500" />}
+                <DataColumn text={admin.username} />
+                <DataColumn text={admin.hoTen} />
+                <DataColumn text={admin.mail} />
+                <DataColumn text={admin.gioiTinh ? "Male" : "Female"}>
+                {admin.gioiTinh ? <FontAwesomeIcon icon={faMars} className=" text-xl mr-1 text-primary" /> : <FontAwesomeIcon icon={faVenus} className="text-xl mr-1 text-pink-500" />}
                 </DataColumn>
-                <DataColumn text={admin.role } />
+                <DataColumn text={admin.role.roleName } />
             </div>
         )}
         </main>
@@ -220,7 +206,7 @@ function SectionFilter({
     return (
         <section className="grid grid-cols-5 h-full gap-4 grow">
             <InputFilter
-                textValue={filterValues.id}
+                textValue={filterValues.username}
                 handleTextChange={nextText => {
                     handleChangeFilterValues({
                         ...filterValues,

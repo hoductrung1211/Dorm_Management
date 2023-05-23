@@ -5,35 +5,35 @@ const API_URL = "http://localhost:8080/api/manage/term/";
 
 const listTerm=()=>{
     return axios.get(API_URL,
-        // {
-        //     headers: authHeader()
-        // }
+        {
+            headers: authHeader()
+        }
         )
 }
 
 const updateTerm=async(id, term)=>{
     const response = await axios.put(API_URL + "update/"+ id, term,
-    // {
-    //     headers: authHeader()
-    // }
+    {
+        headers: authHeader()
+    }
     )
     return response
 }
 
 const createTerm=async(term)=>{
     const response = await axios.post(API_URL + "add", term,
-    // {
-    //     headers: authHeader()
-    // }
+    {
+        headers: authHeader()
+    }
     )
     return response
 }
 
 const deleteTerm=(id)=>{
     return axios.delete(API_URL+ "delete/" +id,
-    // {
-    //     headers: authHeader()
-    // }
+    {
+        headers: authHeader()
+    }
     )
 }
 
@@ -43,7 +43,7 @@ const searchTerm=(id)=>{
         params:{
             id: id
         },
-        // headers: authHeader()
+        headers: authHeader()
     }
     )
 }

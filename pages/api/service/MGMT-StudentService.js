@@ -9,10 +9,9 @@ const getListStudentInDorm=(pageSize, sortBy, typeSort, gender)=>{
             sortBy: sortBy,
             typeSort: typeSort,
             gender: gender
-        }}
-    // ,{
-    //   headers: authHeader() 
-    // }
+        },
+        headers: authHeader() 
+    }
     )
 }
 const getListStudentSearch=(username, name)=>{
@@ -20,18 +19,18 @@ const getListStudentSearch=(username, name)=>{
         params:{
             username: username,
             name: name,
-        }}
-    // ,{
-    //   headers: authHeader() 
-    // }
+        },
+        headers: authHeader() 
+    }
+   
     )
 }
 
 const syncStudents=() =>{
     return axios.get(API_URL+"student/add-students",
-     // ,{
-    //   headers: authHeader() 
-    // }
+    {
+      headers: authHeader() 
+    }
     )
 }
 

@@ -11,11 +11,11 @@ const listAllRoom=(status, gender, idTypeRoom, id, sortByType)=>{
             idTypeRoom: idTypeRoom,
             id: id,
             sortByType: sortByType
-        }
+        },
+        headers: authHeader() 
+    
     }
-    // ,{
-    //   headers: authHeader() 
-    // }
+   
     )
 }
 
@@ -23,27 +23,27 @@ const getListHaveStudent=(status)=>{
     return axios.get(API_URL+"room/combobox",{
         params:{
             statusContract: status
-        }}
-    // ,{
-    //   headers: authHeader() 
-    // }
+        },
+        headers: authHeader() 
+    }
+   
     )
 }
 
 const getListTypeRooms=()=>{
     return axios.get(API_URL+"room-type/",
         
-    // ,{
-    //   headers: authHeader() 
-    // }
+    {
+      headers: authHeader() 
+    }
     )
 }
 
 const updateRoom=(idRoom, idTypeRoom)=>{
     return axios.patch(API_URL+"room/update/"+idRoom+"/"+idTypeRoom,
-    // {
-    //   headers: authHeader() 
-    // }
+    {
+      headers: authHeader() 
+    }
     )
 }
 const addRoom=(idLoaiKTX, trangThai)=>{
@@ -51,17 +51,17 @@ const addRoom=(idLoaiKTX, trangThai)=>{
     {
         idLoaiKTX, trangThai
     },
-    // {
-    //   headers: authHeader() 
-    // }
+    {
+      headers: authHeader() 
+    }
     )
 }
 
 const deleteRoom=(idRoom)=>{
     return axios.get(API_URL + "room/remove/"+idRoom,
-    // {
-    //   headers: authHeader() 
-    // }
+    {
+      headers: authHeader() 
+    }
     )
 }
 
@@ -93,9 +93,9 @@ const updateTypeRoom = (idType, roomTypeModel)=>{
 
 const deleteTypeRoom = (idType)=>{
     return axios.delete(API_URL + "room-type/remove/"+idType,
-    // {
-    //     headers: 
-    // }
+    {
+        headers: authHeader()
+    }
     )
     // }
     // return null

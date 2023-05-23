@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import HeaderSection from "../../layouts/section-header";
 import Container from "../../user/layouts/db-container";
 import InputFilter from "../../ui/input-filter";
@@ -6,8 +6,8 @@ import OrderButtoon from "../../ui/button-order";
 import DataColumn from "../../ui/data.column";
 import SectionTermAdding from "./term-adding.section";
 import SectionTermEditing from "./term-editing.section";
-import MGMTService from "../../../pages/api/service/MMGMT-TermService"
-
+import MGMTService from "../../../pages/api/service/MGMT-TermService"
+import { alertContext } from "../../utils/alert.context";
 
 
 const sortingButtons = [
@@ -20,10 +20,17 @@ const sortingButtons = [
 
 
 export default function TermDashboard() {
-    const [terms, setTerms] = useState([]);
+    const [terms, setTerms] = useState([])
+    const showAlert = useContext(alertContext);
+    const [sectionId, setSectionId] = useState(0)
+    const [info, setInfo] = useState(null)
     const [filterValues, setFilterValues] = useState({
         id: "", 
     });
+    const [termAlert, setTermAlert] = useState({
+        type: true,
+        desc: ''
+    })
 
     function loadListTerm(){
         filterValues.id == "" ?
@@ -44,21 +51,27 @@ export default function TermDashboard() {
     }
 
     useEffect(()=>{
-        console.log(filterValues.id)
         loadListTerm()
     },[filterValues])
-
-    const [sectionId, setSectionId] = useState(0);
-    const [info, setInfo] = useState(null);
  
   
-
+    
     function handleDeleteTerm(termId) {
         MGMTService.deleteTerm(termId).then(res=>{
             loadListTerm()
+            showAlert(true,'Delete Successfully' )
+            setTermAlert({
+                type: true,
+                desc: 'Delete Successfully'
+            })
         }).catch((error)=>{
+            
             if(error.response){
-                console.log(error.response.data)
+                showAlert(false,error.response.data )
+                setTermAlert({
+                    type: false,
+                    desc: error.response.data
+                })
             }
         })
     }
@@ -66,12 +79,18 @@ export default function TermDashboard() {
     // Handle adding term here
     function handleAddingTerm(tempInfo) {
         MGMTService.createTerm(tempInfo).then(res=>{
-            console.log(tempInfo)
-            console.log(res.data)
             loadListTerm()
+            setTermAlert({
+                type: true,
+                desc: 'Add Successfully'
+              })
             setSectionId(0);
         }).catch((error)=>{
             if(error.response){
+                setTermAlert({
+                    type: false,
+                    desc: error.response.data
+                  })
                 console.log(error.response.data)
             }
         })
@@ -79,17 +98,23 @@ export default function TermDashboard() {
     }
 
     function handleEditingTerm(editedTerm) {
-        console.log(editedTerm)
         MGMTService.updateTerm(editedTerm.id, editedTerm).then(res=>{
             loadListTerm()
-            console.log(res.data)
+            setTermAlert({
+                type: true,
+                desc: "Update Term Successfully!"
+              })
+            setSectionId(0);
         }).catch(error=>{
             if(error.response){
+                setTermAlert({
+                    type: false,
+                    desc: error.response.data
+                  })
                 console.log(error.response.data)
             }
         })
-
-        setSectionId(0);
+        
     }
 
     function handleShowMore() {
@@ -109,6 +134,7 @@ export default function TermDashboard() {
                     setSectionId={setSectionId}
                     setInfo={setInfo}
                     handleShowMore={handleShowMore}
+                    termAlert={termAlert}
                 />
             )
         },
@@ -118,6 +144,7 @@ export default function TermDashboard() {
                 <SectionTermAdding
                     setSectionId={setSectionId}
                     handleAddingTerm={handleAddingTerm}
+                    termAlert={termAlert}
                 />
             )
         },
@@ -128,6 +155,7 @@ export default function TermDashboard() {
                     setSectionId={setSectionId}
                     handleEditingTerm={handleEditingTerm}
                     info={info}
+                    termAlert={termAlert}
                 />
             )
         },
@@ -162,7 +190,16 @@ function SectionTermList({
     setInfo,
     handleDeleteTerm,
     handleShowMore,
+    termAlert
 }) {
+
+    // const [alert, setAlert]= useState({})
+    // useEffect(()=>{
+    //     console.log(termAlert)
+    //     setAlert(termAlert)
+    // },[termAlert])
+
+    // const showAlert = useContext(alertContext);
     const [selectedRowID, setSelectedRowID] = useState(null);
     const rowClassName = " flex-shrink-0 grid grid-cols-5 text-center w-full h-14 border-b-2 cursor-pointer hover:bg-fa ";
     const seletectRowClassName = rowClassName + " bg-fa border-l-2 border-r-2 "
@@ -213,7 +250,10 @@ function SectionTermList({
             </button>
 
             { selectedRow && <ActionsBoard 
-                handleDelete={() => handleDeleteTerm(selectedRowID)}
+                handleDelete={() => {
+                    handleDeleteTerm(selectedRowID)
+                    // showAlert(alert.type, alert.desc)
+                }}
                 changeToEdit={() => {
                     setInfo(selectedRow)
                     setSectionId(2)
@@ -269,7 +309,7 @@ function ActionsBoard({
 
             <button 
                 className={deleteClassname}
-                onClick={() => handleDelete()}
+                onClick={handleDelete}
             >
                 Delete
             </button>

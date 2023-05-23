@@ -18,10 +18,12 @@ export const studentURL = {
 }
 
 export const managerURL = {
+    login: '/login-admin',
     index: '/admin',
     rooms: '/admin/rooms',
     invoices: '/admin/invoices',
     contracts: '/admin/contracts',
     terms: '/admin/terms ',
-    admins: '/admin/admin',
+    admins: '/admin/personnel',
+    statistics: '/admin/statistics'
 }

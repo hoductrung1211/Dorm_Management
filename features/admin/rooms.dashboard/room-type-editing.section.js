@@ -8,20 +8,20 @@ import InputEditing from "../../ui/input-editing";
 import { useState, useEffect } from "react";
 import SelectEditing from "../../ui/select-editing";
 import TextareaEditing from "../../ui/textarea-editing";
-
 export default function SectionRoomTypeEditing({
     info,
     handleUpdateInfo,
     setSectionId,
 }) {
 
+    const [tempInfo, setTempInfo] = useState(info);
     useEffect(()=>{
-        info.file=''
-    },[info])
+        // info.file=''
+        console.log(tempInfo)
+    },[tempInfo])
 
     
     // console.log(info)
-    const [tempInfo, setTempInfo] = useState(info);
     
     return (
         <>
@@ -78,6 +78,7 @@ function ImageSection({
     handleChangeInfo,
 }) {
     function handleChangeFile(select){
+        
         handleChangeInfo({
             ...info,
             file: select.target.files[0],

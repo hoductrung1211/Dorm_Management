@@ -24,7 +24,7 @@ const sortingButtons = [
 
 export default function ContractDashboard() {
     const [contracts, setContracts] = useState([]);
-    const showAlert = useContext(alertContext);
+    // const showAlert = useContext(alertContext);
 
     const [filterValues, setFilterValues] = useState({
         id: "",
@@ -195,7 +195,7 @@ export default function ContractDashboard() {
                                         setIsLoading(false)
                                         loadAllContract()
                                     }, 700)
-                                    showAlert(false, "Syncing failed");
+
                                 }}
                             >
                                 Reload

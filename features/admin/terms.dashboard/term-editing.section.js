@@ -1,15 +1,18 @@
 import {   faCalendar,   faMoneyBill, faRightFromBracket, faRightToBracket, faSquare } from "@fortawesome/free-solid-svg-icons";
 import SectionInfoHeader from "../../layouts/info-header.section";
 import AttributeText from '../../ui/attribute-text';
-import {  useState } from "react";
+import {  useState, useContext } from "react";
 import InputEditing from "../../ui/input-editing";
+import { alertContext } from "../../utils/alert.context";
 
 export default function SectionTermEditing({ 
     setSectionId,
     handleEditingTerm,
     info,
+    termAlert
 }) {
-
+    
+    const showAlert = useContext(alertContext);
     const [tempInfo, setTempInfo] = useState(info)
 
     function formatDate(dateStr) {
@@ -91,6 +94,7 @@ export default function SectionTermEditing({
                         ngayKetThucDangKy: reFormatDate(tempInfo.ngayKetThucDangKy)
                     }
                     handleEditingTerm(term)
+                    showAlert(termAlert.type, termAlert.desc)
                 }}/>
             </section>
         </main>

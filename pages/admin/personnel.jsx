@@ -3,12 +3,15 @@ import { userContext } from "../../features/user/user.context";
 import AdminNav from '../../features/admin/nav';
 import Main from "../../features/layouts/main";
 import { useRouter } from "next/router";
-import RoomsDashboard from "../../features/admin/rooms.dashboard";
+import AdminsDashboard from "../../features/admin/admin.dashboard";
 import {alertContext} from "../../features/utils/alert.context";
 import Alert from "../../features/ui/alert";
 import { useState, useEffect } from "react";
 import { managerURL } from "../../features/utils/links";
 import Authorities from "../api/admin-auth/AuthRoles"
+
+
+
 export default function Page() {
     const router = useRouter();
     const [auth, setAuth] = useState(false);
@@ -28,6 +31,8 @@ export default function Page() {
     useEffect(()=>{
         getAuthorities()
     },[])
+
+
     const user = {
         id: "N19DCCN018", 
         name: "Ho Duc Trung", 
@@ -35,7 +40,7 @@ export default function Page() {
         gender: true,
         dateOfBirth: '01-01-2001',
     };
-    const activeNavID = 1;
+    const activeNavID = 5;
     
     function handleNavigate(nextURL) {
         router.push(nextURL); 
@@ -80,7 +85,7 @@ export default function Page() {
                 </Sidebar>
 
                 <Main>
-                    <RoomsDashboard />
+                    <AdminsDashboard />
                 </Main>
 
                 <Alert

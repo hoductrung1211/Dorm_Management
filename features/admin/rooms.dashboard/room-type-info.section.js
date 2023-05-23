@@ -6,12 +6,12 @@ import AttributeValue from '../../ui/attribute-value';
 import ActionButton from "../../ui/button-action";
 import {moneyConverter} from '../../utils/convert';
 import SectionInfoHeader from "../../layouts/info-header.section";
-
 export default function SectionRoomTypeInfo({
     info,
     setSectionId,
     handleDeleteRoomType,
 }) {
+
     return (
         <>
             <SectionInfoHeader 
@@ -34,8 +34,8 @@ export default function SectionRoomTypeInfo({
                             handleClick={() => {
                                 const result = confirm("Do you really want to DELETE this room type?");
                                 if (result) {
-                                    setSectionId(0);
                                     handleDeleteRoomType(info.id)
+                                    
                                 }
                             }}
                             bgRed={true} />

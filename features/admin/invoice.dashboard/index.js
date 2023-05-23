@@ -201,7 +201,7 @@ function CostFilterBar({
     setFilterValues,
 }) {
     return (
-        <div className="ml-5 pl-2 w-0 flex-grow h-full flex gap-5">
+        <div className="ml-5 pl-2 w-20 flex-grow h-full flex gap-5">
             {/* <InputFilter
                 textValue={filterValues.text}
                 handleTextChange={nextText => {

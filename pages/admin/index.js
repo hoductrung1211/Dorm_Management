@@ -6,10 +6,29 @@ import { useRouter } from "next/router";
 import StudentsDashboard from "../../features/admin/students.dashboard";
 import {alertContext} from "../../features/utils/alert.context";
 import Alert from "../../features/ui/alert";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import Authorities from "../api/admin-auth/AuthRoles"
+import { managerURL } from "../../features/utils/links";
 
 export default function Page() {
+    const router = useRouter();
+    const [authority, setAuthority]= useState(null)
+    function getAuthorities(){
+        Authorities().then(res=>{
+            console.log(res.data[0])
+            setAuthority(res.data[0]['authority'])
+        }).catch(error=>{
+            if(error.response.status==403){
+                router.push(managerURL.login)
+            }
+        })
+    }
+
+    useEffect(()=>{
+        getAuthorities()
+    },[authority])
+
+
     const user = {
         id: "N19DCCN018", 
         name: "Ho Duc Trung", 
@@ -17,7 +36,6 @@ export default function Page() {
         gender: true,
         dateOfBirth: '01-01-2001',
     };
-    const router = useRouter();
     const activeNavID = 0;
     
     function handleNavigate(nextURL) {
@@ -46,30 +64,35 @@ export default function Page() {
         }, 3000);
     }
     return (
-        <userContext.Provider value={user}>
-        <alertContext.Provider value={showAlert}>
-        
-            <Sidebar
-                activeNavID={activeNavID}
-                handleNavigate={handleNavigate}
-            >
-                <AdminNav
+        // auth &&
+        <>
+            <userContext.Provider value={user}>
+            <alertContext.Provider value={showAlert}>
+            
+                <Sidebar
                     activeNavID={activeNavID}
                     handleNavigate={handleNavigate}
+                >
+                    <AdminNav
+                        key={authority}
+                        activeNavID={activeNavID}
+                        handleNavigate={handleNavigate}
+                        authority={authority}
+                    />
+                </Sidebar>
+
+                <Main>
+                    <StudentsDashboard />
+                </Main>
+
+                <Alert
+                    type={alert.type}
+                    message={alert.message}
+                    isShow={alert.isShow}
                 />
-            </Sidebar>
-
-            <Main>
-                <StudentsDashboard />
-            </Main>
-
-            <Alert
-                type={alert.type}
-                message={alert.message}
-                isShow={alert.isShow}
-            />
-        </alertContext.Provider>
-        </userContext.Provider>
+            </alertContext.Provider>
+            </userContext.Provider>
+        </>
     )
 }
 

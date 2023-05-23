@@ -12,14 +12,17 @@ import ActionButton from "../../ui/button-action";
 import { moneyConverter } from "../../utils/convert";
 import SectionInfoHeader from "../../layouts/info-header.section";
 import SelectEditing from "../../ui/select-editing";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { alertContext } from "../../utils/alert.context";
 
 export default function SectionRoomAdding({
   roomTypeList,
   setSectionId,
   handleAddRoom,
+  // roomAlert
 }) {
   const [roomTypeId, setRoomTypeId] = useState(roomTypeList[0].id);
+  // const showAlert = useContext(alertContext);
   const roomTypeInfo = roomTypeList.find(
     (roomType) => roomType.id == roomTypeId
   ); 
@@ -45,6 +48,7 @@ export default function SectionRoomAdding({
                     const result = confirm("Do you really want to save the changes?");
                     if (result) {
                         handleAddRoom(roomTypeId);
+                        // showAlert(roomAlert.type, roomAlert.desc)
                         setSectionId(0);
                     }
                 }}    
